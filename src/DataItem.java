@@ -2,21 +2,28 @@
 class DataItem {
 	private DataItem next;
 	private String itemNum;
-	private String name;
+	private String firstName;
+	private String lastName;
 	private String studentNum;
-	private String date;           //get format
+	private String teacher;
+	private String courseCode;
+	private String date;
 	private boolean returned;
 
-	public DataItem(String itemNum, String name, String studentNum, String date) {
+	public DataItem(String itemNum, String studentNum, String lastName, String firstName, String teacher, String date, String courseCode, boolean returned) {
 		this.itemNum = itemNum;
-		this.name = name;
 		this.studentNum = studentNum;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.teacher = teacher;
+		this.courseCode = courseCode;
 		this.date = date;
 		this.next = null;
+		this.returned = returned;
 	}
+	
 	public DataItem(String itemNum) {
 		this.itemNum = itemNum;
-		
 	}
 
 	public DataItem getNext(){
@@ -34,11 +41,17 @@ class DataItem {
 		return this.itemNum;
 	}
 	
-	public void setName(String name){
-		this.name = name;
+	public void setFirstName(String firstName){
+		this.firstName = firstName;
 	}
-	public String getName(){
-		return this.name;
+	public String getFirstName(){
+		return this.firstName;
+	}
+	public void setLastName(String name){
+		this.lastName = name;
+	}
+	public String getLastName(){
+		return this.lastName;
 	}
 	
 	public void setStudentNum(String studentNum){
@@ -53,6 +66,20 @@ class DataItem {
 	}
 	public String getDate(){
 		return this.date;
+	}
+	
+	public void setTeacher(String teacher){
+		this.teacher = teacher;
+	}
+	public String getTeacher(){
+		return this.teacher;
+	}
+	
+	public void setCourseCode(String courseCode){
+		this.courseCode = courseCode;
+	}
+	public String getCourseCode(){
+		return this.courseCode;
 	}
 	
 	public void setReturned(boolean returned){
