@@ -1,4 +1,3 @@
-
 class DataItem {
 	private DataItem next;
 	private String itemNum;
@@ -27,7 +26,7 @@ class DataItem {
 	}
 
 	public DataItem getNext(){
-		return this.next;
+		return (this.next);
 	}
 	public void setNext(DataItem next){
 		this.next = next;

@@ -1,4 +1,3 @@
-import java.io.File;
 import java.io.FileWriter;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -93,25 +92,60 @@ class DataLinkedList {
     	}
     	return -1;
     }
-    public int searchByName(String sName){
+    public DataItem[] searchByLastName(String sName){
     	DataItem tempNode = head;
-    	int index = 0;
+    	int s = 0;
     	while(tempNode != null){
-    		if((tempNode.getLastName().compareTo(sName) == 0)||(tempNode.getFirstName().compareTo(sName) == 0)){
-    			return index;
+    		if(tempNode.getLastName().compareTo(sName) == 0){
+    			s++;
     		}
-    		index++;
     	}
-    	return -1;
+    	
+    	DataItem[] dA = new DataItem[s];
+    	int index = 0;
+    	
+    	tempNode = head;
+    	while(tempNode != null){
+    		if(tempNode.getLastName().compareTo(sName) == 0){
+    			dA[index] = tempNode;
+    			index++;
+    		}
+    		tempNode = tempNode.getNext();
+    	}
+    	return dA;
+    }
+    
+    public DataItem[] searchByFirstName(String sName){
+    	DataItem tempNode = head;
+    	int s = 0;
+    	while(tempNode != null){
+    		if(tempNode.getFirstName().compareTo(sName) == 0){
+    			s++;
+    		}
+    	}
+    	
+    	DataItem[] dA = new DataItem[s];
+    	int index = 0;
+    	
+    	tempNode = head;
+    	while(tempNode != null){
+    		if(tempNode.getFirstName().compareTo(sName) == 0){
+    			dA[index] = tempNode;
+    			index++;
+    		}
+    		tempNode = tempNode.getNext();
+    	}
+    	return dA;
     }
     
     public void saveData()throws IOException{
     	BufferedWriter bWrite = new BufferedWriter(new FileWriter(listName+".csv"));
     	DataItem tempNode = head;
     	
-    	while(tempNode != null){//add teacher, split name, course code,
+    	while(tempNode != null){
     		bWrite.write(tempNode.getItemNum()+","+tempNode.getStudentNum()+","+tempNode.getLastName()+","+tempNode.getFirstName()+","+tempNode.getTeacher()+","+tempNode.getDate()+","+tempNode.getCourseCode()+","+tempNode.getReturned());
     		bWrite.newLine();
+    		tempNode = tempNode.getNext();
     	}
     	
     	bWrite.close();
