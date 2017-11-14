@@ -1,4 +1,6 @@
 class DataItem {
+	
+	//class variables
 	private DataItem next;
 	private String itemNum;
 	private String firstName;
@@ -9,6 +11,8 @@ class DataItem {
 	private String date;
 	private boolean returned;
 
+	//constructors
+	
 	public DataItem(String itemNum, String studentNum, String lastName, String firstName, String teacher, String date, String courseCode, boolean returned) {
 		this.itemNum = itemNum;
 		this.studentNum = studentNum;
@@ -25,6 +29,8 @@ class DataItem {
 		this.itemNum = itemNum;
 	}
 
+	//get and set methods
+	
 	public DataItem getNext(){
 		return (this.next);
 	}
