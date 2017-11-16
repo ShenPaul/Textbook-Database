@@ -269,7 +269,8 @@ class DataLinkedList {//start of class
 		}
 
 		//insertion sort on the array with assigned items
-		DataItem[] newArr = (DataItem[])fullArr.toArray();
+		DataItem[] newArr = new DataItem[fullArr.size()];
+		fullArr.toArray(newArr);
 		tempNode = null;
 		for(int i=1;i<newArr.length;i++){
 			for(int j=i;j>0;j--){
@@ -290,7 +291,8 @@ class DataLinkedList {//start of class
 		}
 
 		//add unassigned items to the list
-		DataItem[] residueArr = (DataItem[])emptyArr.toArray();
+		DataItem[] residueArr = new DataItem[emptyArr.size()];
+		emptyArr.toArray(residueArr);
 		for(int i=0;i<residueArr.length;i++){
 			tempNode.setNext(residueArr[i]);
 			tempNode = tempNode.getNext();
@@ -300,7 +302,7 @@ class DataLinkedList {//start of class
 	}
     
 	/** sortByFirstName *******************************************
-	 * sorts the list alphabetically by last name
+	 * sorts the list alphabetically by first name
 	 */
 	public void sortByFirstName(){
 		ArrayList<DataItem> fullArr = new ArrayList<DataItem>();
@@ -319,7 +321,8 @@ class DataLinkedList {//start of class
 		}
 
 		//insertion sort on the array with assigned items
-		DataItem[] newArr = (DataItem[])fullArr.toArray();
+		DataItem[] newArr = new DataItem[fullArr.size()];
+		fullArr.toArray(newArr);
 		tempNode = null;
 		for(int i=1;i<newArr.length;i++){
 			for(int j=i;j>0;j--){
@@ -340,7 +343,8 @@ class DataLinkedList {//start of class
 		}
 
 		//add unassigned items to the list
-		DataItem[] residueArr = (DataItem[])emptyArr.toArray();
+		DataItem[] residueArr = new DataItem[emptyArr.size()];
+		emptyArr.toArray(residueArr);
 		for(int i=0;i<residueArr.length;i++){
 			tempNode.setNext(residueArr[i]);
 			tempNode = tempNode.getNext();
