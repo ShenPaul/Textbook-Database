@@ -232,10 +232,7 @@ class DataLinkedList {//start of class
     	Path filePath = Paths.get(path);
     	
     	BufferedReader bRead = new BufferedReader(new FileReader(filePath.toFile()));
-    	String str;
-    	
-    	listName = bRead.readLine();
-    	
+    	String str;    	
     	DataItem tempNode = head;
     	while((str = bRead.readLine()) != null){
     		tempNode = new DataItem(str);
