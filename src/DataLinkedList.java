@@ -233,6 +233,9 @@ class DataLinkedList {//start of class
     	
     	BufferedReader bRead = new BufferedReader(new FileReader(filePath.toFile()));
     	String str;
+    	
+    	listName = bRead.readLine();
+    	
     	DataItem tempNode = head;
     	while((str = bRead.readLine()) != null){
     		tempNode = new DataItem(str);
