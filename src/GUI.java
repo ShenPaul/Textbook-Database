@@ -44,7 +44,7 @@ public class GUI {
 	//	public static int x=0;
 
 	/**
-	 *
+	 *@
 	 */
 	public static void main(String[] args)  {
 
@@ -212,6 +212,24 @@ public class GUI {
 		mainWindow.setVisible(true);
 	}
 
+	//assigns student to a textbook
+	static class textbookNumListener implements ActionListener{
+		@Override
+		public void actionPerformed(ActionEvent event){
+			JDialog dialog = new JDialog();
+			dialog.setAlwaysOnTop(true);
+
+			JPanel table = new JPanel();
+
+			String input = (String) JOptionPane.showInputDialog (dialog, "What is the textbook number?", "Textbook Number", JOptionPane.QUESTION_MESSAGE, null, null, null);
+			System.out.println (input);
+
+			tabs.addTab (input,table);
+			//find textbook and move cursor?
+			mainWindow.validate();
+			mainWindow.repaint();
+		}
+	}
 
 	//asks user for confirmation then resets the students column values to 0
 	static class clearListener implements ActionListener{
@@ -266,32 +284,10 @@ public class GUI {
 			JDialog dialog = new JDialog();
 			dialog.setAlwaysOnTop(true);
 
-			JPanel table = new JPanel();
-
-			String input = (String) JOptionPane.showInputDialog (dialog, "What is the textbook name?", "Input Name", JOptionPane.QUESTION_MESSAGE, null, null, null);
+			String input = (String) JOptionPane.showInputDialog (dialog, "What is the textbook number?", "Input Number", JOptionPane.QUESTION_MESSAGE, null, null, null);
 			System.out.println (input);
 
-			tabs.addTab (input,table);
-			//add single textbook to the table
-			mainWindow.validate();
-			mainWindow.repaint();
-		}
-	}
-
-	//assigns student to a textbook
-	static class textbookNumListener implements ActionListener{
-		@Override
-		public void actionPerformed(ActionEvent event){
-			JDialog dialog = new JDialog();
-			dialog.setAlwaysOnTop(true);
-
-			JPanel table = new JPanel();
-
-			String input = (String) JOptionPane.showInputDialog (dialog, "What is the textbook number?", "Textbook Number", JOptionPane.QUESTION_MESSAGE, null, null, null);
-			System.out.println (input);
-
-			tabs.addTab (input,table);
-			//find textbook and move cursor?
+			//add single textbook to the table, add to linklist
 			mainWindow.validate();
 			mainWindow.repaint();
 		}
@@ -325,7 +321,7 @@ public class GUI {
 
 			picker.setDialogTitle("New Database Selector");
 			picker.setFileSelectionMode(JFileChooser.FILES_ONLY);
-			FileFilter filter = new FileNameExtensionFilter("CSV File","csv");
+			FileFilter filter = new FileNameExtensionFilter("TXT File","txt");
 			picker.setFileFilter (filter);
 
 			int returnValue = picker.showOpenDialog(dialog);

@@ -42,11 +42,7 @@ class SpreadsheetModel extends AbstractTableModel {
     public boolean isCellEditable(int row, int col) {
         //Note that the data/cell address is constant,
         //no matter where the cell appears onscreen.
-        if (col < 2) {
-            return false;
-        } else {
             return true;
-        }
     }
 
     /*
@@ -59,3 +55,5 @@ class SpreadsheetModel extends AbstractTableModel {
     }
 //    ...
 }
+
+//https://docs.oracle.com/javase/tutorial/uiswing/components/table.html save data after editing
