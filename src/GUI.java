@@ -1,34 +1,41 @@
 /**
- * 
- */
-
-/**
+ *[GUI.java]
  * @author 072971120
- *
+ * @date
  */
 
 import javax.swing.*;
+import javax.swing.border.BevelBorder;
+import javax.swing.border.Border;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.io.File;
+import java.util.ArrayList;
 
 public class GUI {
 
+	//declares public variables
+	public static JTabbedPane tabs = new JTabbedPane();
+	//	public static JPanel tablePanel = new JPanel();
+	public static JFrame mainWindow = new JFrame ("Textbook Database");
+	public static ArrayList <JPanel> tablePanelList = new ArrayList <JPanel> (); //probably used for arraylist of databases
+	//	public static int x=0;
+
 	/**
-	 * @param
-	 * @throws UnsupportedLookAndFeelException 
-	 * @throws IllegalAccessException 
-	 * @throws InstantiationException 
-	 * @throws ClassNotFoundException 
+	 *
 	 */
 	public static void main(String[] args)  {
 
+
+		//try catch statements
 		try {
 			// Set System L&F
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		} 
+		}
 		catch (UnsupportedLookAndFeelException e) {
 			// handle exception
 		}
@@ -42,24 +49,29 @@ public class GUI {
 			// handle exception
 		}
 
+		//warning to user to not access files while running the database program.
+		JOptionPane.showMessageDialog(null, "Do not open database .csv files while program is running!", "WARNING!", JOptionPane.WARNING_MESSAGE);
 
-		int x=2;
-
+		//sets GUI to full screen
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		double width = screenSize.getWidth();
 		double height = screenSize.getHeight();
 
 		//creates main JFrame
-		JFrame mainWindow = new JFrame ("Textbook Database");
-		mainWindow.setBackground(Color.WHITE);
 		mainWindow.setLayout(new BorderLayout());
+		mainWindow.setBackground(Color.WHITE);
+		//insert rhhs math logo as background picture?
+		//yourFrameHere.setBackground(new Color(0, 0, 0, 0));
+		//yourContentPaneHere.setOpaque(false);
 		mainWindow.setSize((int)width, (int)height);
+		mainWindow.setResizable(true);
 		mainWindow.setAlwaysOnTop (true);
-		mainWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);    
+		mainWindow.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
 		//creates menu on west panel
 		JPanel menuScreen = new JPanel ();
 		menuScreen.setLayout(new GridLayout(7,1));
+		menuScreen.setBackground(Color.WHITE);
 
 		//adds button to assign student
 		JButton textbookNum = new JButton("Assign Student");
@@ -99,204 +111,262 @@ public class GUI {
 		//adds menu to main panel
 		mainWindow.add(menuScreen,BorderLayout.WEST);
 
-		//creates spreadsheet in centre panel
-
-		//8 by x spreadsheet
-		//textbook number, student number, student lastname, student firstname, teacher, date out, coursecode + section, returned checkbox
-		JPanel table = new JPanel();
-		table.setLayout(new GridLayout(x,8));
-		table.setPreferredSize (new Dimension(700,700));
-
-		JLabel textNum1 = new JLabel("000000");
-		JLabel stuNum1 = new JLabel("123456789");
-		JLabel stuLastName1 = new JLabel("RHHS");
-		JLabel stuFirstName1 = new JLabel("Math");
-		JLabel teacher1 = new JLabel("Ms. Sinatra");
-		JLabel dateOut1 = new JLabel("01/01/1999");
-		JLabel courseCode1 = new JLabel("MDM4UE-01");
-		JCheckBox returned1 = new JCheckBox();
-
-		table.add(textNum1, 1, 0);
-		table.add(stuNum1, 1, 1);
-		table.add(stuLastName1, 1, 2);
-		table.add(stuFirstName1,1, 3);
-		table.add(teacher1, 1, 4);
-		table.add(dateOut1, 1, 5);
-		table.add(courseCode1, 1, 6);
-		table.add(returned1, 1, 7);
-
-		JLabel textNum = new JLabel("Textbook Number");
-		JLabel stuNum = new JLabel("Student Number");
-		JLabel stuLastName = new JLabel("Student Last Name");
-		JLabel stuFirstName = new JLabel("Student First Name");
-		JLabel teacher = new JLabel("Teacher");
-		JLabel dateOut = new JLabel("Date out: MM/DD/YYYY");
-		JLabel courseCode = new JLabel("Course Code-Section");
-		JLabel returned = new JLabel("Returned");
-
-		textNum.setVerticalAlignment(JLabel.TOP);
-		stuNum.setVerticalAlignment(JLabel.TOP);
-		stuLastName.setVerticalAlignment(JLabel.TOP);
-		stuFirstName.setVerticalAlignment(JLabel.TOP);
-		teacher.setVerticalAlignment(JLabel.TOP);
-		dateOut.setVerticalAlignment(JLabel.TOP);
-		courseCode.setVerticalAlignment(JLabel.TOP);
-		returned.setVerticalAlignment(JLabel.TOP);
-
-		textNum1.setVerticalAlignment(JLabel.TOP);
-		stuNum1.setVerticalAlignment(JLabel.TOP);
-		stuLastName1.setVerticalAlignment(JLabel.TOP);
-		stuFirstName1.setVerticalAlignment(JLabel.TOP);
-		teacher1.setVerticalAlignment(JLabel.TOP);
-		dateOut1.setVerticalAlignment(JLabel.TOP);
-		courseCode1.setVerticalAlignment(JLabel.TOP);
-		returned1.setVerticalAlignment(JLabel.TOP);
-
-		textNum.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		stuNum.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		stuLastName.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		stuFirstName.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		teacher.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		dateOut.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		courseCode.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		returned.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-
-		textNum1.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		stuNum1.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		stuLastName1.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		stuFirstName1.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		teacher1.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		dateOut1.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		courseCode1.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		returned1.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-
-		table.add(textNum, 0, 0);
-		table.add(stuNum, 0, 1);
-		table.add(stuLastName, 0, 2);
-		table.add(stuFirstName,0, 3);
-		table.add(teacher, 0, 4);
-		table.add(dateOut, 0, 5);
-		table.add(courseCode, 0, 6);
-		table.add(returned, 0, 7);
+		//creates a JTabbedPane to handle different spreadsheets, starts off with one textbook by default
+		tabs.setTabPlacement(JTabbedPane.BOTTOM);
+		tabs.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
+		tabs.setBackground(Color.WHITE);
+//		tabs.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED, Color.CYAN, Color.GREEN));
+//		BorderFactory.createEmptyBorder(0,10,0,10));
 
 
+		//creates table to display students, sets it to fill the entire screen
+		JTable table = new JTable (new SpreadsheetModel());
+		JScrollPane scrollPane = new JScrollPane (table);
+		table.setFillsViewportHeight (true);
 
-		mainWindow.add(table,BorderLayout.CENTER);
+		//adds JPanel to JTabbedPane
+		tabs.addTab ("Textbook Name", null, scrollPane, "Textbook Name");
 
-		//		//2d array for each spot
-		//		spotLabel = new JLabel[6][7];
-		//
-		//		//initializes the pictures for both players and empty
-		//		imageIcon1 = new ImageIcon("blank.png");
-		//		imageIcon2 = new ImageIcon("player 1 piece.png");
-		//		imageIcon3 = new ImageIcon("player 2 piece.png");
-		//
-		//		//sets each label for each connect 4 spot
-		//		for(int i = 5; i > -1; i--){
-		//			for (int j = 0; j < 7; j++){
-		//				if(board[i][j] == 1){
-		//					spotLabel[i][j] = new JLabel(imageIcon2);
-		//				}else if(board[i][j] == -1){
-		//					spotLabel[i][j] = new JLabel(imageIcon3);
-		//				}else{
-		//					spotLabel[i][j] = new JLabel(imageIcon1);
-		//				}
-		//				spreadsheet.add(spotLabel[i][j]);
-		//			}
-		//		}
-
-		//south panel
-		JPanel tabs = new JPanel();
-		tabs.setLayout(new FlowLayout (FlowLayout.LEFT));
-		tabs.setBorder(BorderFactory.createEmptyBorder(10,150,10,10));
-		JButton tab1 = new JButton();
-		tab1.setText("Textbook Name");
-		tabs.add(tab1);
-
-		mainWindow.add(tabs,BorderLayout.SOUTH);
+		//adds JTabbedPane to main panel
+		mainWindow.add(tabs, BorderLayout.CENTER);
 
 		//north panel
 		JPanel topMenu = new JPanel();
 		topMenu.setLayout(new FlowLayout(FlowLayout.LEFT));
-		topMenu.setBorder(BorderFactory.createEmptyBorder(10,150,10,10));
+		topMenu.setBorder(BorderFactory.createEmptyBorder(0,0,0,10));
+		topMenu.setBackground(Color.white);
 
+		//adds button to open a database
 		JButton openData = new JButton("Open Database");
 		openData.addActionListener (new openDataListener());
 		topMenu.add(openData);
 
+		//adds button to create a new database
 		JButton newData = new JButton("New Database");
 		newData.addActionListener (new newDataListener());
 		topMenu.add(newData);
 
+		//adds search field for the list and highlights matches
+		JLabel searchLabel = new JLabel("Search:");
+		JTextField search = new JTextField (50);
+
+		//		final Highlighter hilit;
+		//		final Highlighter.HighlightPainter painter;
+		//		...
+		//		hilit = new DefaultHighlighter();
+		//		painter = new DefaultHighlighter.DefaultHighlightPainter(HILIT_COLOR);
+		//		textArea.setHighlighter(hilit);
+		//
+		//		entry.getDocument().addDocumentListener(this);
+		//
+		//		hilit.addHighlight(index, end, painter);
+		//		textArea.setCaretPosition(end);
+		//		entry.setBackground(entryBg);
+		//		message("'" + s + "' found. Press ESC to end search");
+		//
+		//		private JLabel status;
+		//		...
+		//		void message(String msg) {
+		//		    status.setText(msg);
+		//		}
+		//
+		//		entry.setBackground(ERROR_COLOR);
+		//		message("'" + s + "' not found. Press ESC to start a new search");
+		//
+		//		   class CancelAction extends AbstractAction {
+		//		       public void actionPerformed(ActionEvent ev) {
+		//		               hilit.removeAllHighlights();
+		//		               entry.setText("");
+		//		               entry.setBackground(entryBg);
+		//		           }
+		//		   }
+
+		//adds search text box and label to the north menu
+		topMenu.add(searchLabel);
+		topMenu.add(search);
+
+		//adds the top menu to the main panel
 		mainWindow.add(topMenu,BorderLayout.NORTH);
 
-
-		mainWindow.setResizable(true);
+		//allows window resizing and displays the window
+		mainWindow.validate();
+		mainWindow.repaint ();
 		mainWindow.setVisible(true);
 	}
 
+
+	//asks user for confirmation then resets the students column values to 0
 	static class clearListener implements ActionListener{
 		public void actionPerformed(ActionEvent event){
+			JDialog dialog = new JDialog();
+			dialog.setAlwaysOnTop(true);
+
+			int selection = JOptionPane.showOptionDialog(dialog, "Are you sure you want to clear all students?", "Warning", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null, null, null);
+			System.out.println (selection);
+			if (selection == 0) {
+				//set student column to empty values
+			}
+			mainWindow.repaint();
 		}
 	}
 
+	//asks user how to sort, then sorts the table
 	static class sortListener implements ActionListener{
 		public void actionPerformed(ActionEvent event){
+			//   JDialog confirm = new JDialog (confirm, "Warning");
+			mainWindow.setBackground(Color.WHITE);
+			mainWindow.setLayout(new BorderLayout());
+			mainWindow.setSize(700, 700);
+			mainWindow.setAlwaysOnTop (true);
+			mainWindow.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+			mainWindow.repaint();
 		}
 	}
 
-	static class overdueListener implements ActionListener{
-		public void actionPerformed(ActionEvent event){
+	//asks for confirmation to display all the overdue students
+	static class overdueListener implements ActionListener {
+		public void actionPerformed(ActionEvent event) {
+			JDialog dialog = new JDialog();
+			dialog.setAlwaysOnTop(true);
+
+			int selection = JOptionPane.showOptionDialog(dialog, "Display all overdue students?", "Confirm", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null, null, null);
+			System.out.println(selection);
+			if (selection == 0) { //verify this
+				// shift all boolean false values to top, basically sort
+			}
 		}
 	}
 
+	//asks to insert a textbook name and creates a new tab
 	static class addListener implements ActionListener{
 		public void actionPerformed(ActionEvent event){
+			JDialog dialog = new JDialog();
+			dialog.setAlwaysOnTop(true);
+
+			JPanel table = new JPanel();
+
+			String input = (String) JOptionPane.showInputDialog (dialog, "What is the textbook name?", "Input Name", JOptionPane.QUESTION_MESSAGE, null, null, null);
+			System.out.println (input);
+
+			tabs.addTab (input,table);
+			//name database here and create tab
+			mainWindow.validate();
+			mainWindow.repaint();
 		}
 	}
 
+	//assigns student to a textbook
 	static class textbookNumListener implements ActionListener{
 		public void actionPerformed(ActionEvent event){
+			JDialog dialog = new JDialog();
+			dialog.setAlwaysOnTop(true);
+
+			JPanel table = new JPanel();
+
+			String input = (String) JOptionPane.showInputDialog (dialog, "What is the textbook number?", "Textbook Number", JOptionPane.QUESTION_MESSAGE, null, null, null);
+			System.out.println (input);
+
+			tabs.addTab (input,table);
+			//find textbook and move cursor?
+			mainWindow.validate();
+			mainWindow.repaint();
 		}
 	}
 
+	//asks for confirmation then removes textbook
 	static class removeListener implements ActionListener{
 		public void actionPerformed(ActionEvent event){
+			JDialog dialog = new JDialog();
+			dialog.setAlwaysOnTop(true);
+
+			int selection = JOptionPane.showOptionDialog(dialog, "Are you sure you want to remove this textbook?", "Warning", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null, null, null);
+			System.out.println (selection);
+			if (selection == 0) {
+				//remove textbook from array list and remove tab
+				System.out.println ("Yes");
+			}
+			mainWindow.validate();
+			mainWindow.repaint();
 		}
 	}
 
+	//allows user to select a csv file to import for a new textbook
 	static class importBookListener implements ActionListener{
 		public void actionPerformed(ActionEvent event){
-			JFileChooser jfc = new JFileChooser (); 
+			JDialog dialog = new JDialog();
+			dialog.setAlwaysOnTop(true);
+			JFileChooser picker = new JFileChooser ();
 
-			jfc.setDialogTitle("Custom button");
-			int returnValue = jfc.showOpenDialog(null);
-			// int returnValue = jfc.showSaveDialog(null);
+			picker.setDialogTitle("New Database Selector");
+			picker.setFileSelectionMode(JFileChooser.FILES_ONLY);
+			FileFilter filter = new FileNameExtensionFilter("CSV File","csv");
+			picker.setFileFilter (filter);
+
+			int returnValue = picker.showOpenDialog(dialog);
+			System.out.println (returnValue);
 
 			if (returnValue == JFileChooser.APPROVE_OPTION) {
-				File selectedFile = jfc.getSelectedFile();
-				System.out.println(selectedFile.getAbsolutePath());
+				File selectedFile = picker.getSelectedFile();
+				System.out.println(selectedFile.getAbsolutePath()); //return this to the data file
 			}
-			//			int returnValue1 = jfc.showDialog(null, "A button!");
-			//			if (returnValue1 == JFileChooser.APPROVE_OPTION) {
-			//				System.out.println(jfc.getSelectedFile().getPath());
-			//			}
-			//			JFrame chooseWindow = new JFrame ();
-			//			chooseWindow.add(choose);
-			//			chooseWindow.setLayout(new BorderLayout());
-			//			chooseWindow.setSize(500, 750);
-			//			chooseWindow.setAlwaysOnTop (true);
-			//			chooseWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);    
-			//			chooseWindow.setResizable(true);
-			//			chooseWindow.setVisible(true);
+
+			mainWindow.validate();
+			mainWindow.repaint();
+			// multi selection later if time and doable
 		}
 	}
+
+	//creates new database
 	static class newDataListener implements ActionListener {
 		public void actionPerformed(ActionEvent event){
+			JDialog dialog = new JDialog();
+			dialog.setAlwaysOnTop(true);
+
+			JPanel table = new JPanel();
+
+			String input = (String) JOptionPane.showInputDialog (dialog, "What is the textbook name?", "Input Name", JOptionPane.QUESTION_MESSAGE, null, null, null);
+			System.out.println (input);
+
+			tabs.addTab (input,table);
+
+			//name database here
+
+			mainWindow.validate();
+			mainWindow.repaint();
 		}
 	}
+
+	//asks user to select a file to open a database from
 	static class openDataListener implements ActionListener {
 		public void actionPerformed(ActionEvent event){
+			JDialog dialog = new JDialog();
+			dialog.setAlwaysOnTop(true);
+			JFileChooser picker = new JFileChooser ();
+
+			picker.setDialogTitle("New Database Selector");
+			picker.setFileSelectionMode(JFileChooser.FILES_ONLY);
+			FileFilter filter = new FileNameExtensionFilter("CSV File","csv");
+			picker.setFileFilter (filter);
+
+			int returnValue = picker.showOpenDialog(dialog);
+			System.out.println (returnValue);
+
+			if (returnValue == JFileChooser.APPROVE_OPTION) {
+				File selectedFile = picker.getSelectedFile();
+				System.out.println(selectedFile.getAbsolutePath()); //return this to the data file
+			}
+
+			mainWindow.validate();
+			mainWindow.repaint();
+			// multi selection later if time and doable
 		}
 	}
+
+	public void displaySpreadsheets () {
+		//go through array list here and add each to a new tab and refresh window
+	}
 }
+
+//get rid of wildcard imports
+//make tab names editable?
+//add export option and list of emails of not returned
