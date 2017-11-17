@@ -4,17 +4,35 @@
  * @date
  */
 
-import javax.swing.*;
-import javax.swing.border.BevelBorder;
-import javax.swing.border.Border;
-import javax.swing.filechooser.FileFilter;
-import javax.swing.filechooser.FileNameExtensionFilter;
-
-import java.awt.*;
-import java.awt.event.ActionListener;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.ArrayList;
+
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.WindowConstants;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class GUI {
 
@@ -94,17 +112,17 @@ public class GUI {
 		menuScreen.add(overdue);
 
 		//adds button to add a textbook
-		JButton add = new JButton("Add Textbook");
+		JButton add = new JButton("Add Entry");
 		add.addActionListener (new addListener());
 		menuScreen.add(add);
 
 		//adds button to remove a textbook
-		JButton remove = new JButton("Remove Textbook");
+		JButton remove = new JButton("Remove Entry");
 		remove.addActionListener (new removeListener());
 		menuScreen.add(remove);
 
 		//adds button to import textbooks from a list
-		JButton importBook = new JButton("Import Textbooks");
+		JButton importBook = new JButton("Import Entries");
 		importBook.addActionListener (new importBookListener());
 		menuScreen.add(importBook);
 
@@ -112,7 +130,7 @@ public class GUI {
 		mainWindow.add(menuScreen,BorderLayout.WEST);
 
 		//creates a JTabbedPane to handle different spreadsheets, starts off with one textbook by default
-		tabs.setTabPlacement(JTabbedPane.BOTTOM);
+		tabs.setTabPlacement(SwingConstants.BOTTOM);
 		tabs.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 		tabs.setBackground(Color.WHITE);
 //		tabs.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED, Color.CYAN, Color.GREEN));
@@ -197,6 +215,7 @@ public class GUI {
 
 	//asks user for confirmation then resets the students column values to 0
 	static class clearListener implements ActionListener{
+		@Override
 		public void actionPerformed(ActionEvent event){
 			JDialog dialog = new JDialog();
 			dialog.setAlwaysOnTop(true);
@@ -212,6 +231,7 @@ public class GUI {
 
 	//asks user how to sort, then sorts the table
 	static class sortListener implements ActionListener{
+		@Override
 		public void actionPerformed(ActionEvent event){
 			//   JDialog confirm = new JDialog (confirm, "Warning");
 			mainWindow.setBackground(Color.WHITE);
@@ -225,6 +245,7 @@ public class GUI {
 
 	//asks for confirmation to display all the overdue students
 	static class overdueListener implements ActionListener {
+		@Override
 		public void actionPerformed(ActionEvent event) {
 			JDialog dialog = new JDialog();
 			dialog.setAlwaysOnTop(true);
@@ -233,12 +254,14 @@ public class GUI {
 			System.out.println(selection);
 			if (selection == 0) { //verify this
 				// shift all boolean false values to top, basically sort
+				//ask if want emails, display all emails in popup
 			}
 		}
 	}
 
 	//asks to insert a textbook name and creates a new tab
 	static class addListener implements ActionListener{
+		@Override
 		public void actionPerformed(ActionEvent event){
 			JDialog dialog = new JDialog();
 			dialog.setAlwaysOnTop(true);
@@ -249,7 +272,7 @@ public class GUI {
 			System.out.println (input);
 
 			tabs.addTab (input,table);
-			//name database here and create tab
+			//add single textbook to the table
 			mainWindow.validate();
 			mainWindow.repaint();
 		}
@@ -257,6 +280,7 @@ public class GUI {
 
 	//assigns student to a textbook
 	static class textbookNumListener implements ActionListener{
+		@Override
 		public void actionPerformed(ActionEvent event){
 			JDialog dialog = new JDialog();
 			dialog.setAlwaysOnTop(true);
@@ -275,6 +299,7 @@ public class GUI {
 
 	//asks for confirmation then removes textbook
 	static class removeListener implements ActionListener{
+		@Override
 		public void actionPerformed(ActionEvent event){
 			JDialog dialog = new JDialog();
 			dialog.setAlwaysOnTop(true);
@@ -282,7 +307,7 @@ public class GUI {
 			int selection = JOptionPane.showOptionDialog(dialog, "Are you sure you want to remove this textbook?", "Warning", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null, null, null);
 			System.out.println (selection);
 			if (selection == 0) {
-				//remove textbook from array list and remove tab
+				//remove single textbook from tablet
 				System.out.println ("Yes");
 			}
 			mainWindow.validate();
@@ -292,6 +317,7 @@ public class GUI {
 
 	//allows user to select a csv file to import for a new textbook
 	static class importBookListener implements ActionListener{
+		@Override
 		public void actionPerformed(ActionEvent event){
 			JDialog dialog = new JDialog();
 			dialog.setAlwaysOnTop(true);
@@ -312,12 +338,14 @@ public class GUI {
 
 			mainWindow.validate();
 			mainWindow.repaint();
+			//imports text file adds textbook numbers, all other fields enpty
 			// multi selection later if time and doable
 		}
 	}
 
 	//creates new database
 	static class newDataListener implements ActionListener {
+		@Override
 		public void actionPerformed(ActionEvent event){
 			JDialog dialog = new JDialog();
 			dialog.setAlwaysOnTop(true);
@@ -338,6 +366,7 @@ public class GUI {
 
 	//asks user to select a file to open a database from
 	static class openDataListener implements ActionListener {
+		@Override
 		public void actionPerformed(ActionEvent event){
 			JDialog dialog = new JDialog();
 			dialog.setAlwaysOnTop(true);
@@ -370,3 +399,4 @@ public class GUI {
 //get rid of wildcard imports
 //make tab names editable?
 //add export option and list of emails of not returned
+//save button
