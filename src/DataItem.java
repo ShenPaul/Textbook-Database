@@ -31,6 +31,45 @@ class DataItem {
 
 	//get and set methods
 	
+	public Object get(int n) {
+		if(n==0){
+			return (this.itemNum);
+		}else if(n==1) {
+			return (this.studentNum);
+		}else if(n==2) {
+			return (this.lastName);
+		}else if(n==3) {
+			return (this.firstName);
+		}else if(n==4) {
+			return (this.teacher);
+		}else if(n==5) {
+			return (this.date);
+		}else if(n==6) {
+			return (this.courseCode);
+		}else {
+			return (this.returned);
+		}
+	}
+	public void set(int n, Object value) {
+		if(n==0){
+			this.itemNum = (String)value;
+		}else if(n==1) {
+			this.studentNum = (String)value;
+		}else if(n==2) {
+			this.lastName = (String)value;
+		}else if(n==3) {
+			this.firstName = (String)value;
+		}else if(n==4) {
+			this.teacher = (String)value;
+		}else if(n==5) {
+			this.date = (String)value;
+		}else if(n==6) {
+			this.courseCode = (String)value;
+		}else {
+			this.returned = (Boolean)value;
+		}
+	}
+	
 	public DataItem getNext(){
 		return (this.next);
 	}
