@@ -12,27 +12,38 @@ import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.Font;
+import java.awt.Component;
+
 import java.io.File;
+import java.io.IOException;
+
 import java.util.ArrayList;
 
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
-import javax.swing.JTable;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JOptionPane;
+import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JTextField;
-import javax.swing.SwingConstants;
+import javax.swing.JTextPane;
+import javax.swing.JDialog;
+import javax.swing.JTable;
+import javax.swing.JScrollPane;
+import javax.swing.JFileChooser;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.BorderFactory;
 import javax.swing.WindowConstants;
+import javax.swing.SwingConstants;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.text.DefaultHighlighter;
+import javax.swing.text.Highlighter;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.text.BadLocationException;
+
 
 public class GUI {
 
@@ -40,8 +51,10 @@ public class GUI {
 	public static JTabbedPane tabs = new JTabbedPane();
 	//	public static JPanel tablePanel = new JPanel();
 	public static JFrame mainWindow = new JFrame ("Textbook Database");
-	public static ArrayList <JPanel> tablePanelList = new ArrayList <JPanel> (); //probably used for arraylist of databases
+	public static ArrayList <JPanel> tablePanelList = new ArrayList <JPanel> (); //probably used for arraylist of databases, associate data linked list
 	//	public static int x=0;
+	public static JTextField search = new JTextField (50);
+	public static String searchText = "";
 
 	/**
 	 *@
@@ -137,16 +150,22 @@ public class GUI {
 //		BorderFactory.createEmptyBorder(0,10,0,10));
 
 
-		//creates table to display students, sets it to fill the entire screen
-		JTable table = new JTable (new SpreadsheetModel());
-		JScrollPane scrollPane = new JScrollPane (table);
-		table.setFillsViewportHeight (true);
+//		//creates table to display students, sets it to fill the entire screen
+//		JTable table = new JTable (new SpreadsheetModel());
+//		JScrollPane scrollPane = new JScrollPane (table);
+//		table.setFillsViewportHeight (true);
+//
+//		//adds JPanel to JTabbedPane
+//		tabs.addTab ("Textbook Name", null, scrollPane, "Textbook Name");
+//
+//		//adds JTabbedPane to main panel
+//		mainWindow.add(tabs, BorderLayout.CENTER);
 
-		//adds JPanel to JTabbedPane
-		tabs.addTab ("Textbook Name", null, scrollPane, "Textbook Name");
-
-		//adds JTabbedPane to main panel
-		mainWindow.add(tabs, BorderLayout.CENTER);
+		Font font = new Font("Courier", Font.BOLD,72);
+		JLabel empty = new JLabel("NO DATABASES HAVE BEEN IMPORTED YET!");
+		empty.setBorder (BorderFactory.createEmptyBorder(0,70,0,70));
+		empty.setFont(font);
+		mainWindow.add(empty, BorderLayout.CENTER);
 
 		//north panel
 		JPanel topMenu = new JPanel();
@@ -164,44 +183,51 @@ public class GUI {
 		newData.addActionListener (new newDataListener());
 		topMenu.add(newData);
 
+		//adds button to save databases
+		JButton save = new JButton("Save");
+		save.addActionListener (new saveListener());
+		topMenu.add(save);
+
 		//adds search field for the list and highlights matches
 		JLabel searchLabel = new JLabel("Search:");
-		JTextField search = new JTextField (50);
+		JButton searchButton = new JButton("Go!");
+		searchButton.addActionListener (new searchListener());
 
-		//		final Highlighter hilit;
-		//		final Highlighter.HighlightPainter painter;
-		//		...
-		//		hilit = new DefaultHighlighter();
-		//		painter = new DefaultHighlighter.DefaultHighlightPainter(HILIT_COLOR);
-		//		textArea.setHighlighter(hilit);
-		//
-		//		entry.getDocument().addDocumentListener(this);
-		//
-		//		hilit.addHighlight(index, end, painter);
-		//		textArea.setCaretPosition(end);
-		//		entry.setBackground(entryBg);
-		//		message("'" + s + "' found. Press ESC to end search");
-		//
-		//		private JLabel status;
-		//		...
-		//		void message(String msg) {
-		//		    status.setText(msg);
-		//		}
-		//
-		//		entry.setBackground(ERROR_COLOR);
-		//		message("'" + s + "' not found. Press ESC to start a new search");
-		//
-		//		   class CancelAction extends AbstractAction {
-		//		       public void actionPerformed(ActionEvent ev) {
-		//		               hilit.removeAllHighlights();
-		//		               entry.setText("");
-		//		               entry.setBackground(entryBg);
-		//		           }
-		//		   }
+//		Highlighter hilit;
+//		Highlighter.HighlightPainter painter;
+//
+//		hilit = new DefaultHighlighter();
+//		painter = new DefaultHighlighter.DefaultHighlightPainter(Color.YELLOW);
+//		hilit.install(tabs);
+//
+//		entry.getDocument().addDocumentListener(this);
+//
+//		hilit.addHighlight(index, end, painter);
+//		textArea.setCaretPosition(end);
+//		entry.setBackground(entryBg);
+//		message("'" + s + "' found. Press ESC to end search");
+//
+//		private JLabel status;
+//				...
+//		void message(String msg) {
+//			status.setText(msg);
+//		}
+//
+//		entry.setBackground(ERROR_COLOR);
+//		message("'" + s + "' not found. Press ESC to start a new search");
+//
+//		class CancelAction extends AbstractAction {
+//			public void actionPerformed(ActionEvent ev) {
+//				hilit.removeAllHighlights();
+//				entry.setText("");
+//				entry.setBackground(entryBg);
+//			}
+//		}
 
 		//adds search text box and label to the north menu
 		topMenu.add(searchLabel);
 		topMenu.add(search);
+		topMenu.add(searchButton);
 
 		//adds the top menu to the main panel
 		mainWindow.add(topMenu,BorderLayout.NORTH);
@@ -251,12 +277,13 @@ public class GUI {
 	static class sortListener implements ActionListener{
 		@Override
 		public void actionPerformed(ActionEvent event){
-			//   JDialog confirm = new JDialog (confirm, "Warning");
-			mainWindow.setBackground(Color.WHITE);
-			mainWindow.setLayout(new BorderLayout());
-			mainWindow.setSize(700, 700);
-			mainWindow.setAlwaysOnTop (true);
-			mainWindow.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+			JDialog dialog = new JDialog();
+			dialog.setAlwaysOnTop(true);
+			Object[] sortOptions = {"Textbook Number", "Student Number", "Last Name", "First Name", "Teacher", "Date Out", "Course Code"};
+			int selection = JOptionPane.showOptionDialog(dialog, "How would you like to sort the students?", "Sort", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, sortOptions, sortOptions [0]); //remove question message?
+			System.out.println(selection);
+			// make if statements with sorts
+			mainWindow.validate();
 			mainWindow.repaint();
 		}
 	}
@@ -272,8 +299,30 @@ public class GUI {
 			System.out.println(selection);
 			if (selection == 0) { //verify this
 				// shift all boolean false values to top, basically sort
-				//ask if want emails, display all emails in popup
+				//ask if want emails
+				selection = JOptionPane.showOptionDialog(dialog, "Would you like a list of the student emails?", "Confirm", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null, null, null);
+				// if yes, display all emails in popup
+				if (selection == 0) {
+					JFrame email = new JFrame();
+					JPanel emails = new JPanel();
+					JTextPane emailList = new JTextPane();
+
+					//display all emails in text pane
+
+					emails.add(emailList);
+					email.add(emails);
+
+					email.setBackground(Color.WHITE);
+					email.setSize(500, 500);
+					email.setResizable(true);
+					email.setAlwaysOnTop (true);
+					email.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE); //this.dispose? will this end the program?
+					email.setVisible(true);
+
+				}
 			}
+			mainWindow.validate();
+			mainWindow.repaint();
 		}
 	}
 
@@ -329,7 +378,8 @@ public class GUI {
 
 			if (returnValue == JFileChooser.APPROVE_OPTION) {
 				File selectedFile = picker.getSelectedFile();
-				System.out.println(selectedFile.getAbsolutePath()); //return this to the data file
+				System.out.println(selectedFile.getAbsolutePath());
+				//return this to the data file
 			}
 
 			mainWindow.validate();
@@ -378,8 +428,25 @@ public class GUI {
 
 			if (returnValue == JFileChooser.APPROVE_OPTION) {
 				File selectedFile = picker.getSelectedFile();
-				System.out.println(selectedFile.getAbsolutePath()); //return this to the data file
+				DataLinkedList list = new DataLinkedList("list");
+				try {
+					list.dataImport(selectedFile.getAbsolutePath());
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
+
+			//creates table to display students, sets it to fill the entire screen
+			JTable table = new JTable (new SpreadsheetModel());
+			JScrollPane scrollPane = new JScrollPane (table);
+			table.setFillsViewportHeight (true);
+
+			//adds JPanel to JTabbedPane
+			tabs.addTab ("Textbook Name", null, scrollPane, "Textbook Name");
+			//must find way to pass in the textbook name as well
+
+			//adds JTabbedPane to main panel
+			mainWindow.add(tabs, BorderLayout.CENTER);
 
 			mainWindow.validate();
 			mainWindow.repaint();
@@ -387,12 +454,58 @@ public class GUI {
 		}
 	}
 
+	//saves the file
+	static class saveListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent event) {
+			JDialog dialog = new JDialog();
+			dialog.setAlwaysOnTop(true);
+
+			//save file here
+			JOptionPane.showMessageDialog(dialog,"You have saved the database!", "Saved!", JOptionPane.QUESTION_MESSAGE, null);
+		}
+	}
+
+	//conducts the search
+	static class searchListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent event) {
+			searchText = search.getText();
+			tablePanelList.get(tabs.getSelectedIndex()).repaint(); //repaints index of table, make sure matches array list
+		}
+	}
+
+//	private TableCellRenderer searchRenderer() {
+//		return new TableCellRenderer() {
+//			@Override
+//			public Component getTableCellRendererComponent(JTable arg0, Object arg1, boolean arg2, boolean arg3, int arg4, int arg5) {
+//				if (arg1 != null) {
+//					search.setText(arg1.toString());
+//					String string = arg1.toString();
+//					if (string.contains(searchText)) {
+//						int indexOf = string.indexOf(searchText);
+//						try {
+//							search.getHighlighter().addHighlight(indexOf, indexOf + searchText.length(), new javax.swing.text.DefaultHighlighter.DefaultHighlightPainter(Color.RED));
+//						} catch (BadLocationException e) {
+//							e.printStackTrace();
+//						}
+//					}
+//				} else {
+//					search.setText("");
+//					search.getHighlighter().removeAllHighlights();
+//				}
+//				return search;
+//			}
+//		};
+//	}
+
 	public void displaySpreadsheets () {
 		//go through array list here and add each to a new tab and refresh window
+		//incorporate into existing methods at the end?
 	}
 }
 
-//get rid of wildcard imports
-//make tab names editable?
-//add export option and list of emails of not returned
-//save button
+//make tab names editable: https://stackoverflow.com/questions/27124121/how-to-change-the-tab-name-in-jtabbedpane
+//highlighted cell different colour: https://stackoverflow.com/questions/6862102/swing-jtable-highlight-selected-cell-in-a-different-color-from-rest-of-the-sel
+//search by drop down menu or search all and highlight search: https://stackoverflow.com/questions/20113920/highlighting-the-text-of-a-jtable-cell
+// add comments
