@@ -1,4 +1,5 @@
 
+
 //start of imports
 import java.io.FileWriter;
 import java.io.BufferedReader;
@@ -20,6 +21,7 @@ class DataLinkedList {//start of class
 	DataLinkedList(String listName){
 		this.listName = listName;
 	}
+	DataLinkedList(){}
 	
 	//methods
 	
@@ -158,7 +160,7 @@ class DataLinkedList {//start of class
     		tempNode = tempNode.getNext();
     	}
     	return dA;
-    }
+    } //does this cover multiple names?
     
     /** searchByFirstName *******************************************
      * locates the DataItem with specified student first name
@@ -197,7 +199,11 @@ class DataLinkedList {//start of class
     	DataItem tempNode = head;
     	
     	while(tempNode != null){
-    		bWrite.write(tempNode.getItemNum()+","+tempNode.getStudentNum()+","+tempNode.getLastName()+","+tempNode.getFirstName()+","+tempNode.getTeacher()+","+tempNode.getDate()+","+tempNode.getCourseCode()+","+tempNode.getReturned());
+    		if(tempNode.getStudentNum() != null){
+    			bWrite.write(tempNode.getItemNum()+","+tempNode.getStudentNum()+","+tempNode.getLastName()+","+tempNode.getFirstName()+","+tempNode.getTeacher()+","+tempNode.getDate()+","+tempNode.getCourseCode()+","+tempNode.getReturned());
+    		}else{
+    			bWrite.write(tempNode.getItemNum());
+    		}
     		bWrite.newLine();
     		tempNode = tempNode.getNext();
     	}
@@ -210,21 +216,37 @@ class DataLinkedList {//start of class
      * @param fileName the name of file to be read
      * @throws IOException
      */
-    public void loadData(String fileName)throws IOException{
-    	BufferedReader bRead = new BufferedReader(new FileReader(fileName+".csv"));
+    public void loadData(String path)throws IOException{
+    	Path filePath = Paths.get(path);
+    	BufferedReader bRead = new BufferedReader(new FileReader(filePath.toFile()));
     	String str;
     	String[] strArr;
-    	DataItem tempNode = head;
+    	DataItem tempNode;
+    	DataItem prevNode;
+    	
+    	str = bRead.readLine();
+    	strArr = str.split(",");
+		head = new DataItem(strArr[0],strArr[1],strArr[2],strArr[3],strArr[4],strArr[5],strArr[6],Boolean.getBoolean(strArr[7]));
+		prevNode = head;
+    	
     	while((str = bRead.readLine()) != null){
     		strArr = str.split(",");
-    		tempNode = new DataItem(strArr[0],strArr[1],strArr[2],strArr[3],strArr[4],strArr[5],strArr[6],Boolean.getBoolean(strArr[7]));
-    		tempNode = tempNode.getNext();
+    		if(strArr.length > 1){
+    			tempNode = new DataItem(strArr[0],strArr[1],strArr[2],strArr[3],strArr[4],strArr[5],strArr[6],Boolean.getBoolean(strArr[7]));
+    		}else{
+    			tempNode = new DataItem(strArr[0]);
+    		}
+    		prevNode.setNext(tempNode);
+    		prevNode = tempNode;
     	}
+    	
+
+    	
     	bRead.close();
     }
     
     /** dataImport *******************************************
-     * creates DataItems from .csv file with item numbers only
+     * creates DataItems from .txt file with item numbers only
      * @param path to the file to be read
      * @throws IOException
      */
@@ -389,5 +411,16 @@ class DataLinkedList {//start of class
 
 	}
 	
+	public void itemClear(int index){
+		DataItem item = this.get(index);
+		item.setCourseCode(null);
+		item.setDate(null);
+		item.setFirstName(null);
+		item.setLastName(null);
+		item.setStudentNum(null);
+		item.setTeacher(null);
+		item.setReturned(true);
+	}
+
     
 }//end of class
