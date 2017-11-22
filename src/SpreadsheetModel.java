@@ -103,6 +103,18 @@ class SpreadsheetModel extends AbstractTableModel {
             e.printStackTrace();
         }
     }
+
+    public void add(DataItem newTextBook) {
+        list.add(newTextBook);
+    }
+
+    public void importData(String absolutePath) {
+        try {
+            list.dataImport(absolutePath);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
 
 //https://docs.oracle.com/javase/tutorial/uiswing/components/table.html save data after editing
