@@ -49,12 +49,11 @@ public class GUI {
 
 	//declares public variables
 	public static JTabbedPane tabs = new JTabbedPane();
-	//	public static JPanel tablePanel = new JPanel();
 	public static JFrame mainWindow = new JFrame ("Textbook Database");
-	public static ArrayList <JPanel> tablePanelList = new ArrayList <JPanel> (); //probably used for arraylist of databases, associate data linked list
-	//	public static int x=0;
+	public static ArrayList <SpreadsheetModel> tableList = new ArrayList <SpreadsheetModel> (); //probably used for arraylist of databases, associate data linked list
 	public static JTextField search = new JTextField (50);
 	public static String searchText = "";
+	public static JLabel empty;
 
 	/**
 	 *@
@@ -162,7 +161,7 @@ public class GUI {
 //		mainWindow.add(tabs, BorderLayout.CENTER);
 
 		Font font = new Font("Courier", Font.BOLD,72);
-		JLabel empty = new JLabel("NO DATABASES HAVE BEEN IMPORTED YET!");
+		empty = new JLabel("NO DATABASES HAVE BEEN IMPORTED YET!");
 		empty.setBorder (BorderFactory.createEmptyBorder(0,70,0,70));
 		empty.setFont(font);
 		mainWindow.add(empty, BorderLayout.CENTER);
@@ -267,7 +266,7 @@ public class GUI {
 			int selection = JOptionPane.showOptionDialog(dialog, "Are you sure you want to clear all students?", "Warning", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null, null, null);
 			System.out.println (selection);
 			if (selection == 0) {
-				//set student column to empty values
+				tableList.get(tabs.getSelectedIndex()).clear(); //gotten table at index so far, need to clear it
 			}
 			mainWindow.repaint();
 		}
@@ -282,7 +281,15 @@ public class GUI {
 			Object[] sortOptions = {"Textbook Number", "Student Number", "Last Name", "First Name", "Teacher", "Date Out", "Course Code"};
 			int selection = JOptionPane.showOptionDialog(dialog, "How would you like to sort the students?", "Sort", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, sortOptions, sortOptions [0]); //remove question message?
 			System.out.println(selection);
-			// make if statements with sorts
+			if (selection == 0){
+				tableList.get(tabs.getSelectedIndex()).itemSort();
+			}else if (selection == 1){
+				//we don't have a student number sort
+			}else if (selection == 2){
+				tableList.get(tabs.getSelectedIndex()).lastSort();
+			}else{
+				tableList.get(tabs.getSelectedIndex()).firstSort();
+			}
 			mainWindow.validate();
 			mainWindow.repaint();
 		}
@@ -352,8 +359,8 @@ public class GUI {
 			int selection = JOptionPane.showOptionDialog(dialog, "Are you sure you want to remove this textbook?", "Warning", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null, null, null);
 			System.out.println (selection);
 			if (selection == 0) {
-				//remove single textbook from tablet
-				System.out.println ("Yes");
+				tableList.get(tabs.getSelectedIndex()).remove(0); //need to get selection row here, temporarily set to 0
+				tabs.getModel().clearSelection();
 			}
 			mainWindow.validate();
 			mainWindow.repaint();
@@ -396,17 +403,27 @@ public class GUI {
 			JDialog dialog = new JDialog();
 			dialog.setAlwaysOnTop(true);
 
-			JPanel table = new JPanel();
-
 			String input = (String) JOptionPane.showInputDialog (dialog, "What is the textbook name?", "Input Name", JOptionPane.QUESTION_MESSAGE, null, null, null);
 			System.out.println (input);
 
-			tabs.addTab (input,table);
+			//creates table to display students, sets it to fill the entire screen
+			JTable table = new JTable (new SpreadsheetModel(input, 0));
+			SpreadsheetModel model = (SpreadsheetModel) table.getModel();
+			tableList.add (model);
+			JScrollPane scrollPane = new JScrollPane (table);
+			table.setFillsViewportHeight (true);
 
-			//name database here
+			//adds JPanel to JTabbedPane
+			tabs.addTab (input, null, scrollPane, input);
+			//must find way to pass in the textbook name as well
+
+			//adds JTabbedPane to main panel
+			mainWindow.add(tabs, BorderLayout.CENTER);
+			mainWindow.remove(empty);
 
 			mainWindow.validate();
 			mainWindow.repaint();
+			// multi selection later if time and doable
 		}
 	}
 
@@ -417,6 +434,9 @@ public class GUI {
 			JDialog dialog = new JDialog();
 			dialog.setAlwaysOnTop(true);
 			JFileChooser picker = new JFileChooser ();
+			File selectedFile = new File ("");
+			String fileName;
+			String path = "";
 
 			picker.setDialogTitle("New Database Selector");
 			picker.setFileSelectionMode(JFileChooser.FILES_ONLY);
@@ -424,29 +444,28 @@ public class GUI {
 			picker.setFileFilter (filter);
 
 			int returnValue = picker.showOpenDialog(dialog);
-			System.out.println (returnValue);
 
 			if (returnValue == JFileChooser.APPROVE_OPTION) {
-				File selectedFile = picker.getSelectedFile();
-				DataLinkedList list = new DataLinkedList("list");
-				try {
-					list.dataImport(selectedFile.getAbsolutePath());
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+				selectedFile = picker.getSelectedFile();
+				path = selectedFile.getAbsolutePath();
 			}
+			
+			fileName = (selectedFile.getName().substring(0, selectedFile.getName().length()-4));
 
 			//creates table to display students, sets it to fill the entire screen
-			JTable table = new JTable (new SpreadsheetModel());
+			JTable table = new JTable (new SpreadsheetModel(path));
+			SpreadsheetModel model = (SpreadsheetModel) table.getModel();
+			tableList.add (model);
 			JScrollPane scrollPane = new JScrollPane (table);
 			table.setFillsViewportHeight (true);
 
 			//adds JPanel to JTabbedPane
-			tabs.addTab ("Textbook Name", null, scrollPane, "Textbook Name");
+			tabs.addTab (fileName, null, scrollPane, fileName);
 			//must find way to pass in the textbook name as well
 
 			//adds JTabbedPane to main panel
 			mainWindow.add(tabs, BorderLayout.CENTER);
+			mainWindow.remove(empty);
 
 			mainWindow.validate();
 			mainWindow.repaint();
@@ -461,7 +480,7 @@ public class GUI {
 			JDialog dialog = new JDialog();
 			dialog.setAlwaysOnTop(true);
 
-			//save file here
+			tableList.get(tabs.getSelectedIndex()).saveData();
 			JOptionPane.showMessageDialog(dialog,"You have saved the database!", "Saved!", JOptionPane.QUESTION_MESSAGE, null);
 		}
 	}
@@ -471,7 +490,7 @@ public class GUI {
 		@Override
 		public void actionPerformed(ActionEvent event) {
 			searchText = search.getText();
-			tablePanelList.get(tabs.getSelectedIndex()).repaint(); //repaints index of table, make sure matches array list
+			mainWindow.repaint(); //repaints entire main window (index of table???), make sure matches array list
 		}
 	}
 
@@ -505,7 +524,16 @@ public class GUI {
 	}
 }
 
+//TODO:
 //make tab names editable: https://stackoverflow.com/questions/27124121/how-to-change-the-tab-name-in-jtabbedpane
 //highlighted cell different colour: https://stackoverflow.com/questions/6862102/swing-jtable-highlight-selected-cell-in-a-different-color-from-rest-of-the-sel
 //search by drop down menu or search all and highlight search: https://stackoverflow.com/questions/20113920/highlighting-the-text-of-a-jtable-cell
-// add comments
+//add comments
+//table filter: http://www.java2s.com/Tutorials/Java/Java_Swing/1100__Java_Swing_JTable.htm
+//http://www.informit.com/articles/article.aspx?p=24130&seqNum=3
+//overdue method
+//textbooknum method
+//add method
+//import method
+//new database
+// try to get rid of repeated middle man code in spreadsheetmodel

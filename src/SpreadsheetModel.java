@@ -6,8 +6,8 @@ import javax.swing.table.AbstractTableModel;
 class SpreadsheetModel extends AbstractTableModel {
    private String[] columnNames = {"Textbook Number", "Student Number", "Last Name", "First Name", "Teacher", "Course Code", "Date", "Returned"};
 //   private  ArrayList <DataItem> data = new ArrayList <DataItem>();
-   private DataLinkedList list = new DataLinkedList();
-   
+   private DataLinkedList list;
+
 //    private Object[][] data = {
 //         {"Kathy", "Smith",
 //             "Snowboarding", new Integer(5), new Boolean(false)},
@@ -20,8 +20,13 @@ class SpreadsheetModel extends AbstractTableModel {
 //            {"Joe", "Brown",
 //             "Pool", new Integer(10), new Boolean(false)},
 //        };
+    SpreadsheetModel (String name, int none) {
+        list = new DataLinkedList();
+    }
+
 
    SpreadsheetModel (String path) {
+        list = new DataLinkedList();
 	try {
 		list.loadData(path);
 	} catch (IOException e) {
@@ -29,6 +34,8 @@ class SpreadsheetModel extends AbstractTableModel {
 		e.printStackTrace();
 	}
    }
+   
+
    
     public int getColumnCount() {
         return 8;
@@ -49,6 +56,10 @@ class SpreadsheetModel extends AbstractTableModel {
     public Class getColumnClass(int c) {
         return getValueAt(0, c).getClass();
     }
+    
+    public void clear () {
+    	list.itemClear();
+    }
 
     /*
      * Don't need to implement this method unless your table's
@@ -60,6 +71,18 @@ class SpreadsheetModel extends AbstractTableModel {
      return true;
     }
 
+    public void firstSort() {
+        list.sortByFirstName();
+    }
+
+    public void lastSort() {
+        list.sortByLastName();
+    }
+
+    public void itemSort() {
+        list.sortByItemNum();
+    }
+
     /*
      * Don't need to implement this method unless your table's
      * data can change.
@@ -67,6 +90,18 @@ class SpreadsheetModel extends AbstractTableModel {
     public void setValueAt(Object value, int row, int col) {
         list.get(row).set(col, value);
         fireTableCellUpdated(row, col); //check what this does
+    }
+
+    public void remove(int index) {
+        list.remove(index);
+    }
+
+    public void saveData() {
+        try {
+            list.saveData();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
 
