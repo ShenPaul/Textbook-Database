@@ -250,18 +250,7 @@ public class GUI {
 			System.out.println (input);
 
 			tabs.addTab (input,table);
-			
-		   	//Need a new window asking for student info
-   			//ask for first name, last name, student num, teacher, course code, date
-   			//save as input1, input2, input3, input4, input5, input6
-		   	DataItem unassignedTextBook = tableList.get(tabs.getSelectedIndex()).searchByItemNum(input);
-		   	unassignedTextBook.setFirstName(input1);
-		  	unassignedTextBook.setLastName(input2);
-			unassignedTextBook.setStudentNum(input3);
-	   		unassingedTextBook.setTeacher(input4);
-		  	unassignedTextBook.setCourseCode(input5);
-		   	unassignedTextBook.setDate(input6);
-		   	unassignedTextBook.setReturned(false);
+			//find textbook and move cursor?
 			mainWindow.validate();
 			mainWindow.repaint();
 		}
@@ -334,7 +323,7 @@ public class GUI {
 					email.setSize(500, 500);
 					email.setResizable(true);
 					email.setAlwaysOnTop (true);
-					email.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE); //this.dispose? will this end the program?
+					email.dispose(); //this.dispose? will this end the program?
 					email.setVisible(true);
 
 				}
@@ -354,11 +343,8 @@ public class GUI {
 
 			String input = (String) JOptionPane.showInputDialog (dialog, "What is the textbook number?", "Input Number", JOptionPane.QUESTION_MESSAGE, null, null, null);
 			System.out.println (input);
-
-			DataItem newTextBook =  new DataItem(input);
-			newTextBook.setItemNum(input);
-
-			tableList.get(tabs.getSelectedIndex()).add(newTextBook);
+			
+			tableList.get(tabs.getSelectedIndex()).add(input);
 
 			mainWindow.validate();
 			mainWindow.repaint();
@@ -424,6 +410,7 @@ public class GUI {
 			//creates table to display students, sets it to fill the entire screen
 			JTable table = new JTable (new SpreadsheetModel(input, 0));
 			SpreadsheetModel model = (SpreadsheetModel) table.getModel();
+			model.addEmpty();
 			tableList.add (model);
 			JScrollPane scrollPane = new JScrollPane (table);
 			table.setFillsViewportHeight (true);
@@ -548,6 +535,7 @@ public class GUI {
 //http://www.informit.com/articles/article.aspx?p=24130&seqNum=3
 // try to get rid of repeated middle man code in spreadsheetmodel
 //overdue method - David
+//textbooknum method - David
 //import method - David
 //add method error - David
 //new database - David

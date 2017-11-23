@@ -20,11 +20,13 @@ class SpreadsheetModel extends AbstractTableModel {
 //            {"Joe", "Brown",
 //             "Pool", new Integer(10), new Boolean(false)},
 //        };
+   
+   // For new Databases
     SpreadsheetModel (String name, int none) {
-        list = new DataLinkedList();
+        list = new DataLinkedList(name);
     }
 
-
+   // for existing databases
    SpreadsheetModel (String path) {
         list = new DataLinkedList();
 	try {
@@ -53,12 +55,12 @@ class SpreadsheetModel extends AbstractTableModel {
         return list.get(row).get(col);
     }
 
-    public Class getColumnClass(int c) {
-        return getValueAt(0, c).getClass();
+    public Class getColumnClass(int c){
+    	return getValueAt(0, c).getClass();
     }
     
     public void clear () {
-    	list.itemClear();
+    	//list.itemClear();
     }
 
     /*
@@ -104,8 +106,13 @@ class SpreadsheetModel extends AbstractTableModel {
         }
     }
 
-    public void add(DataItem newTextBook) {
-        list.add(newTextBook);
+    public void add(String name) {
+		DataItem newTextBook =  new DataItem(name);
+		if( ( (String)getValueAt(0, 0) ).equals("") ){
+			list.get(0).set(0, name);
+		}else{
+			list.add(newTextBook);
+		}
     }
 
     public void importData(String absolutePath) {
@@ -115,6 +122,12 @@ class SpreadsheetModel extends AbstractTableModel {
             e.printStackTrace();
         }
     }
+
+	public void addEmpty() {
+		DataItem temp = new DataItem("","","","","","","", false);
+		list.add(temp);
+	}
+	
 }
 
 //https://docs.oracle.com/javase/tutorial/uiswing/components/table.html save data after editing

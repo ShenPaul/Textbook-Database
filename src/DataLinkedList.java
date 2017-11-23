@@ -66,6 +66,7 @@ class DataLinkedList {//start of class
         DataItem prevNode = head;
         if(index == 0){
           head = head.getNext();
+          return prevNode;
         }
         for(int i=0;i<index-1;i++){
           prevNode = prevNode.getNext();
