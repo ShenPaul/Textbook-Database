@@ -261,7 +261,13 @@ public class GUI {
 
 			String date = (String) JOptionPane.showInputDialog (dialog, "What is the date?", "Date", JOptionPane.QUESTION_MESSAGE, null, null, null);
 
-			tableList.get(tabs.getSelectedIndex()).assignStudent(textBookNum, studentNum, lastName, firstName, teacher, courseCode, date);
+			boolean isRealTable = tableList.get(tabs.getSelectedIndex()).assignStudent(textBookNum, studentNum, lastName, firstName, teacher, courseCode, date);
+
+			if(!isRealTable){
+				System.out.println("Error");
+				JOptionPane.showMessageDialog(dialog, "This is not a real textbook number!", "Error!", JOptionPane.WARNING_MESSAGE);
+				System.out.println("Error");
+			}
 
 			//find textbook and move cursor?
 			mainWindow.validate();

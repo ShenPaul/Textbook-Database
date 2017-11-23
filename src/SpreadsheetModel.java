@@ -128,9 +128,12 @@ class SpreadsheetModel extends AbstractTableModel {
 		list.add(temp);
 	}
 
-    public void assignStudent(String textBookNum, String studentNum, String lastName, String firstName, String teacher, String courseCode, String date) {
+    public boolean assignStudent(String textBookNum, String studentNum, String lastName, String firstName, String teacher, String courseCode, String date) {
         DataItem assigned = list.get(textBookNum);
-        if (assigned == null);
+        if (assigned == null){
+            System.out.println("ERROR");
+            return false;
+        }
         else{
             assigned.set(1, studentNum);
             assigned.set(2, lastName);
@@ -138,6 +141,7 @@ class SpreadsheetModel extends AbstractTableModel {
             assigned.set(4,teacher);
             assigned.set(5,courseCode);
             assigned.set(6,date);
+            return true;
         }
     }
 }
