@@ -250,7 +250,18 @@ public class GUI {
 			System.out.println (input);
 
 			tabs.addTab (input,table);
-			//find textbook and move cursor?
+			
+		   	//Need a new window asking for student info
+   			//ask for first name, last name, student num, teacher, course code, date
+   			//save as input1, input2, input3, input4, input5, input6
+		   	DataItem unassignedTextBook = tableList.get(tabs.getSelectedIndex()).searchByItemNum(input);
+		   	unassignedTextBook.setFirstName(input1);
+		  	unassignedTextBook.setLastName(input2);
+			unassignedTextBook.setStudentNum(input3);
+	   		unassingedTextBook.setTeacher(input4);
+		  	unassignedTextBook.setCourseCode(input5);
+		   	unassignedTextBook.setDate(input6);
+		   	unassignedTextBook.setReturned(false);
 			mainWindow.validate();
 			mainWindow.repaint();
 		}
@@ -537,7 +548,6 @@ public class GUI {
 //http://www.informit.com/articles/article.aspx?p=24130&seqNum=3
 // try to get rid of repeated middle man code in spreadsheetmodel
 //overdue method - David
-//textbooknum method - David
 //import method - David
 //add method error - David
 //new database - David
