@@ -55,6 +55,18 @@ class DataLinkedList {//start of class
         }
         return tempNode;
     }
+
+	// get DataItem by the textbook number
+    public DataItem get(String textbookNum){
+    	DataItem tempNode = head;
+		for (int i = 0; i < size(); i++) {
+			if(tempNode.getItemNum().equals(textbookNum)){
+				return tempNode;
+			}
+			tempNode = tempNode.getNext();
+		}
+		return null;
+	}
     
     /** remove *******************************************
      * removes and returns DataItem at specified index

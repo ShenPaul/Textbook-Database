@@ -244,12 +244,25 @@ public class GUI {
 			JDialog dialog = new JDialog();
 			dialog.setAlwaysOnTop(true);
 
-			JPanel table = new JPanel();
+			// get textbook number
+			String textBookNum = (String) JOptionPane.showInputDialog (dialog, "What is the textbook number?", "Textbook Number", JOptionPane.QUESTION_MESSAGE, null, null, null);
+			//System.out.println (textBookNum);
 
-			String input = (String) JOptionPane.showInputDialog (dialog, "What is the textbook number?", "Textbook Number", JOptionPane.QUESTION_MESSAGE, null, null, null);
-			System.out.println (input);
+			// get student number
+			String studentNum = (String) JOptionPane.showInputDialog (dialog, "What is their student number?", "Student Number", JOptionPane.QUESTION_MESSAGE, null, null, null);
 
-			tabs.addTab (input,table);
+			String lastName = (String) JOptionPane.showInputDialog (dialog, "What is their last name?", "Last Name", JOptionPane.QUESTION_MESSAGE, null, null, null);
+
+			String firstName = (String) JOptionPane.showInputDialog (dialog, "What is their first name?", "First Name", JOptionPane.QUESTION_MESSAGE, null, null, null);
+
+			String teacher = (String) JOptionPane.showInputDialog (dialog, "Who is the teacher?", "Teacher", JOptionPane.QUESTION_MESSAGE, null, null, null);
+
+			String courseCode = (String) JOptionPane.showInputDialog (dialog, "What is the course code?", "Course Code", JOptionPane.QUESTION_MESSAGE, null, null, null);
+
+			String date = (String) JOptionPane.showInputDialog (dialog, "What is the date?", "Date", JOptionPane.QUESTION_MESSAGE, null, null, null);
+
+			tableList.get(tabs.getSelectedIndex()).assignStudent(textBookNum, studentNum, lastName, firstName, teacher, courseCode, date);
+
 			//find textbook and move cursor?
 			mainWindow.validate();
 			mainWindow.repaint();
@@ -535,7 +548,7 @@ public class GUI {
 //http://www.informit.com/articles/article.aspx?p=24130&seqNum=3
 // try to get rid of repeated middle man code in spreadsheetmodel
 //overdue method - David
-//textbooknum method - David
+//textbooknum method - David  DONE
 //import method - David
-//add method error - David
-//new database - David
+//add method error - David DONE
+//new database - David DONE

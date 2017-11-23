@@ -127,7 +127,19 @@ class SpreadsheetModel extends AbstractTableModel {
 		DataItem temp = new DataItem("","","","","","","", false);
 		list.add(temp);
 	}
-	
+
+    public void assignStudent(String textBookNum, String studentNum, String lastName, String firstName, String teacher, String courseCode, String date) {
+        DataItem assigned = list.get(textBookNum);
+        if (assigned == null);
+        else{
+            assigned.set(1, studentNum);
+            assigned.set(2, lastName);
+            assigned.set(3, firstName);
+            assigned.set(4,teacher);
+            assigned.set(5,courseCode);
+            assigned.set(6,date);
+        }
+    }
 }
 
 //https://docs.oracle.com/javase/tutorial/uiswing/components/table.html save data after editing
