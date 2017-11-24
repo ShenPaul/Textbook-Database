@@ -317,14 +317,23 @@ public class GUI {
 	//asks for confirmation to display all the overdue students
 	static class overdueListener implements ActionListener {
 		@Override
-		public void actionPerformed(ActionEvent event) {
-			JDialog dialog = new JDialog();
-			dialog.setAlwaysOnTop(true);
+	  	public void actionPerformed(ActionEvent event) {
+	   		JDialog dialog = new JDialog();
+	   		dialog.setAlwaysOnTop(true);
 
 			int selection = JOptionPane.showOptionDialog(dialog, "Display all overdue students?", "Confirm", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null, null, null);
 			System.out.println(selection);
 			if (selection == 0) { //verify this
 				// shift all boolean false values to top, basically sort
+				DataLinkedList returned = new DataLinkedList;
+				for (int i = 0; i<tableList.get(tabs.getSelectedIndex()).size();i++){
+					if (tableList.get(tabs.getSelectedIndex()).get(i).getReturned()){
+						returned.add(tableList.get(tabs.getSelectedIndex()).remove(i));
+					}
+				}
+				for (int i = 0; i<returned.size();i++){
+					tableList.get(tabs.getSelectedIndex()).add(returned.get(i));
+				}
 				//ask if want emails
 				selection = JOptionPane.showOptionDialog(dialog, "Would you like a list of the student emails?", "Confirm", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null, null, null);
 				// if yes, display all emails in popup
@@ -342,14 +351,14 @@ public class GUI {
 					email.setSize(500, 500);
 					email.setResizable(true);
 					email.setAlwaysOnTop (true);
-					email.dispose(); //this.dispose? will this end the program?
+					email.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE); //this.dispose? will this end the program?
 					email.setVisible(true);
 
 				}
-			}
-			mainWindow.validate();
-			mainWindow.repaint();
-		}
+	   		}
+	  		mainWindow.validate();
+	  		mainWindow.repaint();
+	  	}
 	}
 
 	//asks to insert a textbook name and creates a new tab
