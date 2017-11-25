@@ -1,5 +1,7 @@
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.table.AbstractTableModel;
 
@@ -143,6 +145,36 @@ class SpreadsheetModel extends AbstractTableModel {
             assigned.set(6,date);
             return true;
         }
+    }
+
+    public String getOverdueNames() {
+        DataItem[] overdue = list.getOverdue();
+        // map that holds name of student and student number
+        StringBuilder overdueStudentNums = new StringBuilder();
+
+        for (int i = 0; i < overdue.length; i++) {
+            // if this is not the last overdue textbook
+            if (i != overdue.length-1){
+                overdueStudentNums.append(overdue[i].getFirstName() + " " + overdue[i].getLastName() + ":" + overdue[i].getStudentNum() + ", ");
+            }else{// if this is the last overdue textbook
+                overdueStudentNums.append(overdue[i].getFirstName() + " " + overdue[i].getLastName() + " : " + overdue[i].getStudentNum());
+            }
+        }
+
+        return overdueStudentNums.toString();
+    }
+
+    public String[] getOverdueNumbers() {
+        DataItem[] overdue = list.getOverdue();
+
+        String[] overdueNums = new String[overdue.length];
+
+        for (int i = 0; i <overdue.length ; i++) {
+            // get the student numbers
+            overdueNums[i] = overdue[i].getStudentNum();
+        }
+
+        return overdueNums;
     }
 }
 

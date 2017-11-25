@@ -19,6 +19,7 @@ import java.io.File;
 import java.io.IOException;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import javax.swing.JTabbedPane;
 import javax.swing.JFrame;
@@ -317,23 +318,20 @@ public class GUI {
 	//asks for confirmation to display all the overdue students
 	static class overdueListener implements ActionListener {
 		@Override
-	  	public void actionPerformed(ActionEvent event) {
-	   		JDialog dialog = new JDialog();
-	   		dialog.setAlwaysOnTop(true);
+		public void actionPerformed(ActionEvent event) {
+			JDialog dialog = new JDialog();
+			dialog.setAlwaysOnTop(true);
 
 			int selection = JOptionPane.showOptionDialog(dialog, "Display all overdue students?", "Confirm", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null, null, null);
 			System.out.println(selection);
 			if (selection == 0) { //verify this
-				// shift all boolean false values to top, basically sort
-				DataLinkedList returned = new DataLinkedList;
-				for (int i = 0; i<tableList.get(tabs.getSelectedIndex()).size();i++){
-					if (tableList.get(tabs.getSelectedIndex()).get(i).getReturned()){
-						returned.add(tableList.get(tabs.getSelectedIndex()).remove(i));
-					}
-				}
-				for (int i = 0; i<returned.size();i++){
-					tableList.get(tabs.getSelectedIndex()).add(returned.get(i));
-				}
+
+				// get all the names and student numbers of overdue students
+				String overDue = tableList.get(tabs.getSelectedIndex()).getOverdueNames();
+
+				// get all the overdue student numbers in an array
+				String[] studentNumbers = tableList.get(tabs.getSelectedIndex()).getOverdueNumbers();
+
 				//ask if want emails
 				selection = JOptionPane.showOptionDialog(dialog, "Would you like a list of the student emails?", "Confirm", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null, null, null);
 				// if yes, display all emails in popup
@@ -355,10 +353,10 @@ public class GUI {
 					email.setVisible(true);
 
 				}
-	   		}
-	  		mainWindow.validate();
-	  		mainWindow.repaint();
-	  	}
+			}
+			mainWindow.validate();
+			mainWindow.repaint();
+		}
 	}
 
 	//asks to insert a textbook name and creates a new tab
@@ -371,7 +369,7 @@ public class GUI {
 
 			String input = (String) JOptionPane.showInputDialog (dialog, "What is the textbook number?", "Input Number", JOptionPane.QUESTION_MESSAGE, null, null, null);
 			System.out.println (input);
-			
+
 			tableList.get(tabs.getSelectedIndex()).add(input);
 
 			mainWindow.validate();
