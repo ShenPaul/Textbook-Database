@@ -14,6 +14,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.Font;
 import java.awt.Component;
+import java.awt.Frame;
 
 import java.io.File;
 import java.io.IOException;
@@ -34,6 +35,7 @@ import javax.swing.JTable;
 import javax.swing.JScrollPane;
 import javax.swing.JFileChooser;
 import javax.swing.UIManager;
+import javax.swing.UIDefaults;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.BorderFactory;
 import javax.swing.WindowConstants;
@@ -45,7 +47,6 @@ import javax.swing.text.Highlighter;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.text.BadLocationException;
 
-
 public class GUI {
 
 	//declares public variables
@@ -55,6 +56,7 @@ public class GUI {
 	public static JTextField search = new JTextField (50);
 	public static String searchText = "";
 	public static JLabel empty;
+	public static Font font = new Font("Courier", Font.BOLD,18);
 
 	/**
 	 *@
@@ -80,13 +82,14 @@ public class GUI {
 			// handle exception
 		}
 
+		UIDefaults defaults = UIManager.getLookAndFeelDefaults();
+
+		if (defaults.get("Table.alternateRowColor") == null) {
+			defaults.put("Table.alternateRowColor", Color.LIGHT_GRAY);
+		}
+
 		//warning to user to not access files while running the database program.
 		JOptionPane.showMessageDialog(null, "Do not open database .csv files while program is running!", "WARNING!", JOptionPane.WARNING_MESSAGE);
-
-		//sets GUI to full screen
-		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		double width = screenSize.getWidth();
-		double height = screenSize.getHeight();
 
 		//creates main JFrame
 		mainWindow.setLayout(new BorderLayout());
@@ -94,10 +97,12 @@ public class GUI {
 		//insert rhhs math logo as background picture?
 		//yourFrameHere.setBackground(new Color(0, 0, 0, 0));
 		//yourContentPaneHere.setOpaque(false);
-		mainWindow.setSize((int)width, (int)height);
 		mainWindow.setResizable(true);
 		mainWindow.setAlwaysOnTop (true);
 		mainWindow.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+
+		//sets GUI to full screen
+		mainWindow.setExtendedState(Frame.MAXIMIZED_BOTH);
 
 		//creates menu on west panel
 		JPanel menuScreen = new JPanel ();
@@ -106,43 +111,50 @@ public class GUI {
 
 		//adds button to assign student
 		JButton textbookNum = new JButton("Assign Student");
+		textbookNum.setFont(font);
 		textbookNum.addActionListener (new textbookNumListener());
 		menuScreen.add(textbookNum);
 
-		//adds button to clear all student
-		JButton clear = new JButton("Clear Students");
-		clear.addActionListener (new clearListener());
-		menuScreen.add(clear);
-
 		//adds button to sort students
 		JButton sort = new JButton("Sort");
+		sort.setFont(font);
 		sort.addActionListener (new sortListener());
 		menuScreen.add(sort);
 
 		//adds button to highlight overdue students
 		JButton overdue = new JButton("Overdue");
+		overdue.setFont(font);
 		overdue.addActionListener (new overdueListener());
 		menuScreen.add(overdue);
 
 		//adds button to add a textbook
-		JButton add = new JButton("Add Entry");
+		JButton add = new JButton("Add Textbook");
+		add.setFont(font);
 		add.addActionListener (new addListener());
 		menuScreen.add(add);
 
 		//adds button to remove a textbook
-		JButton remove = new JButton("Remove Entry");
+		JButton remove = new JButton("Remove Textbook");
+		remove.setFont(font);
 		remove.addActionListener (new removeListener());
 		menuScreen.add(remove);
 
 		//adds button to import textbooks from a list
-		JButton importBook = new JButton("Import Entries");
+		JButton importBook = new JButton("Import Textbooks");
+		importBook.setFont(font);
 		importBook.addActionListener (new importBookListener());
 		menuScreen.add(importBook);
+
+		//adds button to clear all student
+		JButton clear = new JButton("Clear Students");
+		clear.setFont(font);
+		clear.addActionListener (new clearListener());
+		menuScreen.add(clear);
 
 		//adds menu to main panel
 		mainWindow.add(menuScreen,BorderLayout.WEST);
 
-		//creates a JTabbedPane to handle different spreadsheets, starts off with one textbook by default
+		//creates a JTabbedPane to handle different spreadsheets, starts off with no textbooks by default
 		tabs.setTabPlacement(SwingConstants.BOTTOM);
 		tabs.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 		tabs.setBackground(Color.WHITE);
@@ -161,10 +173,10 @@ public class GUI {
 //		//adds JTabbedPane to main panel
 //		mainWindow.add(tabs, BorderLayout.CENTER);
 
-		Font font = new Font("Courier", Font.BOLD,72);
+		Font font1 = new Font("Courier", Font.BOLD,72);
 		empty = new JLabel("NO DATABASES HAVE BEEN IMPORTED YET!");
 		empty.setBorder (BorderFactory.createEmptyBorder(0,70,0,70));
-		empty.setFont(font);
+		empty.setFont(font1);
 		mainWindow.add(empty, BorderLayout.CENTER);
 
 		//north panel
@@ -175,22 +187,27 @@ public class GUI {
 
 		//adds button to open a database
 		JButton openData = new JButton("Open Database");
+		openData.setFont(font);
 		openData.addActionListener (new openDataListener());
 		topMenu.add(openData);
 
 		//adds button to create a new database
 		JButton newData = new JButton("New Database");
+		newData.setFont(font);
 		newData.addActionListener (new newDataListener());
 		topMenu.add(newData);
 
 		//adds button to save databases
 		JButton save = new JButton("Save");
+		save.setFont(font);
 		save.addActionListener (new saveListener());
 		topMenu.add(save);
 
 		//adds search field for the list and highlights matches
 		JLabel searchLabel = new JLabel("Search:");
+		searchLabel.setFont(font);
 		JButton searchButton = new JButton("Go!");
+		searchButton.setFont(font);
 		searchButton.addActionListener (new searchListener());
 
 //		Highlighter hilit;
@@ -244,6 +261,23 @@ public class GUI {
 		public void actionPerformed(ActionEvent event){
 			JDialog dialog = new JDialog();
 			dialog.setAlwaysOnTop(true);
+
+//			JFrame email = new JFrame();
+//			JPanel emails = new JPanel();
+//			JTextPane emailList = new JTextPane();
+//
+//			//display all emails in text pane
+//
+//			emails.add(emailList);
+//			email.add(emails);
+//
+//			email.setBackground(Color.WHITE);
+//			email.setSize(500, 500);
+//			email.setResizable(true);
+//			email.setAlwaysOnTop (true);
+//			email.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE); //this.dispose? will this end the program?
+//			email.setVisible(true);
+
 
 			// get textbook number
 			String textBookNum = (String) JOptionPane.showInputDialog (dialog, "What is the textbook number?", "Textbook Number", JOptionPane.QUESTION_MESSAGE, null, null, null);
@@ -546,10 +580,6 @@ public class GUI {
 //		};
 //	}
 
-	public void displaySpreadsheets () {
-		//go through array list here and add each to a new tab and refresh window
-		//incorporate into existing methods at the end?
-	}
 }
 
 //TODO:
@@ -565,3 +595,21 @@ public class GUI {
 //import method - David
 //add method error - David DONE
 //new database - David DONE
+// clear students add more warning
+//change every other row colour
+//change date format, input selection?
+//tablemodellistener, fire inserted row? https://docs.oracle.com/javase/tutorial/uiswing/components/table.html#modelchange, https://docs.oracle.com/javase/tutorial/uiswing/events/tablemodellistener.html, http://www.java2s.com/Tutorial/Java/0240__Swing/ListeningtoJTableEventswithaTableModelListener.htm, http://www.codejava.net/java-se/swing/editable-jtable-example
+//prevent header movement?
+//tooltips?
+//TableColumn sportColumn = table.getColumnModel().getColumn(2);
+//...
+//		JComboBox comboBox = new JComboBox();
+//		comboBox.addItem("Snowboarding");
+//		comboBox.addItem("Rowing");
+//		comboBox.addItem("Chasing toddlers");
+//		comboBox.addItem("Speed reading");
+//		comboBox.addItem("Teaching high school");
+//		comboBox.addItem("None");
+//		sportColumn.setCellEditor(new DefaultCellEditor(comboBox));
+// for date?
+//https://stackoverflow.com/questions/17762214/java-jtable-alternate-row-color-not-working, checkboxes colour not changed

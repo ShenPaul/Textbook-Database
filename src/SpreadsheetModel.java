@@ -1,52 +1,41 @@
+import java.awt.Color;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import javax.swing.UIManager;
+import javax.swing.UIDefaults;
+import javax.swing.event.TableModelEvent;
 
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.DefaultTableCellRenderer;
 
 class SpreadsheetModel extends AbstractTableModel {
-   private String[] columnNames = {"Textbook Number", "Student Number", "Last Name", "First Name", "Teacher", "Course Code", "Date", "Returned"};
-//   private  ArrayList <DataItem> data = new ArrayList <DataItem>();
-   private DataLinkedList list;
+    private String[] columnNames = {"Textbook Number", "Student Number", "Last Name", "First Name", "Teacher", "Course Code", "Date", "Returned"};
+    private DataLinkedList list;
 
-//    private Object[][] data = {
-//         {"Kathy", "Smith",
-//             "Snowboarding", new Integer(5), new Boolean(false)},
-//            {"John", "Doe",
-//             "Rowing", new Integer(3), new Boolean(true)},
-//            {"Sue", "Black",
-//             "Knitting", new Integer(2), new Boolean(false)},
-//            {"Jane", "White",
-//             "Speed reading", new Integer(20), new Boolean(true)},
-//            {"Joe", "Brown",
-//             "Pool", new Integer(10), new Boolean(false)},
-//        };
-   
-   // For new Databases
+    // for new Databases
     SpreadsheetModel (String name, int none) {
         list = new DataLinkedList(name);
     }
 
-   // for existing databases
-   SpreadsheetModel (String path) {
+    // for existing databases
+    SpreadsheetModel (String path) {
         list = new DataLinkedList();
-	try {
-		list.loadData(path);
-	} catch (IOException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}
-   }
-   
+        try {
+            list.loadData(path);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
 
-   
     public int getColumnCount() {
         return 8;
     }
 
     public int getRowCount() {
-     return list.size();
+        return list.size();
     }
 
     public String getColumnName(int col) {
@@ -58,11 +47,11 @@ class SpreadsheetModel extends AbstractTableModel {
     }
 
     public Class getColumnClass(int c){
-    	return getValueAt(0, c).getClass();
+        return getValueAt(0, c).getClass();
     }
-    
+
     public void clear () {
-    	//list.itemClear();
+        //list.itemClear();
     }
 
     /*
@@ -72,7 +61,7 @@ class SpreadsheetModel extends AbstractTableModel {
     public boolean isCellEditable(int row, int col) {
         //Note that the data/cell address is constant,
         //no matter where the cell appears onscreen.
-     return true;
+        return true;
     }
 
     public void firstSort() {
@@ -87,12 +76,23 @@ class SpreadsheetModel extends AbstractTableModel {
         list.sortByItemNum();
     }
 
+    //check this method
+    public void tableChanged(TableModelEvent e) {
+        System.out.println(e);
+    }
+
     /*
      * Don't need to implement this method unless your table's
      * data can change.
      */
     public void setValueAt(Object value, int row, int col) {
+//        System.out.println (value);
         list.get(row).set(col, value);
+        try {
+            list.saveData();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         fireTableCellUpdated(row, col); //check what this does
     }
 
@@ -109,12 +109,12 @@ class SpreadsheetModel extends AbstractTableModel {
     }
 
     public void add(String name) {
-		DataItem newTextBook =  new DataItem(name);
-		if( ( (String)getValueAt(0, 0) ).equals("") ){
-			list.get(0).set(0, name);
-		}else{
-			list.add(newTextBook);
-		}
+        DataItem newTextBook =  new DataItem(name);
+        if( ( (String)getValueAt(0, 0) ).equals("") ){
+            list.get(0).set(0, name);
+        }else{
+            list.add(newTextBook);
+        }
     }
 
     public void importData(String absolutePath) {
@@ -125,10 +125,10 @@ class SpreadsheetModel extends AbstractTableModel {
         }
     }
 
-	public void addEmpty() {
-		DataItem temp = new DataItem("","","","","","","", false);
-		list.add(temp);
-	}
+    public void addEmpty() {
+        DataItem temp = new DataItem("","","","","","","", false);
+        list.add(temp);
+    }
 
     public boolean assignStudent(String textBookNum, String studentNum, String lastName, String firstName, String teacher, String courseCode, String date) {
         DataItem assigned = list.get(textBookNum);
@@ -176,6 +176,8 @@ class SpreadsheetModel extends AbstractTableModel {
 
         return overdueNums;
     }
+
+
 }
 
 //https://docs.oracle.com/javase/tutorial/uiswing/components/table.html save data after editing
