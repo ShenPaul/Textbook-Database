@@ -210,7 +210,14 @@ class DataLinkedList {//start of class
      * @throws IOException
      */
     public void saveData()throws IOException{
-    	BufferedWriter bWrite = new BufferedWriter(new FileWriter(filePath.toFile()));
+    	
+    	BufferedWriter bWrite;
+    	
+    	if(filePath != null){
+    		bWrite = new BufferedWriter(new FileWriter(filePath.toFile()));
+    	}else{
+    		bWrite = new BufferedWriter(new FileWriter(listName+".csv"));
+    	}
     	DataItem tempNode = head;
     	
     	while(tempNode != null){
@@ -239,24 +246,21 @@ class DataLinkedList {//start of class
     	String[] strArr;
     	DataItem tempNode;
     	DataItem prevNode;
-    	
     	str = bRead.readLine();
     	strArr = str.split(",");
-		head = new DataItem(strArr[0],strArr[1],strArr[2],strArr[3],strArr[4],strArr[5],strArr[6],Boolean.getBoolean(strArr[7]));
+		head = new DataItem(strArr[0],strArr[1],strArr[2],strArr[3],strArr[4],strArr[5],strArr[6],(strArr[7].equals("true")));
 		prevNode = head;
     	
     	while((str = bRead.readLine()) != null){
     		strArr = str.split(",");
     		if(strArr.length > 1){
-    			tempNode = new DataItem(strArr[0],strArr[1],strArr[2],strArr[3],strArr[4],strArr[5],strArr[6],Boolean.getBoolean(strArr[7]));
+    			tempNode = new DataItem(strArr[0],strArr[1],strArr[2],strArr[3],strArr[4],strArr[5],strArr[6],(strArr[7].equals("true")));
     		}else{
     			tempNode = new DataItem(strArr[0]);
     		}
     		prevNode.setNext(tempNode);
     		prevNode = tempNode;
     	}
-    	
-
     	
     	bRead.close();
     }
@@ -270,6 +274,7 @@ class DataLinkedList {//start of class
     	Path filePath = Paths.get(path);
     	
     	BufferedReader bRead = new BufferedReader(new FileReader(filePath.toFile()));
+    	
     	String str;    	
     	DataItem tempNode;
     	DataItem prevNode = head;

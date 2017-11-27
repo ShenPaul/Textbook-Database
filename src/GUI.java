@@ -478,6 +478,10 @@ public class GUI {
 			//adds JPanel to JTabbedPane
 			tabs.addTab (input, null, scrollPane, input);
 			//must find way to pass in the textbook name as well
+			if (input == null) {
+				tabs.remove(tableList.size()-1);
+				tableList.remove(tableList.size()-1 );
+			}
 
 			//adds JTabbedPane to main panel
 			mainWindow.add(tabs, BorderLayout.CENTER);

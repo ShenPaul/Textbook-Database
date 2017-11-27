@@ -51,7 +51,7 @@ class SpreadsheetModel extends AbstractTableModel {
     }
 
     public void clear () {
-        //list.itemClear();
+        list.clear();
     }
 
     /*
@@ -102,6 +102,7 @@ class SpreadsheetModel extends AbstractTableModel {
 
     public void saveData() {
         try {
+        	System.out.println(list.get(0).getReturned());
             list.saveData();
         } catch (IOException e) {
             e.printStackTrace();
