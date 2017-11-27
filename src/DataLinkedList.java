@@ -132,6 +132,36 @@ class DataLinkedList {//start of class
         return (DataItem[]) dataArray.toArray();
     }
     
+    
+    public int[][] searchAll(String str){
+    	int[][] sArr;
+    	int count = 0;
+    	
+    	for(int i=0;i<this.size();i++) {
+    		for(int j=0;j<7;j++) {
+    			if(((String)(this.get(i).get(j))).equals(str)) {
+    				count++;
+    			}
+    		}
+    	}
+    	
+    	sArr = new int[count][2];
+    	count = 0;
+    	
+    	for(int i=0;i<this.size();i++) {
+    		for(int j=0;j<7;j++) {
+    			if(((String)(this.get(i).get(j))).equals(str)) {
+    				sArr[count][0] = i;
+    				sArr[count][1] = j;
+    				count++;
+    			}
+    		}
+    	}
+    	
+    	return sArr;
+    }
+    
+    
     /** searchByItemNum *******************************************
      * locates the DataItem with specified number
      * @param sNum number of the item 
@@ -406,21 +436,38 @@ class DataLinkedList {//start of class
 
 		DataItem[] newArr = new DataItem[this.size()];
 		DataItem tempNode = head;
+		boolean allIntegers = true;
 		
 		//copy list items to an array
 		for(int i=0;i<newArr.length;i++){
 			newArr[i] = tempNode;
+			try {
+				int testNum = Integer.parseInt(tempNode.getItemNum());
+			}catch(NumberFormatException e){
+				allIntegers = false;
+			}
 			tempNode = tempNode.getNext();
 		}
 		
-		//insertion sort 
-		for(int i=1;i<newArr.length;i++){
-			for(int j=i;j>0;j--){
-				if(newArr[j].getItemNum().compareTo(newArr[j-1].getItemNum()) < 0){
-                   		tempNode = newArr[j];
-                   		newArr[j] = newArr[j-1];
-                   		newArr[j-1] = tempNode;
-               	}
+		if(allIntegers){ //insertion sort on values as integers 
+			for(int i=1;i<newArr.length;i++){
+				for(int j=i;j>0;j--){
+					if(Integer.parseInt(newArr[j].getItemNum()) < Integer.parseInt(newArr[j-1].getItemNum())){
+	                   		tempNode = newArr[j];
+	                   		newArr[j] = newArr[j-1];
+	                   		newArr[j-1] = tempNode;
+	               	}
+				}
+			}
+		}else { //insertion sort on values as strings
+			for(int i=1;i<newArr.length;i++){
+				for(int j=i;j>0;j--){
+					if(newArr[j].getItemNum().compareTo(newArr[j-1].getItemNum()) < 0){
+	                   		tempNode = newArr[j];
+	                   		newArr[j] = newArr[j-1];
+	                   		newArr[j-1] = tempNode;
+	               	}
+				}
 			}
 		}
 		

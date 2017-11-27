@@ -32,41 +32,34 @@ class DataItem {
 	//get and set methods
 	
 	public Object get(int n) {
-		if(n==0){
-			return (this.itemNum);
-		}else if(n==1) {
-			return (this.studentNum);
-		}else if(n==2) {
-			return (this.lastName);
-		}else if(n==3) {
-			return (this.firstName);
-		}else if(n==4) {
-			return (this.teacher);
-		}else if(n==5) {
-			return (this.date);
-		}else if(n==6) {
-			return (this.courseCode);
-		}else {
-			return (this.returned);
+		switch(n) {
+			case 1: return this.itemNum;
+			case 2: return this.studentNum;
+			case 3: return this.lastName;
+			case 4: return this.firstName;
+			case 5: return this.teacher;
+			case 6: return this.date;
+			case 7: return this.courseCode;
+					
 		}
+		return null;
 	}
 	public void set(int n, Object value) {
-		if(n==0){
-			this.itemNum = (String)value;
-		}else if(n==1) {
-			this.studentNum = (String)value;
-		}else if(n==2) {
-			this.lastName = (String)value;
-		}else if(n==3) {
-			this.firstName = (String)value;
-		}else if(n==4) {
-			this.teacher = (String)value;
-		}else if(n==5) {
-			this.date = (String)value;
-		}else if(n==6) {
-			this.courseCode = (String)value;
-		}else {
-			this.returned = (Boolean)value;
+		switch(n) {
+			case 1: this.itemNum = (String)value;
+					break;
+			case 2: this.studentNum = (String)value;
+					break;
+			case 3: this.lastName = (String)value;
+					break;
+			case 4: this.firstName = (String)value;
+					break;
+			case 5: this.teacher = (String)value;
+					break;
+			case 6: this.date = (String)value;
+					break;
+			case 7: this.courseCode = (String)value;
+					break;
 		}
 	}
 	
