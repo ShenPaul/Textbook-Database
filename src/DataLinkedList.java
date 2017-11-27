@@ -16,6 +16,7 @@ class DataLinkedList {//start of class
 	//class variables
 	private DataItem head;
 	private String listName;
+	private Path filePath;
 	
 	//constructor
 	DataLinkedList(String listName){
@@ -125,6 +126,7 @@ class DataLinkedList {//start of class
         while(tempNode != null){
         	if(!tempNode.getReturned()){
         		dataArray.add(tempNode);
+        		tempNode = tempNode.getNext();
         	}
         }
         return (DataItem[]) dataArray.toArray();
@@ -208,7 +210,7 @@ class DataLinkedList {//start of class
      * @throws IOException
      */
     public void saveData()throws IOException{
-    	BufferedWriter bWrite = new BufferedWriter(new FileWriter(listName+".csv"));
+    	BufferedWriter bWrite = new BufferedWriter(new FileWriter(filePath.toFile()));
     	DataItem tempNode = head;
     	
     	while(tempNode != null){
@@ -232,6 +234,7 @@ class DataLinkedList {//start of class
     public void loadData(String path)throws IOException{
     	Path filePath = Paths.get(path);
     	BufferedReader bRead = new BufferedReader(new FileReader(filePath.toFile()));
+    	this.filePath = filePath;
     	String str;
     	String[] strArr;
     	DataItem tempNode;
@@ -433,6 +436,19 @@ class DataLinkedList {//start of class
 		item.setStudentNum(null);
 		item.setTeacher(null);
 		item.setReturned(true);
+	}
+	
+	public void itemClear(){
+		for(int i=0;i<this.size();i++){
+			DataItem item = this.get(i);
+			item.setCourseCode(null);
+			item.setDate(null);
+			item.setFirstName(null);
+			item.setLastName(null);
+			item.setStudentNum(null);
+			item.setTeacher(null);
+			item.setReturned(true);
+		}
 	}
 
     
