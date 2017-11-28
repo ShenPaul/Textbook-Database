@@ -6,21 +6,16 @@
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.Font;
-import java.awt.Component;
 import java.awt.Frame;
 
 import java.io.File;
-import java.io.IOException;
 
 import java.util.ArrayList;
-import java.util.Map;
 
 import javax.swing.JTabbedPane;
 import javax.swing.JFrame;
@@ -42,10 +37,6 @@ import javax.swing.WindowConstants;
 import javax.swing.SwingConstants;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.swing.text.DefaultHighlighter;
-import javax.swing.text.Highlighter;
-import javax.swing.table.TableCellRenderer;
-import javax.swing.text.BadLocationException;
 
 public class GUI {
 
@@ -88,6 +79,8 @@ public class GUI {
 			defaults.put("Table.alternateRowColor", Color.LIGHT_GRAY);
 		}
 
+		UIManager.put("TabbedPane.selected", Color.GREEN);
+
 		//warning to user to not access files while running the database program.
 		JOptionPane.showMessageDialog(null, "Do not open database .csv files while program is running!", "WARNING!", JOptionPane.WARNING_MESSAGE);
 
@@ -102,6 +95,7 @@ public class GUI {
 		mainWindow.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
 		//sets GUI to full screen
+		mainWindow.setSize(1600, 800);
 		mainWindow.setExtendedState(Frame.MAXIMIZED_BOTH);
 
 		//creates menu on west panel
@@ -173,11 +167,7 @@ public class GUI {
 //		//adds JTabbedPane to main panel
 //		mainWindow.add(tabs, BorderLayout.CENTER);
 
-		Font font1 = new Font("Courier", Font.BOLD,72);
-		empty = new JLabel("NO DATABASES HAVE BEEN IMPORTED YET!");
-		empty.setBorder (BorderFactory.createEmptyBorder(0,70,0,70));
-		empty.setFont(font1);
-		mainWindow.add(empty, BorderLayout.CENTER);
+		showEmpty();
 
 		//north panel
 		JPanel topMenu = new JPanel();
@@ -196,6 +186,12 @@ public class GUI {
 		newData.setFont(font);
 		newData.addActionListener (new newDataListener());
 		topMenu.add(newData);
+
+		//adds button to close database
+		JButton closeData = new JButton("Close Current Database");
+		closeData.setFont(font);
+		closeData.addActionListener (new closeDataListener());
+		topMenu.add(closeData);
 
 		//adds button to save databases
 		JButton save = new JButton("Save");
@@ -255,6 +251,22 @@ public class GUI {
 		mainWindow.setVisible(true);
 	}
 
+	public static void showEmpty () {
+		if (tableList.size() != 0) {
+			System.out.println(tableList.size());
+			empty.setVisible(false);
+
+		} else {
+			System.out.println(tableList.size());
+			Font font1 = new Font("Courier", Font.BOLD,67);
+			empty = new JLabel("NO DATABASES HAVE BEEN IMPORTED YET!");
+			empty.setBorder (BorderFactory.createEmptyBorder(0,70,0,70));
+			empty.setFont(font1);
+			mainWindow.add(empty, BorderLayout.CENTER);
+			empty.setVisible(true);
+		}
+	}
+
 	//assigns student to a textbook
 	static class textbookNumListener implements ActionListener{
 		@Override
@@ -306,22 +318,6 @@ public class GUI {
 
 			//find textbook and move cursor?
 			mainWindow.validate();
-			mainWindow.repaint();
-		}
-	}
-
-	//asks user for confirmation then resets the students column values to 0
-	static class clearListener implements ActionListener{
-		@Override
-		public void actionPerformed(ActionEvent event){
-			JDialog dialog = new JDialog();
-			dialog.setAlwaysOnTop(true);
-
-			int selection = JOptionPane.showOptionDialog(dialog, "Are you sure you want to clear all students?", "Warning", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null, null, null);
-			System.out.println (selection);
-			if (selection == 0) {
-				tableList.get(tabs.getSelectedIndex()).clear(); //gotten table at index so far, need to clear it
-			}
 			mainWindow.repaint();
 		}
 	}
@@ -457,39 +453,23 @@ public class GUI {
 		}
 	}
 
-	//creates new database
-	static class newDataListener implements ActionListener {
+	//asks user for confirmation then resets the students column values to 0
+	static class clearListener implements ActionListener{
 		@Override
 		public void actionPerformed(ActionEvent event){
 			JDialog dialog = new JDialog();
 			dialog.setAlwaysOnTop(true);
 
-			String input = (String) JOptionPane.showInputDialog (dialog, "What is the textbook name?", "Input Name", JOptionPane.QUESTION_MESSAGE, null, null, null);
-			System.out.println (input);
-
-			//creates table to display students, sets it to fill the entire screen
-			JTable table = new JTable (new SpreadsheetModel(input, 0));
-			SpreadsheetModel model = (SpreadsheetModel) table.getModel();
-			model.addEmpty();
-			tableList.add (model);
-			JScrollPane scrollPane = new JScrollPane (table);
-			table.setFillsViewportHeight (true);
-
-			//adds JPanel to JTabbedPane
-			tabs.addTab (input, null, scrollPane, input);
-			//must find way to pass in the textbook name as well
-			if (input == null) {
-				tabs.remove(tableList.size()-1);
-				tableList.remove(tableList.size()-1 );
+			int selection = JOptionPane.showOptionDialog(dialog, "Only the Math Department Head can use this function. Proceed?", "Warning", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null, null, null);
+			System.out.println (selection);
+			if (selection == 0) {
+				selection = JOptionPane.showOptionDialog(dialog, "Are you sure you want to clear all students?", "Warning", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null, null, null);
+				if (selection == 0) {
+					tableList.get(tabs.getSelectedIndex()).clear();
+					//gotten table at index so far, need to clear it, clears table so far? fix?
+				}
 			}
-
-			//adds JTabbedPane to main panel
-			mainWindow.add(tabs, BorderLayout.CENTER);
-			mainWindow.remove(empty);
-
-			mainWindow.validate();
 			mainWindow.repaint();
-			// multi selection later if time and doable
 		}
 	}
 
@@ -522,6 +502,7 @@ public class GUI {
 			JTable table = new JTable (new SpreadsheetModel(path));
 			SpreadsheetModel model = (SpreadsheetModel) table.getModel();
 			tableList.add (model);
+			table.getTableHeader().setReorderingAllowed(false);
 			JScrollPane scrollPane = new JScrollPane (table);
 			table.setFillsViewportHeight (true);
 
@@ -531,11 +512,62 @@ public class GUI {
 
 			//adds JTabbedPane to main panel
 			mainWindow.add(tabs, BorderLayout.CENTER);
-			mainWindow.remove(empty);
 
-			mainWindow.validate();
-			mainWindow.repaint();
+			showEmpty();
 			// multi selection later if time and doable
+		}
+	}
+
+	//creates new database
+	static class newDataListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent event){
+			JDialog dialog = new JDialog();
+			dialog.setAlwaysOnTop(true);
+
+			String input = (String) JOptionPane.showInputDialog (dialog, "What is the textbook name?", "Input Name", JOptionPane.QUESTION_MESSAGE, null, null, null);
+
+			if (input != null) {
+				//creates table to display students, sets it to fill the entire screen
+				JTable table = new JTable(new SpreadsheetModel(input, 0));
+				SpreadsheetModel model = (SpreadsheetModel) table.getModel();
+				table.getTableHeader().setReorderingAllowed(false);
+				model.addEmpty();
+				tableList.add(model);
+				JScrollPane scrollPane = new JScrollPane(table);
+				table.setFillsViewportHeight(true);
+
+				//adds JPanel to JTabbedPane
+				tabs.addTab(input, null, scrollPane, input);
+
+				//adds JTabbedPane to main panel
+				mainWindow.add(tabs, BorderLayout.CENTER);
+
+				mainWindow.validate();
+				mainWindow.repaint();
+				// multi selection later if time and doable
+			}
+			showEmpty();
+		}
+	}
+
+	//asks user for confirmation then resets the students column values to 0
+	static class closeDataListener implements ActionListener{
+		@Override
+		public void actionPerformed(ActionEvent event){
+			JDialog dialog = new JDialog();
+			dialog.setAlwaysOnTop(true);
+			int selection = JOptionPane.showOptionDialog(dialog, "Close the current database?", "Warning", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null, null, null);
+			if (selection == 0) {
+				selection = JOptionPane.showOptionDialog(dialog, "Have you saved your work?", "Warning", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null, null, null);
+				if (selection == 0) {
+					tableList.remove(tabs.getSelectedIndex());
+					tabs.remove(tabs.getSelectedIndex());
+					showEmpty();
+					mainWindow.repaint();
+				}
+			}
+			showEmpty();
 		}
 	}
 
@@ -593,27 +625,14 @@ public class GUI {
 //add comments
 //table filter: http://www.java2s.com/Tutorials/Java/Java_Swing/1100__Java_Swing_JTable.htm
 //http://www.informit.com/articles/article.aspx?p=24130&seqNum=3
-// try to get rid of repeated middle man code in spreadsheetmodel
 //overdue method - David
-//textbooknum method - David  DONE
+//textbooknum method - check valid textbook number while typing in field?
 //import method - David
 //add method error - David DONE
-//new database - David DONE
-// clear students add more warning
-//change every other row colour
+//sort method - add other sort types
+//new database - fix the empty row at top
+//change every other row colour, fix check boxes, https://stackoverflow.com/questions/17762214/java-jtable-alternate-row-color-not-working
 //change date format, input selection?
 //tablemodellistener, fire inserted row? https://docs.oracle.com/javase/tutorial/uiswing/components/table.html#modelchange, https://docs.oracle.com/javase/tutorial/uiswing/events/tablemodellistener.html, http://www.java2s.com/Tutorial/Java/0240__Swing/ListeningtoJTableEventswithaTableModelListener.htm, http://www.codejava.net/java-se/swing/editable-jtable-example
-//prevent header movement?
 //tooltips?
-//TableColumn sportColumn = table.getColumnModel().getColumn(2);
-//...
-//		JComboBox comboBox = new JComboBox();
-//		comboBox.addItem("Snowboarding");
-//		comboBox.addItem("Rowing");
-//		comboBox.addItem("Chasing toddlers");
-//		comboBox.addItem("Speed reading");
-//		comboBox.addItem("Teaching high school");
-//		comboBox.addItem("None");
-//		sportColumn.setCellEditor(new DefaultCellEditor(comboBox));
-// for date?
-//https://stackoverflow.com/questions/17762214/java-jtable-alternate-row-color-not-working, checkboxes colour not changed
+// add error messages as popup when no textbook open? method?

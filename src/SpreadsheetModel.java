@@ -102,7 +102,7 @@ class SpreadsheetModel extends AbstractTableModel {
 
     public void saveData() {
         try {
-        	System.out.println(list.get(0).getReturned());
+            System.out.println(list.get(0).getReturned());
             list.saveData();
         } catch (IOException e) {
             e.printStackTrace();
