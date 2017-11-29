@@ -144,8 +144,8 @@ class DataLinkedList {//start of class
 		while(tempNode != null){
 			if(!tempNode.getReturned()){
 				dataArray.add(tempNode);
-				tempNode = tempNode.getNext();
 			}
+			tempNode = (tempNode.getNext());
 		}
 		return dataArray.toArray(new DataItem[] {});
 	}
