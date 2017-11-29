@@ -1,3 +1,9 @@
+/**
+ *[DataItem.java]
+ * @author 349271213
+ * @date November 29, 2017
+ */
+
 class DataItem {
 
 	//class variables
