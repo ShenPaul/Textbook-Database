@@ -64,14 +64,6 @@ class SpreadsheetModel extends AbstractTableModel {
         return true;
     }
 
-    public void firstSort() {
-        list.sortByFirstName();
-    }
-
-    public void lastSort() {
-        list.sortByLastName();
-    }
-
     public void itemSort() {
         list.sortByItemNum();
     }
@@ -155,7 +147,7 @@ class SpreadsheetModel extends AbstractTableModel {
         for (int i = 0; i < overdue.length; i++) {
             // if this is not the last overdue textbook
             if (i != overdue.length-1){
-                overdueStudentNames[i] = overdue[i].getFirstName() + " " + overdue[i].getLastName() + ":" + overdue[i].getStudentNum() + ", ";
+                overdueStudentNames[i] = overdue[i].getFirstName() + " " + overdue[i].getLastName() + ":" + overdue[i].getStudentNum();
             }else{// if this is the last overdue textbook
                 overdueStudentNames[i] = overdue[i].getFirstName() + " " + overdue[i].getLastName() + " : " + overdue[i].getStudentNum();
             }
@@ -175,6 +167,18 @@ class SpreadsheetModel extends AbstractTableModel {
         }
 
         return overdueNums;
+    }
+    
+    public void setFilePath(String path){
+        try {
+            list.setFilePath(path);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void sortByType(int column){
+        list.sortByType(column);
     }
 
 

@@ -4,14 +4,48 @@
  * @date
  */
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
+/*
+ import java.awt.event.ActionListener;
+  import java.awt.Font;
+  import java.awt.Component;
+ +import java.awt.Frame;
+
+  import java.io.File;
+  import java.io.IOException;
+
+ import java.util.ArrayList;
+ import java.util.Map;
+
+ import javax.swing.JTabbedPane;
+ import javax.swing.JFrame;
+ import javax.swing.JPanel;
+ import javax.swing.JOptionPane;
+ import javax.swing.JButton;
+ import javax.swing.JLabel;
+ import javax.swing.JTextField;
+ import javax.swing.JTextPane;
+ import javax.swing.JDialog;
+ import javax.swing.JTable;
+  import javax.swing.JScrollPane;
+  import javax.swing.JFileChooser;
+  import javax.swing.UIManager;
+ +import javax.swing.UIDefaults;
+  import javax.swing.UnsupportedLookAndFeelException;
+  import javax.swing.BorderFactory;
+  import javax.swing.WindowConstants;
+ import javax.swing.SwingConstants;
+ import javax.swing.filechooser.FileFilter;
+ import javax.swing.filechooser.FileNameExtensionFilter;
+ import javax.swing.text.DefaultHighlighter;
+ import javax.swing.text.Highlighter;
+  import javax.swing.table.TableCellRenderer;
+  import javax.swing.text.BadLocationException;
+
+ */
+
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.Font;
-import java.awt.Frame;
 import java.awt.event.WindowEvent;
 
 import java.io.File;
@@ -36,6 +70,8 @@ public class GUI {
 	public static String searchText = "";
 	public static JLabel empty;
 	public static Font font = new Font("Courier", Font.BOLD,18);
+	public static JFrame assign = new JFrame ("Assign Student");
+	public static boolean isRealTable = false;
 
 	/**
 	 *@
@@ -268,52 +304,135 @@ public class GUI {
 			JDialog dialog = new JDialog();
 			dialog.setAlwaysOnTop(true);
 
-//			JFrame overdue = new JFrame();
-//			JPanel overdues = new JPanel();
-//			JTextPane overdueList = new JTextPane();
+			JButton doneButton = new JButton("Done");
+			doneButton.setFont(font);
+			doneButton.addActionListener (new doneListener()); //add in the finish button that verifies and then sends data
+
+			assign.setAlwaysOnTop(true);
+			JPanel assigned = new JPanel(new GridLayout(8, 2));
+
+			//get textbook number
+			JLabel textNumLabel = new JLabel("Textbook Number:");
+			textNumLabel.setFont(font);
+			JTextField textNumIn = new JTextField (10);
+			String textNum = textNumIn.getText();
+
+			//get student number
+			JLabel studentNumLabel = new JLabel("Student Number:");
+			studentNumLabel.setFont(font);
+			JTextField studentNumIn = new JTextField (10);
+			String studentNum = studentNumIn.getText();
+
+			//get last name
+			JLabel lastLabel = new JLabel("Last Name:");
+			lastLabel.setFont(font);
+			JTextField lastIn = new JTextField (10);
+			String last = lastIn.getText();
+
+			//get first name
+			JLabel firstLabel = new JLabel("First Name:");
+			firstLabel.setFont(font);
+			JTextField firstIn = new JTextField (10);
+			String first = firstIn.getText();
+
+			//get teacher name, DROP DOWN MENU????
+			JLabel teacherLabel = new JLabel("Teacher Name:");
+			teacherLabel.setFont(font);
+			JTextField teacherIn = new JTextField (10);
+			String teacher = teacherIn.getText();
+
+			//get course code, DROP DOWN MENU???
+			JLabel courseLabel = new JLabel("Course Code:");
+			courseLabel.setFont(font);
+			JTextField courseIn = new JTextField (10);
+			String course = courseIn.getText();
+
+			//get date, concatenate strings then pass in, radio buttons
+			JLabel dateLabel = new JLabel("Date:");
+			dateLabel.setFont(font);
+			JTextField dateIn = new JTextField (10);
+			String date = dateIn.getText();
+
+			//adds fields to the panel
+//			assigned.add(textNumLabel, 0, 0);
+//			assigned.add(textNumIn, 0, 1);
+//			assigned.add(studentNumLabel, 1, 0);
+//			assigned.add(studentNumIn, 1, 1);
+//			assigned.add(lastLabel, 2, 0);
+//			assigned.add(lastLabel, 2, 1);
+//			assigned.add(firstLabel, 3, 0);
+//			assigned.add(firstLabel, 3, 1);
+//			assigned.add(teacherLabel, 4, 0);
+//			assigned.add(teacherLabel, 4, 1);
+//			assigned.add(courseLabel, 5, 0);
+//			assigned.add(courseLabel, 5, 1);
+//			assigned.add(dateLabel, 6, 0);
+//			assigned.add(dateLabel, 6, 1);
+
+//			assigned.add(textNumLabel);
+//			assigned.add(studentNumLabel);
+//			assigned.add(lastLabel);
+//			assigned.add(firstLabel);
+//			assigned.add(teacherLabel);
+//			assigned.add(courseLabel);
+//			assigned.add(dateLabel);
 //
-//
-//			overdues.add(overdueList);
-//			overdue.add(overdues);
-//
-//			overdue.setBackground(Color.WHITE);
-//			overdue.setSize(500, 500);
-//			overdue.setResizable(true);
-//			overdue.setAlwaysOnTop (true);
-//			overdue.dispatchEvent(new WindowEvent(overdue, WindowEvent.WINDOW_CLOSING));
-//			overdue.validate();
-//			overdue.repaint();
-//			overdue.setVisible(true);
+//			assigned.add(textNumIn);
+//			assigned.add(studentNumIn);
+//			assigned.add(lastLabel);
+//			assigned.add(firstLabel);
+//			assigned.add(teacherLabel);
+//			assigned.add(courseLabel);
+//			assigned.add(dateLabel);
 
+			assigned.add(textNumLabel);
+			assigned.add(textNumIn);
+			assigned.add(studentNumLabel);
+			assigned.add(studentNumIn);
+			assigned.add(lastLabel);
+			assigned.add(lastLabel);
+			assigned.add(firstLabel);
+			assigned.add(firstLabel);
+			assigned.add(teacherLabel);
+			assigned.add(teacherLabel);
+			assigned.add(courseLabel);
+			assigned.add(courseLabel);
+			assigned.add(dateLabel);
+			assigned.add(dateLabel);
 
-			// get textbook number
-			String textBookNum = (String) JOptionPane.showInputDialog (dialog, "What is the textbook number?", "Textbook Number", JOptionPane.QUESTION_MESSAGE, null, null, null);
-			//System.out.println (textBookNum);
+			assign.add(assigned);
+			assign.setBackground(Color.WHITE);
+			assign.setSize(500, 500);
+			assign.setResizable(true);
+			assign.setAlwaysOnTop (true);
+			assign.dispatchEvent(new WindowEvent(assign, WindowEvent.WINDOW_CLOSING));
+			assign.validate();
+			assign.repaint();
+			assign.setVisible(true);
 
-			// get student number
-			String studentNum = (String) JOptionPane.showInputDialog (dialog, "What is their student number?", "Student Number", JOptionPane.QUESTION_MESSAGE, null, null, null);
+			boolean isRealTable = tableList.get(tabs.getSelectedIndex()).assignStudent(textNum, studentNum, last, first, teacher, course, date);
 
-			String lastName = (String) JOptionPane.showInputDialog (dialog, "What is their last name?", "Last Name", JOptionPane.QUESTION_MESSAGE, null, null, null);
+			//find textbook and move cursor?
+			mainWindow.validate();
+			mainWindow.repaint();
+		}
+	}
 
-			String firstName = (String) JOptionPane.showInputDialog (dialog, "What is their first name?", "First Name", JOptionPane.QUESTION_MESSAGE, null, null, null);
-
-			String teacher = (String) JOptionPane.showInputDialog (dialog, "Who is the teacher?", "Teacher", JOptionPane.QUESTION_MESSAGE, null, null, null);
-
-			String courseCode = (String) JOptionPane.showInputDialog (dialog, "What is the course code?", "Course Code", JOptionPane.QUESTION_MESSAGE, null, null, null);
-
-			String date = (String) JOptionPane.showInputDialog (dialog, "What is the date?", "Date", JOptionPane.QUESTION_MESSAGE, null, null, null);
-
-			boolean isRealTable = tableList.get(tabs.getSelectedIndex()).assignStudent(textBookNum, studentNum, lastName, firstName, teacher, courseCode, date);
+	//asks user how to sort, then sorts the table
+	static class doneListener implements ActionListener{
+		@Override
+		public void actionPerformed(ActionEvent event){
+			JDialog dialog = new JDialog();
+			dialog.setAlwaysOnTop(true);
 
 			if(!isRealTable){
 				System.out.println("Error");
 				JOptionPane.showMessageDialog(dialog, "This is not a real textbook number!", "Error!", JOptionPane.WARNING_MESSAGE);
 				System.out.println("Error");
+			} else {
+				JOptionPane.showMessageDialog(dialog, "Student added!", "SUCCESS!", JOptionPane.INFORMATION_MESSAGE);
+				assign.dispose();
 			}
-
-			//find textbook and move cursor?
-			mainWindow.validate();
-			mainWindow.repaint();
 		}
 	}
 
@@ -328,12 +447,8 @@ public class GUI {
 			System.out.println(selection);
 			if (selection == 0){
 				tableList.get(tabs.getSelectedIndex()).itemSort();
-			}else if (selection == 1){
-				//we don't have a student number sort
-			}else if (selection == 2){
-				tableList.get(tabs.getSelectedIndex()).lastSort();
 			}else{
-				tableList.get(tabs.getSelectedIndex()).firstSort();
+				tableList.get(tabs.getSelectedIndex()).sortByType(selection);
 			}
 			mainWindow.validate();
 			mainWindow.repaint();
@@ -348,23 +463,20 @@ public class GUI {
 			dialog.setAlwaysOnTop(true);
 
 			int selection = JOptionPane.showOptionDialog(dialog, "Display all overdue students?", "Confirm", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null, null, null);
-			System.out.println(selection);
 			if (selection == 0) {
-				JFrame overdue = new JFrame();
-				JPanel overdues = new JPanel();
+				JFrame overdue = new JFrame("Overdue Names");
 				JTextArea overdueList = new JTextArea();
+				JScrollPane scroller = new JScrollPane(overdueList, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 
-//				// get all the names and student numbers of overdue students
-//				String overdueNames[] = tableList.get(tabs.getSelectedIndex()).getOverdueNames();
-//
-//				//  Add some text
-//				for (int i = 0; i < overdueNames.length; i++) {
-//					overdueList.append(overdueNames[i] + "\n");
-//				}
+				// get all the names and student numbers of overdue students
+				String overdueNames[] = tableList.get(tabs.getSelectedIndex()).getOverdueNames();
 
-				overdues.add(overdueList);
-				overdue.add(overdues);
+				//  Add some text
+				for (int i = 0; i < overdueNames.length; i++) {
+					overdueList.append(overdueNames[i] + "\n");
+				}
 
+				overdue.add(scroller);
 				overdue.setBackground(Color.WHITE);
 				overdue.setSize(500, 500);
 				overdue.setResizable(true);
@@ -378,17 +490,19 @@ public class GUI {
 				selection = JOptionPane.showOptionDialog(dialog, "Would you like a list of the student emails?", "Confirm", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null, null, null);
 				// if yes, display all emails in popup
 				if (selection == 0) {
-					JFrame email = new JFrame();
-					JPanel emails = new JPanel();
-					JTextPane emailList = new JTextPane();
+					JFrame email = new JFrame("Overdue Emails");
+					JTextArea emailList = new JTextArea();
+					JScrollPane scroller1 = new JScrollPane(emailList, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 
-					System.out.println("NUmber1");
 					// get all the overdue student numbers in an array
 					String[] studentEmails = tableList.get(tabs.getSelectedIndex()).getOverdueEmails();
-					System.out.println("NUmber2");
 
-					emails.add(emailList);
-					email.add(emails);
+					//  Add some text
+					for (int i = 0; i < studentEmails.length; i++) {
+						emailList.append(studentEmails[i] + "\n");
+					}
+
+					email.add(scroller1);
 
 					email.setBackground(Color.WHITE);
 					email.setSize(500, 500);
@@ -527,6 +641,9 @@ public class GUI {
 			tabs.addTab (fileName, null, scrollPane, fileName);
 			//must find way to pass in the textbook name as well
 
+			//sets new database to selected database
+			tabs.setSelectedIndex(tableList.size() - 1);
+
 			//adds JTabbedPane to main panel
 			mainWindow.add(tabs, BorderLayout.CENTER);
 
@@ -544,7 +661,7 @@ public class GUI {
 			JFileChooser picker = new JFileChooser ();
 			File selectedFile = new File ("");
 			String fileName;
-			String path;
+			String path = "";
 
 			String input = (String) JOptionPane.showInputDialog (dialog, "What is the textbook name?", "Input Name", JOptionPane.QUESTION_MESSAGE, null, null, null);
 
@@ -558,9 +675,6 @@ public class GUI {
 				if (returnValue == JFileChooser.APPROVE_OPTION) {
 					selectedFile = picker.getSelectedFile();
 					path = selectedFile.getAbsolutePath();
-
-					//path holds file path
-
 					System.out.println(path);
 				}
 
@@ -570,17 +684,26 @@ public class GUI {
 				table.getTableHeader().setReorderingAllowed(false);
 				model.addEmpty();
 				tableList.add(model);
+
 				JScrollPane scrollPane = new JScrollPane(table);
 				table.setFillsViewportHeight(true);
 
 				//adds JPanel to JTabbedPane
 				tabs.addTab(input, null, scrollPane, input);
 
+				//sets directory
+				tableList.get(tabs.getSelectedIndex()).setFilePath(path);
+
+				//sets new database to selected database
+				tabs.setSelectedIndex(tableList.size() - 1);
+
 				//adds JTabbedPane to main panel
 				mainWindow.add(tabs, BorderLayout.CENTER);
 
 				mainWindow.validate();
 				mainWindow.repaint();
+
+				tableList.get(tabs.getSelectedIndex()).saveData();
 				// multi selection later if time and doable
 			}
 			showEmpty();
@@ -666,10 +789,9 @@ public class GUI {
 //import method - David
 //add method error - David DONE
 //sort method - add other sort types
-//new database - fix the empty row at top
 //change every other row colour, fix check boxes, https://stackoverflow.com/questions/17762214/java-jtable-alternate-row-color-not-working
 //change date format, input selection?
 //tablemodellistener, fire inserted row? https://docs.oracle.com/javase/tutorial/uiswing/components/table.html#modelchange, https://docs.oracle.com/javase/tutorial/uiswing/events/tablemodellistener.html, http://www.java2s.com/Tutorial/Java/0240__Swing/ListeningtoJTableEventswithaTableModelListener.htm, http://www.codejava.net/java-se/swing/editable-jtable-example
 //tooltips?
 // add error messages as popup when no textbook open? method?
-// jlabel popping up randomly
+// jlabel empty popping up randomly
