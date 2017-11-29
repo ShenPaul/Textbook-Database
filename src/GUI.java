@@ -357,10 +357,10 @@ public class GUI {
 			if (selection == 0) { //verify this
 
 				// get all the names and student numbers of overdue students
-				String overDue = tableList.get(tabs.getSelectedIndex()).getOverdueNames();
+				String overdueNames[] = tableList.get(tabs.getSelectedIndex()).getOverdueNames();
 
 				// get all the overdue student numbers in an array
-				String[] studentNumbers = tableList.get(tabs.getSelectedIndex()).getOverdueNumbers();
+				String[] studentEmails = tableList.get(tabs.getSelectedIndex()).getOverdueEmails();
 
 				//ask if want emails
 				selection = JOptionPane.showOptionDialog(dialog, "Would you like a list of the student emails?", "Confirm", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null, null, null);

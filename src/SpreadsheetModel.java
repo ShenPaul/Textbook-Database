@@ -148,31 +148,31 @@ class SpreadsheetModel extends AbstractTableModel {
         }
     }
 
-    public String getOverdueNames() {
+    public String[] getOverdueNames() {
         DataItem[] overdue = list.getOverdue();
         // map that holds name of student and student number
-        StringBuilder overdueStudentNums = new StringBuilder();
+        String[] overdueStudentNames = new String[overdue.length];
 
         for (int i = 0; i < overdue.length; i++) {
             // if this is not the last overdue textbook
             if (i != overdue.length-1){
-                overdueStudentNums.append(overdue[i].getFirstName() + " " + overdue[i].getLastName() + ":" + overdue[i].getStudentNum() + ", ");
+                overdueStudentNames[i] = overdue[i].getFirstName() + " " + overdue[i].getLastName() + ":" + overdue[i].getStudentNum() + ", ";
             }else{// if this is the last overdue textbook
-                overdueStudentNums.append(overdue[i].getFirstName() + " " + overdue[i].getLastName() + " : " + overdue[i].getStudentNum());
+                overdueStudentNames[i] = overdue[i].getFirstName() + " " + overdue[i].getLastName() + " : " + overdue[i].getStudentNum();
             }
         }
 
-        return overdueStudentNums.toString();
+        return overdueStudentNames;
     }
 
-    public String[] getOverdueNumbers() {
+    public String[] getOverdueEmails() {
         DataItem[] overdue = list.getOverdue();
 
         String[] overdueNums = new String[overdue.length];
 
         for (int i = 0; i <overdue.length ; i++) {
             // get the student numbers
-            overdueNums[i] = overdue[i].getStudentNum();
+            overdueNums[i] = overdue[i].getStudentNum() + "@gapps.yrdsb.ca";
         }
 
         return overdueNums;
