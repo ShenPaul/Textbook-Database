@@ -1,3 +1,9 @@
+/**
+ *[DataLinked.java]
+ * @author 349271213
+ * @date November 29, 2017
+ */
+
 //start of imports
 import java.io.FileWriter;
 import java.io.BufferedReader;
@@ -16,7 +22,7 @@ class DataLinkedList {//start of class
 	private String listName;
 	private Path filePath;
 
-	//constructor
+	//constructors
 	DataLinkedList(String listName){
 		this.listName = listName;
 	}
@@ -25,17 +31,17 @@ class DataLinkedList {//start of class
 	//methods
 
 	/** add *******************************************
-	 * adds a DataItem to the list
+	 * adds a DataItem to the end of the list
 	 * @param item to be added to the list
 	 * @return true if method run successfully
 	 */
 	public boolean add(DataItem item) {
 		DataItem tempNode = head;
-		if (head==null) {
+		if (head==null) { //if list is empty
 			head = item;
 			return true;
 		}
-		while(tempNode.getNext() != null) {
+		while(tempNode.getNext() != null) { //loop through the list until the last item
 			tempNode = tempNode.getNext();
 		}
 		tempNode.setNext(item);
@@ -49,17 +55,21 @@ class DataLinkedList {//start of class
 	 */
 	public DataItem get(int index) {
 		DataItem tempNode = head;
-		for(int i=0;i<index;i++){
+		for(int i=0;i<index;i++){ //loop until the index
 			tempNode = tempNode.getNext();
 		}
 		return tempNode;
 	}
 
-	// get DataItem by the textbook number
+	/** get *******************************************
+	 * gets DataItem with specified number
+	 * @param itemNum of DataItem to be retrieved
+	 * @return DataItem with specified number
+	 */
 	public DataItem get(String textbookNum){
 		DataItem tempNode = head;
-		for (int i = 0; i < size(); i++) {
-			if(tempNode.getItemNum().equals(textbookNum)){
+		for (int i = 0; i < size(); i++) { //loop through the list
+			if(tempNode.getItemNum().equals(textbookNum)){ //check if numbers match
 				return tempNode;
 			}
 			tempNode = tempNode.getNext();
@@ -79,7 +89,7 @@ class DataLinkedList {//start of class
 			head = head.getNext();
 			return prevNode;
 		}
-		for(int i=0;i<index-1;i++){
+		for(int i=0;i<index-1;i++){ //loop through the list until the index
 			prevNode = prevNode.getNext();
 		}
 		tempNode = prevNode.getNext();
@@ -92,8 +102,14 @@ class DataLinkedList {//start of class
 		return tempNode;
 	}
 
-	public void setFilePath(String str){
+	/** setFilePath *******************************************
+	 * sets the file location
+	 * @param String representation of the path
+	 */
+	public void setFilePath(String str)throws IOException{
 		this.filePath = Paths.get(str);
+		BufferedWriter bWrite = new BufferedWriter(new FileWriter(filePath.toFile()));
+		bWrite.close();
 	}
 
 	/** clear *******************************************
@@ -134,12 +150,16 @@ class DataLinkedList {//start of class
 		return dataArray.toArray(new DataItem[] {});
 	}
 
-
+	/** searchAll *******************************************
+	 * locates all instances of the searched String
+	 * @param String to be searched for
+	 * @return double integer array of all locations of the specified String in [row][column] form
+	 */
 	public int[][] searchAll(String str){
 		int[][] sArr;
 		int count = 0;
 
-		for(int i=0;i<this.size();i++) {
+		for(int i=0;i<this.size();i++) { //count number of instances of the searched String
 			for(int j=0;j<7;j++) {
 				if(((String)(this.get(i).get(j))).equals(str)) {
 					count++;
@@ -147,10 +167,10 @@ class DataLinkedList {//start of class
 			}
 		}
 
-		sArr = new int[count][2];
+		sArr = new int[count][2]; //[number of instances][0=row OR 1=column]
 		count = 0;
 
-		for(int i=0;i<this.size();i++) {
+		for(int i=0;i<this.size();i++) { //write all instances into a 2D integer array
 			for(int j=0;j<7;j++) {
 				if(((String)(this.get(i).get(j))).equals(str)) {
 					sArr[count][0] = i;
@@ -245,15 +265,15 @@ class DataLinkedList {//start of class
 
 		BufferedWriter bWrite;
 
-		if(filePath != null){
+		if(filePath != null){ //initialize connection with the file
 			bWrite = new BufferedWriter(new FileWriter(filePath.toFile()));
 		}else{
 			bWrite = new BufferedWriter(new FileWriter(listName+".csv"));
 		}
 		DataItem tempNode = head;
 
-		while(tempNode != null){
-			if(tempNode.getStudentNum() != null){
+		while(tempNode != null){ //loop
+			if(!tempNode.getStudentNum().equals("")){
 				bWrite.write(tempNode.getItemNum()+","+tempNode.getStudentNum()+","+tempNode.getLastName()+","+tempNode.getFirstName()+","+tempNode.getTeacher()+","+tempNode.getDate()+","+tempNode.getCourseCode()+","+tempNode.getReturned());
 			}else{
 				bWrite.write(tempNode.getItemNum());
@@ -544,6 +564,10 @@ class DataLinkedList {//start of class
 
 	}
 
+	/** itemClear *******************************************
+	 * removes data of a specified textbook
+	 * @param integer index of the item to be cleared
+	 */
 	public void itemClear(int index){
 		DataItem item = this.get(index);
 		item.setCourseCode("");
@@ -555,6 +579,9 @@ class DataLinkedList {//start of class
 		item.setReturned(false);
 	}
 
+	/** itemClear *******************************************
+	 * removes data of all items
+	 */
 	public void itemClear(){
 		for(int i=0;i<this.size();i++){
 			DataItem item = this.get(i);
