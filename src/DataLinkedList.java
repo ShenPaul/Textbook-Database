@@ -10,54 +10,54 @@ import java.nio.file.Paths;
 //end of imports
 
 class DataLinkedList {//start of class
-	
+
 	//class variables
 	private DataItem head;
 	private String listName;
 	private Path filePath;
-	
+
 	//constructor
 	DataLinkedList(String listName){
 		this.listName = listName;
 	}
 	DataLinkedList(){}
-	
+
 	//methods
-	
+
 	/** add *******************************************
 	 * adds a DataItem to the list
 	 * @param item to be added to the list
 	 * @return true if method run successfully
 	 */
-    public boolean add(DataItem item) { 
-        DataItem tempNode = head;
-        if (head==null) {
-          head = item;
-          return true;
-        }
-        while(tempNode.getNext() != null) { 
-          tempNode = tempNode.getNext();
-        }
-        tempNode.setNext(item);
-        return true;
-    }
-	
-    /** get *******************************************
-     * gets DataItem at specified index
-     * @param index of DataItem to be retrieved
-     * @return DataItem at specified index
-     */
-    public DataItem get(int index) { 
-        DataItem tempNode = head;
-        for(int i=0;i<index;i++){
-          tempNode = tempNode.getNext();
-        }
-        return tempNode;
-    }
+	public boolean add(DataItem item) {
+		DataItem tempNode = head;
+		if (head==null) {
+			head = item;
+			return true;
+		}
+		while(tempNode.getNext() != null) {
+			tempNode = tempNode.getNext();
+		}
+		tempNode.setNext(item);
+		return true;
+	}
+
+	/** get *******************************************
+	 * gets DataItem at specified index
+	 * @param index of DataItem to be retrieved
+	 * @return DataItem at specified index
+	 */
+	public DataItem get(int index) {
+		DataItem tempNode = head;
+		for(int i=0;i<index;i++){
+			tempNode = tempNode.getNext();
+		}
+		return tempNode;
+	}
 
 	// get DataItem by the textbook number
-    public DataItem get(String textbookNum){
-    	DataItem tempNode = head;
+	public DataItem get(String textbookNum){
+		DataItem tempNode = head;
 		for (int i = 0; i < size(); i++) {
 			if(tempNode.getItemNum().equals(textbookNum)){
 				return tempNode;
@@ -66,276 +66,276 @@ class DataLinkedList {//start of class
 		}
 		return null;
 	}
-    
-    /** remove *******************************************
-     * removes and returns DataItem at specified index
-     * @param index of DataItem to be removed
-     * @return removed DataItem
-     */
-    public DataItem remove(int index) { 
-        DataItem tempNode;
-        DataItem prevNode = head;
-        if(index == 0){
-          head = head.getNext();
-          return prevNode;
-        }
-        for(int i=0;i<index-1;i++){
-          prevNode = prevNode.getNext();
-        }
-        tempNode = prevNode.getNext();
-        if(prevNode.getNext() != null){
-          prevNode.setNext(tempNode.getNext());
-        }
-        if(index == 0){
-          return prevNode;
-        }
-        return tempNode;
-    }
-    
-    public void setFilePath(String str){
-    	this.filePath = Paths.get(str);
-    }
-    
-    /** clear *******************************************
-     * clears the list
-     */
-    public void clear() { 
-        head = null;
-    }
-    
-    /** size *******************************************
-     * calculates size of the list
-     * @return integer size of the list
-     */
-    public int size() { 
-        DataItem tempNode = head;
-        int i=0;
-        while(tempNode != null){
-          tempNode = tempNode.getNext();
-          i++;
-        }
-        return i;
-    }
-    
-    /** getOverdue *******************************************
-     * locates not returned DataItems
-     * @return array of all not returned items
-     */
-    public DataItem[] getOverdue(){
-    	DataItem tempNode = head;
-        
-        ArrayList<DataItem> dataArray = new ArrayList<DataItem>();
-        while(tempNode != null){
-        	if(!tempNode.getReturned()){
-        		dataArray.add(tempNode);
-        		tempNode = tempNode.getNext();
-        	}
-        }
-        return dataArray.toArray(new DataItem[] {});
-    }
-    
-    
-    public int[][] searchAll(String str){
-    	int[][] sArr;
-    	int count = 0;
-    	
-    	for(int i=0;i<this.size();i++) {
-    		for(int j=0;j<7;j++) {
-    			if(((String)(this.get(i).get(j))).equals(str)) {
-    				count++;
-    			}
-    		}
-    	}
-    	
-    	sArr = new int[count][2];
-    	count = 0;
-    	
-    	for(int i=0;i<this.size();i++) {
-    		for(int j=0;j<7;j++) {
-    			if(((String)(this.get(i).get(j))).equals(str)) {
-    				sArr[count][0] = i;
-    				sArr[count][1] = j;
-    				count++;
-    			}
-    		}
-    	}
-    	
-    	return sArr;
-    }
-    
-    
-    /** searchByItemNum *******************************************
-     * locates the DataItem with specified number
-     * @param sNum number of the item 
-     * @return index of the DataItem with specified item number
-     */
-    public int searchByItemNum(String sNum){
-    	DataItem tempNode = head;
-    	int index = 0;
-    	while(tempNode != null){
-    		if(tempNode.getItemNum().compareTo(sNum) == 0){
-    			return index;
-    		}
-    		index++;
-    	}
-    	return -1;
-    }
-    
-    /** searchByLastName *******************************************
-     * locates the DataItem with specified student last name
-     * @param sName student last name
-     * @return index of the DataItem with specified student last name
-     */
-    public DataItem[] searchByLastName(String sName){
-    	DataItem tempNode = head;
-    	int s = 0;
-    	while(tempNode != null){
-    		if(tempNode.getLastName().compareTo(sName) == 0){
-    			s++;
-    		}
-    	}
-    	
-    	DataItem[] dA = new DataItem[s];
-    	int index = 0;
-    	
-    	tempNode = head;
-    	while(tempNode != null){
-    		if(tempNode.getLastName().compareTo(sName) == 0){
-    			dA[index] = tempNode;
-    			index++;
-    		}
-    		tempNode = tempNode.getNext();
-    	}
-    	return dA;
-    } //does this cover multiple names?
-    
-    /** searchByFirstName *******************************************
-     * locates the DataItem with specified student first name
-     * @param sName student first name
-     * @return index of the DataItem with specified first name
-     */
-    public DataItem[] searchByFirstName(String sName){
-    	DataItem tempNode = head;
-    	int s = 0;
-    	while(tempNode != null){
-    		if(tempNode.getFirstName().compareTo(sName) == 0){
-    			s++;
-    		}
-    	}
-    	
-    	DataItem[] dA = new DataItem[s];
-    	int index = 0;
-    	
-    	tempNode = head;
-    	while(tempNode != null){
-    		if(tempNode.getFirstName().compareTo(sName) == 0){
-    			dA[index] = tempNode;
-    			index++;
-    		}
-    		tempNode = tempNode.getNext();
-    	}
-    	return dA;
-    }
-    
-    /** saveData *******************************************
-     * save data to a .csv file
-     * @throws IOException
-     */
-    public void saveData()throws IOException{
-    	
-    	BufferedWriter bWrite;
-    	
-    	if(filePath != null){
-    		bWrite = new BufferedWriter(new FileWriter(filePath.toFile()));
-    	}else{
-    		bWrite = new BufferedWriter(new FileWriter(listName+".csv"));
-    	}
-    	DataItem tempNode = head;
-    	
-    	while(tempNode != null){
-    		if(tempNode.getStudentNum() != null){
-    			bWrite.write(tempNode.getItemNum()+","+tempNode.getStudentNum()+","+tempNode.getLastName()+","+tempNode.getFirstName()+","+tempNode.getTeacher()+","+tempNode.getDate()+","+tempNode.getCourseCode()+","+tempNode.getReturned());
-    		}else{
-    			bWrite.write(tempNode.getItemNum());
-    		}
-    		bWrite.newLine();
-    		tempNode = tempNode.getNext();
-    	}
-    	
-    	bWrite.close();
-    }
-    
-    /** loadData *******************************************
-     * loads data from specified file name
-     * @param fileName the name of file to be read
-     * @throws IOException
-     */
-    public void loadData(String path)throws IOException{
-    	Path filePath = Paths.get(path);
-    	BufferedReader bRead = new BufferedReader(new FileReader(filePath.toFile()));
-    	this.filePath = filePath;
-    	String str;
-    	String[] strArr;
-    	DataItem tempNode;
-    	DataItem prevNode;
-    	str = bRead.readLine();
-    	strArr = str.split(",");
+
+	/** remove *******************************************
+	 * removes and returns DataItem at specified index
+	 * @param index of DataItem to be removed
+	 * @return removed DataItem
+	 */
+	public DataItem remove(int index) {
+		DataItem tempNode;
+		DataItem prevNode = head;
+		if(index == 0){
+			head = head.getNext();
+			return prevNode;
+		}
+		for(int i=0;i<index-1;i++){
+			prevNode = prevNode.getNext();
+		}
+		tempNode = prevNode.getNext();
+		if(prevNode.getNext() != null){
+			prevNode.setNext(tempNode.getNext());
+		}
+		if(index == 0){
+			return prevNode;
+		}
+		return tempNode;
+	}
+
+	public void setFilePath(String str){
+		this.filePath = Paths.get(str);
+	}
+
+	/** clear *******************************************
+	 * clears the list
+	 */
+	public void clear() {
+		head = null;
+	}
+
+	/** size *******************************************
+	 * calculates size of the list
+	 * @return integer size of the list
+	 */
+	public int size() {
+		DataItem tempNode = head;
+		int i=0;
+		while(tempNode != null){
+			tempNode = tempNode.getNext();
+			i++;
+		}
+		return i;
+	}
+
+	/** getOverdue *******************************************
+	 * locates not returned DataItems
+	 * @return array of all not returned items
+	 */
+	public DataItem[] getOverdue(){
+		DataItem tempNode = head;
+
+		ArrayList<DataItem> dataArray = new ArrayList<DataItem>();
+		while(tempNode != null){
+			if(!tempNode.getReturned()){
+				dataArray.add(tempNode);
+				tempNode = tempNode.getNext();
+			}
+		}
+		return dataArray.toArray(new DataItem[] {});
+	}
+
+
+	public int[][] searchAll(String str){
+		int[][] sArr;
+		int count = 0;
+
+		for(int i=0;i<this.size();i++) {
+			for(int j=0;j<7;j++) {
+				if(((String)(this.get(i).get(j))).equals(str)) {
+					count++;
+				}
+			}
+		}
+
+		sArr = new int[count][2];
+		count = 0;
+
+		for(int i=0;i<this.size();i++) {
+			for(int j=0;j<7;j++) {
+				if(((String)(this.get(i).get(j))).equals(str)) {
+					sArr[count][0] = i;
+					sArr[count][1] = j;
+					count++;
+				}
+			}
+		}
+
+		return sArr;
+	}
+
+
+	/** searchByItemNum *******************************************
+	 * locates the DataItem with specified number
+	 * @param sNum number of the item
+	 * @return index of the DataItem with specified item number
+	 */
+	public int searchByItemNum(String sNum){
+		DataItem tempNode = head;
+		int index = 0;
+		while(tempNode != null){
+			if(tempNode.getItemNum().compareTo(sNum) == 0){
+				return index;
+			}
+			index++;
+		}
+		return -1;
+	}
+
+	/** searchByLastName *******************************************
+	 * locates the DataItem with specified student last name
+	 * @param sName student last name
+	 * @return index of the DataItem with specified student last name
+	 */
+	public DataItem[] searchByLastName(String sName){
+		DataItem tempNode = head;
+		int s = 0;
+		while(tempNode != null){
+			if(tempNode.getLastName().compareTo(sName) == 0){
+				s++;
+			}
+		}
+
+		DataItem[] dA = new DataItem[s];
+		int index = 0;
+
+		tempNode = head;
+		while(tempNode != null){
+			if(tempNode.getLastName().compareTo(sName) == 0){
+				dA[index] = tempNode;
+				index++;
+			}
+			tempNode = tempNode.getNext();
+		}
+		return dA;
+	} //does this cover multiple names?
+
+	/** searchByFirstName *******************************************
+	 * locates the DataItem with specified student first name
+	 * @param sName student first name
+	 * @return index of the DataItem with specified first name
+	 */
+	public DataItem[] searchByFirstName(String sName){
+		DataItem tempNode = head;
+		int s = 0;
+		while(tempNode != null){
+			if(tempNode.getFirstName().compareTo(sName) == 0){
+				s++;
+			}
+		}
+
+		DataItem[] dA = new DataItem[s];
+		int index = 0;
+
+		tempNode = head;
+		while(tempNode != null){
+			if(tempNode.getFirstName().compareTo(sName) == 0){
+				dA[index] = tempNode;
+				index++;
+			}
+			tempNode = tempNode.getNext();
+		}
+		return dA;
+	}
+
+	/** saveData *******************************************
+	 * save data to a .csv file
+	 * @throws IOException
+	 */
+	public void saveData()throws IOException{
+
+		BufferedWriter bWrite;
+
+		if(filePath != null){
+			bWrite = new BufferedWriter(new FileWriter(filePath.toFile()));
+		}else{
+			bWrite = new BufferedWriter(new FileWriter(listName+".csv"));
+		}
+		DataItem tempNode = head;
+
+		while(tempNode != null){
+			if(tempNode.getStudentNum() != null){
+				bWrite.write(tempNode.getItemNum()+","+tempNode.getStudentNum()+","+tempNode.getLastName()+","+tempNode.getFirstName()+","+tempNode.getTeacher()+","+tempNode.getDate()+","+tempNode.getCourseCode()+","+tempNode.getReturned());
+			}else{
+				bWrite.write(tempNode.getItemNum());
+			}
+			bWrite.newLine();
+			tempNode = tempNode.getNext();
+		}
+
+		bWrite.close();
+	}
+
+	/** loadData *******************************************
+	 * loads data from specified file name
+	 * @param path the name of file to be read
+	 * @throws IOException
+	 */
+	public void loadData(String path)throws IOException{
+		Path filePath = Paths.get(path);
+		BufferedReader bRead = new BufferedReader(new FileReader(filePath.toFile()));
+		this.filePath = filePath;
+		String str;
+		String[] strArr;
+		DataItem tempNode;
+		DataItem prevNode;
+		str = bRead.readLine();
+		strArr = str.split(",");
 		head = new DataItem(strArr[0],strArr[1],strArr[2],strArr[3],strArr[4],strArr[5],strArr[6],(strArr[7].equals("true")));
 		prevNode = head;
-    	
-    	while((str = bRead.readLine()) != null){
-    		strArr = str.split(",");
-    		if(strArr.length > 1){
-    			tempNode = new DataItem(strArr[0],strArr[1],strArr[2],strArr[3],strArr[4],strArr[5],strArr[6],(strArr[7].equals("true")));
-    		}else{
-    			tempNode = new DataItem(strArr[0]);
-    		}
-    		prevNode.setNext(tempNode);
-    		prevNode = tempNode;
-    	}
-    	
-    	bRead.close();
-    }
-    
-    /** dataImport *******************************************
-     * creates DataItems from .txt file with item numbers only
-     * @param path to the file to be read
-     * @throws IOException
-     */
-    public void dataImport(String path)throws IOException{
-    	Path filePath = Paths.get(path);
-    	
-    	BufferedReader bRead = new BufferedReader(new FileReader(filePath.toFile()));
-    	
-    	String str;   
-    	head.setItemNum(bRead.readLine());
-    	DataItem tempNode;
-    	DataItem prevNode = head;
-    	
-    	while((str = bRead.readLine()) != null){
-    		tempNode = new DataItem(str);
-    		prevNode.setNext(tempNode);
-    		prevNode = tempNode;
-    	}
-    	bRead.close();
-    }
-    
-    //get and set methods for list name
-    public void setListName(String listName){
-    	this.listName = listName;
-    }
-    public String getListName(){
-    	return this.listName;
-    }
-    
-    /** sortByLastName *******************************************
-     * sorts the list alphabetically by last name
-     */
+
+		while((str = bRead.readLine()) != null){
+			strArr = str.split(",");
+			if(strArr.length > 1){
+				tempNode = new DataItem(strArr[0],strArr[1],strArr[2],strArr[3],strArr[4],strArr[5],strArr[6],(strArr[7].equals("true")));
+			}else{
+				tempNode = new DataItem(strArr[0]);
+			}
+			prevNode.setNext(tempNode);
+			prevNode = tempNode;
+		}
+
+		bRead.close();
+	}
+
+	/** dataImport *******************************************
+	 * creates DataItems from .txt file with item numbers only
+	 * @param path to the file to be read
+	 * @throws IOException
+	 */
+	public void dataImport(String path)throws IOException{
+		Path filePath = Paths.get(path);
+
+		BufferedReader bRead = new BufferedReader(new FileReader(filePath.toFile()));
+
+		String str;
+		head.setItemNum(bRead.readLine());
+		DataItem tempNode;
+		DataItem prevNode = head;
+
+		while((str = bRead.readLine()) != null){
+			tempNode = new DataItem(str);
+			prevNode.setNext(tempNode);
+			prevNode = tempNode;
+		}
+		bRead.close();
+	}
+
+	//get and set methods for list name
+	public void setListName(String listName){
+		this.listName = listName;
+	}
+	public String getListName(){
+		return this.listName;
+	}
+
+	/** sortByLastName *******************************************
+	 * sorts the list alphabetically by last name
+	 */
 	public void sortByLastName(){
 		ArrayList<DataItem> fullArr = new ArrayList<DataItem>();
 		ArrayList<DataItem> emptyArr = new ArrayList<DataItem>();
 		DataItem tempNode = head;
-		
+
 		//separate list into two arrays: assigned and not assigned
 		while(tempNode != null){
 			if(tempNode.getLastName() == null){
@@ -343,7 +343,7 @@ class DataLinkedList {//start of class
 			}else{
 				fullArr.add(tempNode);
 			}
-			
+
 			tempNode = tempNode.getNext();
 		}
 
@@ -354,13 +354,13 @@ class DataLinkedList {//start of class
 		for(int i=1;i<newArr.length;i++){
 			for(int j=i;j>0;j--){
 				if(newArr[j].getLastName().compareTo(newArr[j-1].getLastName()) < 0){
-                   		tempNode = newArr[j];
-                   		newArr[j] = newArr[j-1];
-                   		newArr[j-1] = tempNode;
-               	}
+					tempNode = newArr[j];
+					newArr[j] = newArr[j-1];
+					newArr[j-1] = tempNode;
+				}
 			}
 		}
-		
+
 		//copy sorted array to the list
 		head = newArr[0];
 		tempNode = head;
@@ -379,16 +379,16 @@ class DataLinkedList {//start of class
 		tempNode.setNext(null);
 
 	}
-	
+
 	/** sortByType *******************************************
-     * sorts the list alphabetically by last name
-     * should not be used with itemNum
-     */
+	 * sorts the list alphabetically by last name
+	 * should not be used with itemNum
+	 */
 	public void sortByType(int l){
 		ArrayList<DataItem> fullArr = new ArrayList<DataItem>();
 		ArrayList<DataItem> emptyArr = new ArrayList<DataItem>();
 		DataItem tempNode = head;
-		
+
 		//separate list into two arrays: assigned and not assigned
 		while(tempNode != null){
 			if(tempNode.get(l) == null){
@@ -396,7 +396,7 @@ class DataLinkedList {//start of class
 			}else{
 				fullArr.add(tempNode);
 			}
-			
+
 			tempNode = tempNode.getNext();
 		}
 
@@ -407,13 +407,13 @@ class DataLinkedList {//start of class
 		for(int i=1;i<newArr.length;i++){
 			for(int j=i;j>0;j--){
 				if(((String)newArr[j].get(l)).compareTo((String)(newArr[j-1].get(l))) < 0){
-                   		tempNode = newArr[j];
-                   		newArr[j] = newArr[j-1];
-                   		newArr[j-1] = tempNode;
-               	}
+					tempNode = newArr[j];
+					newArr[j] = newArr[j-1];
+					newArr[j-1] = tempNode;
+				}
 			}
 		}
-		
+
 		//copy sorted array to the list
 		head = newArr[0];
 		tempNode = head;
@@ -432,7 +432,7 @@ class DataLinkedList {//start of class
 		tempNode.setNext(null);
 
 	}
-    
+
 	/** sortByFirstName *******************************************
 	 * sorts the list alphabetically by first name
 	 */
@@ -440,7 +440,7 @@ class DataLinkedList {//start of class
 		ArrayList<DataItem> fullArr = new ArrayList<DataItem>();
 		ArrayList<DataItem> emptyArr = new ArrayList<DataItem>();
 		DataItem tempNode = head;
-		
+
 		//separate list into two arrays: assigned and not assigned
 		while(tempNode != null){
 			if(tempNode.getFirstName() == null){
@@ -448,7 +448,7 @@ class DataLinkedList {//start of class
 			}else{
 				fullArr.add(tempNode);
 			}
-			
+
 			tempNode = tempNode.getNext();
 		}
 
@@ -459,13 +459,13 @@ class DataLinkedList {//start of class
 		for(int i=1;i<newArr.length;i++){
 			for(int j=i;j>0;j--){
 				if(newArr[j].getFirstName().compareTo(newArr[j-1].getFirstName()) < 0){
-                   		tempNode = newArr[j];
-                   		newArr[j] = newArr[j-1];
-                   		newArr[j-1] = tempNode;
-               	}
+					tempNode = newArr[j];
+					newArr[j] = newArr[j-1];
+					newArr[j-1] = tempNode;
+				}
 			}
 		}
-		
+
 		//copy sorted array to the list
 		head = newArr[0];
 		tempNode = head;
@@ -484,22 +484,22 @@ class DataLinkedList {//start of class
 		tempNode.setNext(null);
 
 	}
-	
+
 	/** sortByItemNum *******************************************
 	 * sorts the list alphabetically item number
 	 */
 	public void sortByItemNum(){
 
 		boolean allIntegers = true;
-		
+
 		//debug if statement to bypass broken code
 		if(this.head.getItemNum().equals("")) {
 			(this.head) = (this.head.getNext());
 		}
-		
+
 		DataItem tempNode = (this.head);
 		DataItem[] newArr = new DataItem[this.size()];
-		
+
 		//copy list items to an array
 		for(int i=0;i<newArr.length;i++){
 			newArr[i] = tempNode;
@@ -510,29 +510,29 @@ class DataLinkedList {//start of class
 			}
 			tempNode = tempNode.getNext();
 		}
-		
-		if(allIntegers){ //insertion sort on values as integers 
+
+		if(allIntegers){ //insertion sort on values as integers
 			for(int i=1;i<newArr.length;i++){
 				for(int j=i;j>0;j--){
 					if((Integer.parseInt(newArr[j].getItemNum())) < (Integer.parseInt(newArr[j-1].getItemNum()))){
-	                   		tempNode = newArr[j];
-	                   		newArr[j] = newArr[j-1];
-	                   		newArr[j-1] = tempNode;
-	               	}
+						tempNode = newArr[j];
+						newArr[j] = newArr[j-1];
+						newArr[j-1] = tempNode;
+					}
 				}
 			}
 		}else { //insertion sort on values as strings
 			for(int i=1;i<newArr.length;i++){
 				for(int j=i;j>0;j--){
 					if(newArr[j].getItemNum().compareTo(newArr[j-1].getItemNum()) < 0){
-	                   		tempNode = newArr[j];
-	                   		newArr[j] = newArr[j-1];
-	                   		newArr[j-1] = tempNode;
-	               	}
+						tempNode = newArr[j];
+						newArr[j] = newArr[j-1];
+						newArr[j-1] = tempNode;
+					}
 				}
 			}
 		}
-		
+
 		//copy sorted data to the list
 		head = newArr[0];
 		tempNode = head;
@@ -543,30 +543,30 @@ class DataLinkedList {//start of class
 		tempNode.setNext(null);
 
 	}
-	
+
 	public void itemClear(int index){
 		DataItem item = this.get(index);
-		item.setCourseCode(null);
-		item.setDate(null);
-		item.setFirstName(null);
-		item.setLastName(null);
-		item.setStudentNum(null);
-		item.setTeacher(null);
-		item.setReturned(true);
+		item.setCourseCode("");
+		item.setDate("");
+		item.setFirstName("");
+		item.setLastName("");
+		item.setStudentNum("");
+		item.setTeacher("");
+		item.setReturned(false);
 	}
-	
+
 	public void itemClear(){
 		for(int i=0;i<this.size();i++){
 			DataItem item = this.get(i);
-			item.setCourseCode(null);
-			item.setDate(null);
-			item.setFirstName(null);
-			item.setLastName(null);
-			item.setStudentNum(null);
-			item.setTeacher(null);
-			item.setReturned(true);
+			item.setCourseCode("");
+			item.setDate("");
+			item.setFirstName("");
+			item.setLastName("");
+			item.setStudentNum("");
+			item.setTeacher("");
+			item.setReturned(false);
 		}
 	}
 
-    
+
 }//end of class

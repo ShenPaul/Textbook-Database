@@ -12,31 +12,19 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.Font;
 import java.awt.Frame;
+import java.awt.event.WindowEvent;
 
 import java.io.File;
 
 import java.util.ArrayList;
 
-import javax.swing.JTabbedPane;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JOptionPane;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JTextField;
-import javax.swing.JTextPane;
-import javax.swing.JDialog;
-import javax.swing.JTable;
-import javax.swing.JScrollPane;
-import javax.swing.JFileChooser;
-import javax.swing.UIManager;
-import javax.swing.UIDefaults;
-import javax.swing.UnsupportedLookAndFeelException;
-import javax.swing.BorderFactory;
-import javax.swing.WindowConstants;
-import javax.swing.SwingConstants;
+import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
+
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
 
 public class GUI {
 
@@ -255,6 +243,9 @@ public class GUI {
 		if (tableList.size() != 0) {
 			System.out.println(tableList.size());
 			empty.setVisible(false);
+			mainWindow.validate();
+			mainWindow.repaint ();
+			mainWindow.setVisible(true);
 
 		} else {
 			System.out.println(tableList.size());
@@ -264,6 +255,9 @@ public class GUI {
 			empty.setFont(font1);
 			mainWindow.add(empty, BorderLayout.CENTER);
 			empty.setVisible(true);
+			mainWindow.validate();
+			mainWindow.repaint ();
+			mainWindow.setVisible(true);
 		}
 	}
 
@@ -274,21 +268,22 @@ public class GUI {
 			JDialog dialog = new JDialog();
 			dialog.setAlwaysOnTop(true);
 
-//			JFrame email = new JFrame();
-//			JPanel emails = new JPanel();
-//			JTextPane emailList = new JTextPane();
+//			JFrame overdue = new JFrame();
+//			JPanel overdues = new JPanel();
+//			JTextPane overdueList = new JTextPane();
 //
-//			//display all emails in text pane
 //
-//			emails.add(emailList);
-//			email.add(emails);
+//			overdues.add(overdueList);
+//			overdue.add(overdues);
 //
-//			email.setBackground(Color.WHITE);
-//			email.setSize(500, 500);
-//			email.setResizable(true);
-//			email.setAlwaysOnTop (true);
-//			email.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE); //this.dispose? will this end the program?
-//			email.setVisible(true);
+//			overdue.setBackground(Color.WHITE);
+//			overdue.setSize(500, 500);
+//			overdue.setResizable(true);
+//			overdue.setAlwaysOnTop (true);
+//			overdue.dispatchEvent(new WindowEvent(overdue, WindowEvent.WINDOW_CLOSING));
+//			overdue.validate();
+//			overdue.repaint();
+//			overdue.setVisible(true);
 
 
 			// get textbook number
@@ -354,13 +349,30 @@ public class GUI {
 
 			int selection = JOptionPane.showOptionDialog(dialog, "Display all overdue students?", "Confirm", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null, null, null);
 			System.out.println(selection);
-			if (selection == 0) { //verify this
+			if (selection == 0) {
+				JFrame overdue = new JFrame();
+				JPanel overdues = new JPanel();
+				JTextArea overdueList = new JTextArea();
 
-				// get all the names and student numbers of overdue students
-				String overdueNames[] = tableList.get(tabs.getSelectedIndex()).getOverdueNames();
+//				// get all the names and student numbers of overdue students
+//				String overdueNames[] = tableList.get(tabs.getSelectedIndex()).getOverdueNames();
+//
+//				//  Add some text
+//				for (int i = 0; i < overdueNames.length; i++) {
+//					overdueList.append(overdueNames[i] + "\n");
+//				}
 
-				// get all the overdue student numbers in an array
-				String[] studentEmails = tableList.get(tabs.getSelectedIndex()).getOverdueEmails();
+				overdues.add(overdueList);
+				overdue.add(overdues);
+
+				overdue.setBackground(Color.WHITE);
+				overdue.setSize(500, 500);
+				overdue.setResizable(true);
+				overdue.setAlwaysOnTop (true);
+				overdue.dispatchEvent(new WindowEvent(overdue, WindowEvent.WINDOW_CLOSING));
+				overdue.validate();
+				overdue.repaint();
+				overdue.setVisible(true);
 
 				//ask if want emails
 				selection = JOptionPane.showOptionDialog(dialog, "Would you like a list of the student emails?", "Confirm", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null, null, null);
@@ -370,7 +382,10 @@ public class GUI {
 					JPanel emails = new JPanel();
 					JTextPane emailList = new JTextPane();
 
-					//display all emails in text pane
+					System.out.println("NUmber1");
+					// get all the overdue student numbers in an array
+					String[] studentEmails = tableList.get(tabs.getSelectedIndex()).getOverdueEmails();
+					System.out.println("NUmber2");
 
 					emails.add(emailList);
 					email.add(emails);
@@ -379,7 +394,9 @@ public class GUI {
 					email.setSize(500, 500);
 					email.setResizable(true);
 					email.setAlwaysOnTop (true);
-					email.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE); //this.dispose? will this end the program?
+					email.dispatchEvent(new WindowEvent(email, WindowEvent.WINDOW_CLOSING));
+					email.validate();
+					email.repaint();
 					email.setVisible(true);
 
 				}
@@ -524,10 +541,29 @@ public class GUI {
 		public void actionPerformed(ActionEvent event){
 			JDialog dialog = new JDialog();
 			dialog.setAlwaysOnTop(true);
+			JFileChooser picker = new JFileChooser ();
+			File selectedFile = new File ("");
+			String fileName;
+			String path;
 
 			String input = (String) JOptionPane.showInputDialog (dialog, "What is the textbook name?", "Input Name", JOptionPane.QUESTION_MESSAGE, null, null, null);
 
 			if (input != null) {
+				picker.setDialogTitle("New Database Selector");
+				picker.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+				picker.setAcceptAllFileFilterUsed(false);
+
+				int returnValue = picker.showOpenDialog(dialog);
+
+				if (returnValue == JFileChooser.APPROVE_OPTION) {
+					selectedFile = picker.getSelectedFile();
+					path = selectedFile.getAbsolutePath();
+
+					//path holds file path
+
+					System.out.println(path);
+				}
+
 				//creates table to display students, sets it to fill the entire screen
 				JTable table = new JTable(new SpreadsheetModel(input, 0));
 				SpreadsheetModel model = (SpreadsheetModel) table.getModel();
@@ -636,3 +672,4 @@ public class GUI {
 //tablemodellistener, fire inserted row? https://docs.oracle.com/javase/tutorial/uiswing/components/table.html#modelchange, https://docs.oracle.com/javase/tutorial/uiswing/events/tablemodellistener.html, http://www.java2s.com/Tutorial/Java/0240__Swing/ListeningtoJTableEventswithaTableModelListener.htm, http://www.codejava.net/java-se/swing/editable-jtable-example
 //tooltips?
 // add error messages as popup when no textbook open? method?
+// jlabel popping up randomly
