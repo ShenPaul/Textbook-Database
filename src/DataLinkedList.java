@@ -272,7 +272,7 @@ class DataLinkedList {//start of class
 		}
 		DataItem tempNode = head;
 
-		while(tempNode != null){ //loop
+		while(tempNode != null){ //loop through data
 			if(!tempNode.getStudentNum().equals("")){
 				bWrite.write(tempNode.getItemNum()+","+tempNode.getStudentNum()+","+tempNode.getLastName()+","+tempNode.getFirstName()+","+tempNode.getTeacher()+","+tempNode.getDate()+","+tempNode.getCourseCode()+","+tempNode.getReturned());
 			}else{
@@ -291,21 +291,22 @@ class DataLinkedList {//start of class
 	 * @throws IOException
 	 */
 	public void loadData(String path)throws IOException{
-		Path filePath = Paths.get(path);
+		Path filePath = Paths.get(path); //create reference to the file from given path
 		BufferedReader bRead = new BufferedReader(new FileReader(filePath.toFile()));
-		this.filePath = filePath;
+		this.filePath = filePath; //update class variable for file path
 		String str;
 		String[] strArr;
 		DataItem tempNode;
 		DataItem prevNode;
+		//set data head
 		str = bRead.readLine();
 		strArr = str.split(",");
 		head = new DataItem(strArr[0],strArr[1],strArr[2],strArr[3],strArr[4],strArr[5],strArr[6],(strArr[7].equals("true")));
 		prevNode = head;
 
-		while((str = bRead.readLine()) != null){
+		while((str = bRead.readLine()) != null){//loop through file
 			strArr = str.split(",");
-			if(strArr.length > 1){
+			if(strArr.length > 1){//create 1 node per line
 				tempNode = new DataItem(strArr[0],strArr[1],strArr[2],strArr[3],strArr[4],strArr[5],strArr[6],(strArr[7].equals("true")));
 			}else{
 				tempNode = new DataItem(strArr[0]);
@@ -323,17 +324,18 @@ class DataLinkedList {//start of class
 	 * @throws IOException
 	 */
 	public void dataImport(String path)throws IOException{
-		Path filePath = Paths.get(path);
+		Path filePath = Paths.get(path);//create reference to the file from given path
 
 		BufferedReader bRead = new BufferedReader(new FileReader(filePath.toFile()));
 
 		String str;
+		//set head data
 		head.setItemNum(bRead.readLine());
 		DataItem tempNode;
 		DataItem prevNode = head;
 
-		while((str = bRead.readLine()) != null){
-			tempNode = new DataItem(str);
+		while((str = bRead.readLine()) != null){//loop through file
+			tempNode = new DataItem(str);//create 1 node per line
 			prevNode.setNext(tempNode);
 			prevNode = tempNode;
 		}
@@ -401,8 +403,8 @@ class DataLinkedList {//start of class
 	}
 
 	/** sortByType *******************************************
-	 * sorts the list alphabetically by last name
-	 * should not be used with itemNum
+	 * sorts the list alphabetically by given column
+	 * not meant to be used with itemNum and returned
 	 */
 	public void sortByType(int l){
 		ArrayList<DataItem> fullArr = new ArrayList<DataItem>();
@@ -520,7 +522,7 @@ class DataLinkedList {//start of class
 		DataItem tempNode = (this.head);
 		DataItem[] newArr = new DataItem[this.size()];
 
-		//copy list items to an array
+		//run through the data to check if all numbers are of integer type
 		for(int i=0;i<newArr.length;i++){
 			newArr[i] = tempNode;
 			try {
