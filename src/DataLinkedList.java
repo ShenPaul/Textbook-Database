@@ -1,4 +1,3 @@
-
 //start of imports
 import java.io.FileWriter;
 import java.io.BufferedReader;
@@ -91,6 +90,10 @@ class DataLinkedList {//start of class
           return prevNode;
         }
         return tempNode;
+    }
+    
+    public void setFilePath(String str){
+    	this.filePath = Paths.get(str);
     }
     
     /** clear *******************************************
@@ -351,6 +354,59 @@ class DataLinkedList {//start of class
 		for(int i=1;i<newArr.length;i++){
 			for(int j=i;j>0;j--){
 				if(newArr[j].getLastName().compareTo(newArr[j-1].getLastName()) < 0){
+                   		tempNode = newArr[j];
+                   		newArr[j] = newArr[j-1];
+                   		newArr[j-1] = tempNode;
+               	}
+			}
+		}
+		
+		//copy sorted array to the list
+		head = newArr[0];
+		tempNode = head;
+		for(int i=1; i<newArr.length;i++){
+			tempNode.setNext(newArr[i]);
+			tempNode = tempNode.getNext();
+		}
+
+		//add unassigned items to the list
+		DataItem[] residueArr = new DataItem[emptyArr.size()];
+		emptyArr.toArray(residueArr);
+		for(int i=0;i<residueArr.length;i++){
+			tempNode.setNext(residueArr[i]);
+			tempNode = tempNode.getNext();
+		}
+		tempNode.setNext(null);
+
+	}
+	
+	/** sortByType *******************************************
+     * sorts the list alphabetically by last name
+     * should not be used with itemNum
+     */
+	public void sortByType(int l){
+		ArrayList<DataItem> fullArr = new ArrayList<DataItem>();
+		ArrayList<DataItem> emptyArr = new ArrayList<DataItem>();
+		DataItem tempNode = head;
+		
+		//separate list into two arrays: assigned and not assigned
+		while(tempNode != null){
+			if(tempNode.get(l) == null){
+				emptyArr.add(tempNode);
+			}else{
+				fullArr.add(tempNode);
+			}
+			
+			tempNode = tempNode.getNext();
+		}
+
+		//insertion sort on the array with assigned items
+		DataItem[] newArr = new DataItem[fullArr.size()];
+		fullArr.toArray(newArr);
+		tempNode = null;
+		for(int i=1;i<newArr.length;i++){
+			for(int j=i;j>0;j--){
+				if(((String)newArr[j].get(l)).compareTo((String)(newArr[j-1].get(l))) < 0){
                    		tempNode = newArr[j];
                    		newArr[j] = newArr[j-1];
                    		newArr[j-1] = tempNode;
