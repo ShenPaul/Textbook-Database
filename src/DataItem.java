@@ -27,6 +27,14 @@ class DataItem {
 
 	public DataItem(String itemNum) {
 		this.itemNum = itemNum;
+		this.studentNum = "";
+		this.firstName = "";
+		this.lastName = "";
+		this.teacher = "";
+		this.courseCode = "";
+		this.date = "";
+		this.next = null;
+		this.returned = false;
 	}
 
 	//get and set methods

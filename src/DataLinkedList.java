@@ -128,7 +128,7 @@ class DataLinkedList {//start of class
         		tempNode = tempNode.getNext();
         	}
         }
-        return (DataItem[]) dataArray.toArray();
+        return dataArray.toArray(new DataItem[] {});
     }
     
     
@@ -304,7 +304,8 @@ class DataLinkedList {//start of class
     	
     	BufferedReader bRead = new BufferedReader(new FileReader(filePath.toFile()));
     	
-    	String str;    	
+    	String str;   
+    	head.setItemNum(bRead.readLine());
     	DataItem tempNode;
     	DataItem prevNode = head;
     	
