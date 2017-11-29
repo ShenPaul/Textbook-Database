@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 //end of imports
 
 class DataLinkedList {//start of class
@@ -122,14 +123,14 @@ class DataLinkedList {//start of class
 	public DataItem[] getOverdue(){
 		DataItem tempNode = head;
 
-		ArrayList<DataItem> dataArray = new ArrayList<DataItem>();
+		List<DataItem> dataArray = new ArrayList<DataItem>();
 		while(tempNode != null){
 			if(!tempNode.getReturned()){
 				dataArray.add(tempNode);
 				tempNode = tempNode.getNext();
 			}
 		}
-		return (DataItem[]) dataArray.toArray();
+		return dataArray.toArray(new DataItem[]{});
 	}
 
 	/** searchByItemNum *******************************************
@@ -235,7 +236,7 @@ class DataLinkedList {//start of class
 
 	/** loadData *******************************************
 	 * loads data from specified file name
-	 * @param fileName the name of file to be read
+	 * @param path the name of file to be read
 	 * @throws IOException
 	 */
 	public void loadData(String path)throws IOException{
@@ -276,6 +277,7 @@ class DataLinkedList {//start of class
 		BufferedReader bRead = new BufferedReader(new FileReader(filePath.toFile()));
 
 		String str;
+		head.setItemNum(bRead.readLine());
 		DataItem tempNode;
 		DataItem prevNode = head;
 
@@ -437,25 +439,25 @@ class DataLinkedList {//start of class
 
 	public void itemClear(int index){
 		DataItem item = this.get(index);
-		item.setCourseCode(null);
-		item.setDate(null);
-		item.setFirstName(null);
-		item.setLastName(null);
-		item.setStudentNum(null);
-		item.setTeacher(null);
-		item.setReturned(true);
+		item.setCourseCode("");
+		item.setDate("");
+		item.setFirstName("");
+		item.setLastName("");
+		item.setStudentNum("");
+		item.setTeacher("");
+		item.setReturned(false);
 	}
 
 	public void itemClear(){
 		for(int i=0;i<this.size();i++){
 			DataItem item = this.get(i);
-			item.setCourseCode(null);
-			item.setDate(null);
-			item.setFirstName(null);
-			item.setLastName(null);
-			item.setStudentNum(null);
-			item.setTeacher(null);
-			item.setReturned(true);
+			item.setCourseCode("");
+			item.setDate("");
+			item.setFirstName("");
+			item.setLastName("");
+			item.setStudentNum("");
+			item.setTeacher("");
+			item.setReturned(false);
 		}
 	}
 

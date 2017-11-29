@@ -51,7 +51,7 @@ class SpreadsheetModel extends AbstractTableModel {
     }
 
     public void clear () {
-        list.clear();
+        list.itemClear();
     }
 
     /*
