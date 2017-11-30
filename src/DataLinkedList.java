@@ -93,7 +93,7 @@ class DataLinkedList {//start of class
 		for(int i=0;i<size();i++){ //loop through the list until the index
 			if(tempNode.getItemNum().equals(textbookNum)){
 				if (tempNode.getNext() != null){
-					prevNode = tempNode.getNext();
+					prevNode.setNext(tempNode.getNext());
 					tempNode.setNext(null);
 					return prevNode;
 				} else{
