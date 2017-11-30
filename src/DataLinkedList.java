@@ -306,7 +306,11 @@ class DataLinkedList {//start of class
 		//set data head
 		str = bRead.readLine();
 		strArr = str.split(",");
-		head = new DataItem(strArr[0],strArr[1],strArr[2],strArr[3],strArr[4],strArr[5],strArr[6],(strArr[7].equals("true")));
+		if (strArr.length == 1){
+			head = new DataItem(strArr[0]);
+		}else{
+			head = new DataItem(strArr[0],strArr[1],strArr[2],strArr[3],strArr[4],strArr[5],strArr[6],(strArr[7].equals("true")));
+		}
 		prevNode = head;
 
 		while((str = bRead.readLine()) != null){//loop through file
