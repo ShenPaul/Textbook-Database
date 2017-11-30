@@ -112,7 +112,7 @@ class DataLinkedList {//start of class
 	 * @param str representation of the path
 	 */
 	public void setFilePath(String str)throws IOException{
-		this.filePath = Paths.get(str + "/" + listName+".csv");
+		this.filePath = Paths.get(str + "\\" +listName+ ".csv");
 		BufferedWriter bWrite = new BufferedWriter(new FileWriter(filePath.toFile()));
 		bWrite.close();
 	}
