@@ -112,7 +112,7 @@ class DataLinkedList {//start of class
 	 * @param str representation of the path
 	 */
 	public void setFilePath(String str)throws IOException{
-		this.filePath = Paths.get(str);
+		this.filePath = Paths.get(str + "/" + listName+".csv");
 		BufferedWriter bWrite = new BufferedWriter(new FileWriter(filePath.toFile()));
 		bWrite.close();
 	}
@@ -573,7 +573,7 @@ class DataLinkedList {//start of class
 
 	/** itemClear *******************************************
 	 * removes data of a specified textbook
-	 * @param integer index of the item to be cleared
+	 * @param index index of the item to be cleared
 	 */
 	public void itemClear(int index){
 		DataItem item = this.get(index);
