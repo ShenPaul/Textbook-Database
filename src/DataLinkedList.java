@@ -63,7 +63,7 @@ class DataLinkedList {//start of class
 
 	/** get *******************************************
 	 * gets DataItem with specified number
-	 * @param itemNum of DataItem to be retrieved
+	 * @param textbookNum of DataItem to be retrieved
 	 * @return DataItem with specified number
 	 */
 	public DataItem get(String textbookNum){
@@ -79,32 +79,37 @@ class DataLinkedList {//start of class
 
 	/** remove *******************************************
 	 * removes and returns DataItem at specified index
-	 * @param index of DataItem to be removed
+	 * @param textbookNum of DataItem to be removed
 	 * @return removed DataItem
 	 */
-	public DataItem remove(int index) {
-		DataItem tempNode;
+	public DataItem remove(String textbookNum) {
+		DataItem tempNode = null;
 		DataItem prevNode = head;
-		if(index == 0){
+		if(head.getItemNum().equals(textbookNum)){
 			head = head.getNext();
 			return prevNode;
 		}
-		for(int i=0;i<index-1;i++){ //loop through the list until the index
+		tempNode = head.getNext();
+		for(int i=0;i<size();i++){ //loop through the list until the index
+			if(tempNode.getItemNum().equals(textbookNum)){
+				if (tempNode.getNext() != null){
+					prevNode = tempNode.getNext();
+					tempNode.setNext(null);
+					return prevNode;
+				} else{
+					prevNode.setNext(null);
+					return prevNode;
+				}
+			}
+			tempNode = tempNode.getNext();
 			prevNode = prevNode.getNext();
-		}
-		tempNode = prevNode.getNext();
-		if(prevNode.getNext() != null){
-			prevNode.setNext(tempNode.getNext());
-		}
-		if(index == 0){
-			return prevNode;
 		}
 		return tempNode;
 	}
 
 	/** setFilePath *******************************************
 	 * sets the file location
-	 * @param String representation of the path
+	 * @param str representation of the path
 	 */
 	public void setFilePath(String str)throws IOException{
 		this.filePath = Paths.get(str);
@@ -152,7 +157,7 @@ class DataLinkedList {//start of class
 
 	/** searchAll *******************************************
 	 * locates all instances of the searched String
-	 * @param String to be searched for
+	 * @param str to be searched for
 	 * @return double integer array of all locations of the specified String in [row][column] form
 	 */
 	public int[][] searchAll(String str){
@@ -161,7 +166,7 @@ class DataLinkedList {//start of class
 
 		for(int i=0;i<this.size();i++) { //count number of instances of the searched String
 			for(int j=0;j<7;j++) {
-				if(((String)(this.get(i).get(j))).equals(str)) {
+				if(((String)(this.get(i).get(j))).contains(str)) {
 					count++;
 				}
 			}
