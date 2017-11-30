@@ -179,14 +179,12 @@ public class GUI {// start of GUI class
      */
     public static void showEmpty() {
         if (tableList.size() != 0) {
-            System.out.println(tableList.size());
             empty.setVisible(false);
             mainWindow.validate();
             mainWindow.repaint();
             mainWindow.setVisible(true);
 
         } else {
-            System.out.println(tableList.size());
             Font font1 = new Font("Courier", Font.BOLD, 67);
             empty = new JLabel("NO DATABASES HAVE BEEN IMPORTED YET!");
             empty.setBorder(BorderFactory.createEmptyBorder(0, 70, 0, 70));
@@ -395,7 +393,6 @@ public class GUI {// start of GUI class
             picker.setFileFilter(filter);
 
             int returnValue = picker.showOpenDialog(dialog);
-            System.out.println(returnValue);
 
             // put the imported textbook numbers into database
             if (returnValue == JFileChooser.APPROVE_OPTION) {
