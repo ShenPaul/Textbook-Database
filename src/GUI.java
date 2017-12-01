@@ -15,8 +15,6 @@ import java.awt.event.ActionListener;
 import java.awt.Font;
 import java.awt.Frame;
 
-import java.awt.event.WindowEvent;
-
 import java.io.File;
 
 import java.util.ArrayList;
@@ -33,6 +31,8 @@ import javax.swing.JDialog;
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
 import javax.swing.JFileChooser;
+import javax.swing.JRadioButton;
+import javax.swing.ButtonGroup;
 import javax.swing.UIManager;
 import javax.swing.UIDefaults;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -90,6 +90,12 @@ public class GUI {// start of GUI class
 		//sets GUI to full screen
 		mainWindow.setSize(1600, 800);
 		mainWindow.setExtendedState(Frame.MAXIMIZED_BOTH);
+
+		Font font1 = new Font("Courier", Font.BOLD, 67);
+		empty = new JLabel("NO DATABASES HAVE BEEN IMPORTED YET!");
+		empty.setBorder(BorderFactory.createEmptyBorder(0, 70, 0, 70));
+		empty.setFont(font1);
+		mainWindow.add(empty, BorderLayout.CENTER);
 
 		//creates menu on west panel
 		JPanel menuScreen = new JPanel();
@@ -211,11 +217,6 @@ public class GUI {// start of GUI class
 			mainWindow.setVisible(true);
 
 		} else {
-			Font font1 = new Font("Courier", Font.BOLD, 67);
-			empty = new JLabel("NO DATABASES HAVE BEEN IMPORTED YET!");
-			empty.setBorder(BorderFactory.createEmptyBorder(0, 70, 0, 70));
-			empty.setFont(font1);
-			mainWindow.add(empty, BorderLayout.CENTER);
 			empty.setVisible(true);
 			mainWindow.validate();
 			mainWindow.repaint();
@@ -238,6 +239,9 @@ public class GUI {// start of GUI class
 		public static JTextField teacherIn = new JTextField (10);
 		public static JTextField courseIn = new JTextField (10);
 		public static JTextField dateIn = new JTextField (10);
+		public static JRadioButton sem1 = new JRadioButton("Semester 1", true);
+		public static JRadioButton sem2 = new JRadioButton("Semester 2");
+		public static boolean isFirst = true;
 
 		@Override
 		public void actionPerformed(ActionEvent event) {
@@ -248,75 +252,99 @@ public class GUI {// start of GUI class
 				//Displays error message if user has not opened a database and tries to click a button
 				JOptionPane.showMessageDialog(dialog, "Please open a database!", "Error!", JOptionPane.WARNING_MESSAGE);
 			} else {
-				//creates "done" button
-				JButton doneButton = new JButton("Done");
-				doneButton.setFont(font);
-				doneButton.addActionListener(new doneListener());
+				assign.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
+				if (isFirst == true) {
+					isFirst = false;
 
-				//assigns panel layouts
-				JPanel assignBorder = new JPanel(new BorderLayout());
-				JPanel assigned = new JPanel(new GridLayout(8, 2));
+					//creates "done" button
+					JButton doneButton = new JButton("Done");
+					doneButton.setFont(font);
+					doneButton.addActionListener(new doneListener());
 
-				//get textbook number
-				JLabel textNumLabel = new JLabel("Textbook Number:");
-				textNumLabel.setFont(font);
+					//assigns panel layouts
+					JPanel assignBorder = new JPanel(new BorderLayout());
+					JPanel assigned = new JPanel(new GridLayout(8, 2));
 
-				//get student number
-				JLabel studentNumLabel = new JLabel("Student Number:");
-				studentNumLabel.setFont(font);
+					//get textbook number
+					JLabel textNumLabel = new JLabel("Textbook Number:");
+					textNumLabel.setFont(font);
 
-				//get last name
-				JLabel lastLabel = new JLabel("Last Name:");
-				lastLabel.setFont(font);
+					//get student number
+					JLabel studentNumLabel = new JLabel("Student Number:");
+					studentNumLabel.setFont(font);
 
-				//get first name
-				JLabel firstLabel = new JLabel("First Name:");
-				firstLabel.setFont(font);
+					//get last name
+					JLabel lastLabel = new JLabel("Last Name:");
+					lastLabel.setFont(font);
 
-				//get teacher name, DROP DOWN MENU????
-				JLabel teacherLabel = new JLabel("Teacher Name:");
-				teacherLabel.setFont(font);
+					//get first name
+					JLabel firstLabel = new JLabel("First Name:");
+					firstLabel.setFont(font);
 
-				//get course code, DROP DOWN MENU???
-				JLabel courseLabel = new JLabel("Course Code:");
-				courseLabel.setFont(font);
+					//get teacher name
+					JLabel teacherLabel = new JLabel("Teacher Name:");
+					teacherLabel.setFont(font);
 
-				//get date, concatenate strings then pass in, radio buttons
-				JLabel dateLabel = new JLabel("Date:");
-				dateLabel.setFont(font);
+					//get course code
+					JLabel courseLabel = new JLabel("Course Code:");
+					courseLabel.setFont(font);
 
-				//adds fields to the panel
-				assigned.add(textNumLabel);
-				assigned.add(textNumIn);
-				assigned.add(studentNumLabel);
-				assigned.add(studentNumIn);
-				assigned.add(lastLabel);
-				assigned.add(lastIn);
-				assigned.add(firstLabel);
-				assigned.add(firstIn);
-				assigned.add(teacherLabel);
-				assigned.add(teacherIn);
-				assigned.add(courseLabel);
-				assigned.add(courseIn);
-				assigned.add(dateLabel);
-				assigned.add(dateIn);
+					//date label
+					JLabel dateLabel = new JLabel("Date:");
+					dateLabel.setFont(font);
 
-				//adds components
-				assignBorder.add(assigned, BorderLayout.CENTER);
-				assignBorder.add(doneButton, BorderLayout.SOUTH);
-				assign.add(assignBorder);
-				assign.setBackground(Color.WHITE);
-				assign.setSize(500, 500);
-				assign.setResizable(true);
-				assign.setAlwaysOnTop(true);
-				assign.dispatchEvent(new WindowEvent(assign, WindowEvent.WINDOW_CLOSING));
+					//date panel
+					JPanel datePanel = new JPanel(new FlowLayout());
 
-				//paints windows
-				assign.validate();
-				assign.repaint();
-				assign.setVisible(true);
-				mainWindow.validate();
-				mainWindow.repaint();
+					//get semester
+					ButtonGroup group = new ButtonGroup();
+					group.add(sem1);
+					group.add(sem2);
+					datePanel.add(sem1);
+					datePanel.add(sem2);
+
+					//get year
+					datePanel.add(dateIn);
+
+					//adds fields to the panel
+					assigned.add(textNumLabel);
+					assigned.add(textNumIn);
+					assigned.add(studentNumLabel);
+					assigned.add(studentNumIn);
+					assigned.add(lastLabel);
+					assigned.add(lastIn);
+					assigned.add(firstLabel);
+					assigned.add(firstIn);
+					assigned.add(teacherLabel);
+					assigned.add(teacherIn);
+					assigned.add(courseLabel);
+					assigned.add(courseIn);
+					assigned.add(dateLabel);
+					assigned.add(datePanel);
+
+					//adds components
+					assignBorder.add(assigned, BorderLayout.CENTER);
+					assignBorder.add(doneButton, BorderLayout.SOUTH);
+					assign.add(assignBorder);
+					assign.setBackground(Color.WHITE);
+					assign.setSize(500, 500);
+					assign.setResizable(true);
+					assign.setAlwaysOnTop(true);
+
+					//paints windows
+					assign.pack();
+					assign.invalidate();
+					assign.validate();
+					assign.revalidate();
+					assign.repaint();
+					assign.repaint();
+					assign.setVisible(true);
+					mainWindow.validate();
+					mainWindow.repaint();
+				} else {
+					assign.setVisible(true);
+				}
+
 			}
 		}
 		//button for the done button, gets data and verifies it
@@ -326,6 +354,8 @@ public class GUI {// start of GUI class
 				JDialog dialog = new JDialog();
 				dialog.setAlwaysOnTop(true);
 
+				int selection;
+
 				//gets text from input field
 				String textNum = textNumIn.getText();
 				String studentNum = studentNumIn.getText();
@@ -333,7 +363,18 @@ public class GUI {// start of GUI class
 				String first = firstIn.getText();
 				String teacher = teacherIn.getText();
 				String course = courseIn.getText();
-				String date = dateIn.getText();
+				String semester = "";
+				String year = dateIn.getText();
+
+				//checks which radio button is selected
+				if (sem1.isSelected()){
+					semester = "Semester 1";
+				} else if (sem2.isSelected()) {
+					semester = "Semester 2";
+				}
+
+				//assigns date
+				String date = semester + "-" + year;
 
 				//checks if it is a real textbook number
 				boolean isRealTable = tableList.get(tabs.getSelectedIndex()).assignStudent(textNum, studentNum, last, first, teacher, course, date);
@@ -345,21 +386,25 @@ public class GUI {// start of GUI class
 					System.out.println("Error");
 				} else {
 					//closes window if student is added
-					JOptionPane.showMessageDialog(dialog, "Student added!", "SUCCESS!", JOptionPane.INFORMATION_MESSAGE);
+					Object[] textOptions = {"OK"};
+					selection = JOptionPane.showOptionDialog(dialog, "Student added!", "SUCCESS!", JOptionPane.INFORMATION_MESSAGE, JOptionPane.DEFAULT_OPTION, null, textOptions, null);
 
-					//resets text fields
-					textNumIn.setText("");
-					studentNumIn.setText("");
-					lastIn.setText("");
-					firstIn.setText("");
-					teacherIn.setText("");
-					courseIn.setText("");
-					dateIn.setText("");
+					if (selection == 0) {
+						//resets text fields
+						textNumIn.setText("");
+						studentNumIn.setText("");
+						lastIn.setText("");
+						firstIn.setText("");
+						teacherIn.setText("");
+						courseIn.setText("");
+						dateIn.setText("");
+						semester = "";
 
-					//disposes the window and redraws the main window
-					assign.dispose();
-					mainWindow.validate();
-					mainWindow.repaint();
+						//disposes the window and redraws the main window
+						assign.setVisible(false);
+						mainWindow.validate();
+						mainWindow.repaint();
+					}
 				}
 			}
 		}
@@ -428,7 +473,7 @@ public class GUI {// start of GUI class
 					overdue.setSize(500, 500);
 					overdue.setResizable(true);
 					overdue.setAlwaysOnTop(true);
-					overdue.dispatchEvent(new WindowEvent(overdue, WindowEvent.WINDOW_CLOSING));
+					overdue.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 					overdue.validate();
 					overdue.repaint();
 					overdue.setVisible(true);
@@ -455,7 +500,7 @@ public class GUI {// start of GUI class
 						email.setSize(500, 500);
 						email.setResizable(true);
 						email.setAlwaysOnTop(true);
-						email.dispatchEvent(new WindowEvent(email, WindowEvent.WINDOW_CLOSING));
+						email.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 						email.validate();
 						email.repaint();
 						email.setVisible(true);
@@ -611,29 +656,31 @@ public class GUI {// start of GUI class
 			if (returnValue == JFileChooser.APPROVE_OPTION) {
 				selectedFile = picker.getSelectedFile();
 				path = selectedFile.getAbsolutePath();
+
+				// saves the name of the file
+				fileName = (selectedFile.getName().substring(0, selectedFile.getName().length() - 4));
+
+				//creates table to display students, sets it to fill the entire screen
+				JTable table = new JTable(new SpreadsheetModel(path));
+				SpreadsheetModel model = (SpreadsheetModel) table.getModel();
+				model.setTable(table);
+				tableList.add(model);
+				table.getTableHeader().setReorderingAllowed(false);
+				JScrollPane scrollPane = new JScrollPane(table);
+				table.setFillsViewportHeight(true);
+
+				//adds JPanel to JTabbedPane
+				tabs.addTab(fileName, null, scrollPane, fileName);
+				//must find way to pass in the textbook name as well
+
+				//sets new database to selected database
+				tabs.setSelectedIndex(tableList.size() - 1);
+
+				//adds JTabbedPane to main panel
+				mainWindow.add(tabs, BorderLayout.CENTER);
+
+				showEmpty();
 			}
-
-			// saves the name of the file
-			fileName = (selectedFile.getName().substring(0, selectedFile.getName().length() - 4));
-
-			//creates table to display students, sets it to fill the entire screen
-			JTable table = new JTable(new SpreadsheetModel(path));
-			SpreadsheetModel model = (SpreadsheetModel) table.getModel();
-			model.setTable(table);
-			tableList.add(model);
-			table.getTableHeader().setReorderingAllowed(false);
-			JScrollPane scrollPane = new JScrollPane(table);
-			table.setFillsViewportHeight(true);
-
-			//adds JPanel to JTabbedPane
-			tabs.addTab(fileName, null, scrollPane, fileName);
-			//must find way to pass in the textbook name as well
-
-			//sets new database to selected database
-			tabs.setSelectedIndex(tableList.size() - 1);
-
-			//adds JTabbedPane to main panel
-			mainWindow.add(tabs, BorderLayout.CENTER);
 
 			showEmpty();
 			// multi selection later if time and doable
@@ -658,7 +705,9 @@ public class GUI {// start of GUI class
 			String input = (String) JOptionPane.showInputDialog(dialog, "What is the database name?", "Input Name", JOptionPane.QUESTION_MESSAGE, null, null, null);
 
 			if (input != null) {
-				picker.setDialogTitle("New Database Selector");
+				JOptionPane.showMessageDialog(dialog, "Please select a file location", "Location", JOptionPane.INFORMATION_MESSAGE, null);
+
+				picker.setDialogTitle("Location Selector");
 				picker.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 				picker.setAcceptAllFileFilterUsed(false);
 
@@ -668,35 +717,36 @@ public class GUI {// start of GUI class
 				if (returnValue == JFileChooser.APPROVE_OPTION) {
 					selectedFile = picker.getSelectedFile();
 					path = selectedFile.getAbsolutePath();
+
+
+					//creates table to display students, sets it to fill the entire screen
+					JTable table = new JTable(new SpreadsheetModel(input, 0));
+					SpreadsheetModel model = (SpreadsheetModel) table.getModel();
+					table.getTableHeader().setReorderingAllowed(false);
+					model.addEmpty();
+					tableList.add(model);
+
+					JScrollPane scrollPane = new JScrollPane(table);
+					table.setFillsViewportHeight(true);
+
+					//adds JPanel to JTabbedPane
+					tabs.addTab(input, null, scrollPane, input);
+
+					//sets new database to selected database
+					tabs.setSelectedIndex(tableList.size() - 1);
+
+					//sets directory
+					tableList.get(tabs.getSelectedIndex()).setFilePath(path);
+
+					//adds JTabbedPane to main panel
+					mainWindow.add(tabs, BorderLayout.CENTER);
+
+					mainWindow.validate();
+					mainWindow.repaint();
+
+					tableList.get(tabs.getSelectedIndex()).saveData();
+					// multi selection later if time and doable
 				}
-
-				//creates table to display students, sets it to fill the entire screen
-				JTable table = new JTable(new SpreadsheetModel(input, 0));
-				SpreadsheetModel model = (SpreadsheetModel) table.getModel();
-				table.getTableHeader().setReorderingAllowed(false);
-				model.addEmpty();
-				tableList.add(model);
-
-				JScrollPane scrollPane = new JScrollPane(table);
-				table.setFillsViewportHeight(true);
-
-				//adds JPanel to JTabbedPane
-				tabs.addTab(input, null, scrollPane, input);
-
-				//sets directory
-				tableList.get(tabs.getSelectedIndex()).setFilePath(path);
-
-				//sets new database to selected database
-				tabs.setSelectedIndex(tableList.size() - 1);
-
-				//adds JTabbedPane to main panel
-				mainWindow.add(tabs, BorderLayout.CENTER);
-
-				mainWindow.validate();
-				mainWindow.repaint();
-
-				tableList.get(tabs.getSelectedIndex()).saveData();
-				// multi selection later if time and doable
 			}
 			showEmpty();
 		}
@@ -799,7 +849,5 @@ public class GUI {// start of GUI class
 	}
 }
 
-//make tab names editable: https://stackoverflow.com/questions/27124121/how-to-change-the-tab-name-in-jtabbedpane
-//highlighted cell different colour: https://stackoverflow.com/questions/6862102/swing-jtable-highlight-selected-cell-in-a-different-color-from-rest-of-the-sel
-//search by drop down menu or search all and highlight search: https://stackoverflow.com/questions/20113920/highlighting-the-text-of-a-jtable-cell
-//change date format, input selection?
+//check comments
+//try making all variables used static or all not static
