@@ -48,7 +48,7 @@ public class GUI {// start of GUI class
 	public static JTabbedPane tabs = new JTabbedPane();
 	public static JFrame mainWindow = new JFrame("Textbook Database");
 	public static ArrayList<SpreadsheetModel> tableList = new ArrayList<SpreadsheetModel>(); //probably used for arraylist of databases, associate data linked list
-	public static JTextField search = new JTextField(50);
+	public static JTextField search = new JTextField(25);
 	public static JLabel empty;
 	public static Font font = new Font("Courier", Font.BOLD, 18);
 
@@ -186,6 +186,7 @@ public class GUI {// start of GUI class
 		//adds search field for the list and highlights matches
 		JLabel searchLabel = new JLabel("Search:");
 		searchLabel.setFont(font);
+
 		JButton searchButton = new JButton("Go!");
 		searchButton.setFont(font);
 		searchButton.addActionListener(new searchListener());
