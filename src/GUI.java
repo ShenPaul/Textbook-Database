@@ -593,10 +593,12 @@ public class GUI {// start of GUI class
 				if (returnValue == JFileChooser.APPROVE_OPTION) {
 					File selectedFile = picker.getSelectedFile();
 					tableList.get(tabs.getSelectedIndex()).importData(selectedFile.getAbsolutePath());
+					tableList.get(tabs.getSelectedIndex()).saveData();
 				}
 
 				mainWindow.validate();
 				mainWindow.repaint();
+
 			}
 		}
 	}
@@ -743,6 +745,7 @@ public class GUI {// start of GUI class
 
 					mainWindow.validate();
 					mainWindow.repaint();
+					scrollPane.revalidate();
 
 					tableList.get(tabs.getSelectedIndex()).saveData();
 					// multi selection later if time and doable

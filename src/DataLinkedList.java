@@ -307,7 +307,7 @@ class DataLinkedList {//start of class
 		str = bRead.readLine();
 		strArr = str.split(",");
 		if (strArr.length == 1){
-			head = new DataItem(strArr[0]);
+			head = new DataItem(strArr[0],"","","","","","",false);
 		}else{
 			head = new DataItem(strArr[0],strArr[1],strArr[2],strArr[3],strArr[4],strArr[5],strArr[6],(strArr[7].equals("true")));
 		}
@@ -318,7 +318,7 @@ class DataLinkedList {//start of class
 			if(strArr.length > 1){//create 1 node per line
 				tempNode = new DataItem(strArr[0],strArr[1],strArr[2],strArr[3],strArr[4],strArr[5],strArr[6],(strArr[7].equals("true")));
 			}else{
-				tempNode = new DataItem(strArr[0]);
+				tempNode = new DataItem(strArr[0],"","","","","","",false);
 			}
 			prevNode.setNext(tempNode);
 			prevNode = tempNode;
