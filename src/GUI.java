@@ -14,7 +14,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.Font;
 import java.awt.Frame;
-import java.awt.Component;
 
 import java.io.File;
 
@@ -42,17 +41,13 @@ import javax.swing.WindowConstants;
 import javax.swing.SwingConstants;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.TableCellRenderer;
-import javax.swing.text.BadLocationException;
 
 public class GUI {// start of GUI class
 
 	//declare public variables
 	public static JTabbedPane tabs = new JTabbedPane();
 	public static JFrame mainWindow = new JFrame("Textbook Database");
-	public static ArrayList<SpreadsheetModel> spreadsheetList = new ArrayList<SpreadsheetModel>();
-	public static ArrayList<JTable> tableList = new ArrayList<JTable>();
+	public static ArrayList<SpreadsheetModel> tableList = new ArrayList<SpreadsheetModel>(); //probably used for arraylist of databases, associate data linked list
 	public static JTextField search = new JTextField(50);
 	public static JLabel empty;
 	public static Font font = new Font("Courier", Font.BOLD, 18);
@@ -215,7 +210,7 @@ public class GUI {// start of GUI class
 	 * The display that shows up when the program is just started and no database is selected
 	 */
 	public static void showEmpty() {
-		if (spreadsheetList.size() != 0) {
+		if (tableList.size() != 0) {
 			empty.setVisible(false);
 			mainWindow.validate();
 			mainWindow.repaint();
@@ -253,7 +248,7 @@ public class GUI {// start of GUI class
 			JDialog dialog = new JDialog();
 			dialog.setAlwaysOnTop(true);
 
-			if (spreadsheetList.size() == 0) {
+			if (tableList.size() == 0) {
 				//Displays error message if user has not opened a database and tries to click a button
 				JOptionPane.showMessageDialog(dialog, "Please open a database!", "Error!", JOptionPane.WARNING_MESSAGE);
 			} else {
@@ -382,7 +377,7 @@ public class GUI {// start of GUI class
 				String date = semester + "-" + year;
 
 				//checks if it is a real textbook number
-				boolean isRealTable = spreadsheetList.get(tabs.getSelectedIndex()).assignStudent(textNum, studentNum, last, first, teacher, course, date);
+				boolean isRealTable = tableList.get(tabs.getSelectedIndex()).assignStudent(textNum, studentNum, last, first, teacher, course, date);
 
 				//gives error if textbook number is not found
 				if (!isRealTable) {
@@ -425,7 +420,7 @@ public class GUI {// start of GUI class
 			JDialog dialog = new JDialog();
 			dialog.setAlwaysOnTop(true);
 
-			if (spreadsheetList.size() == 0) {
+			if (tableList.size() == 0) {
 				//Displays error message if user has not opened a database and tries to click a button
 				JOptionPane.showMessageDialog(dialog, "Please open a database!", "Error!", JOptionPane.WARNING_MESSAGE);
 			} else {
@@ -434,9 +429,9 @@ public class GUI {// start of GUI class
 				int selection = JOptionPane.showOptionDialog(dialog, "How would you like to sort the students?", "Sort", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, sortOptions, sortOptions[0]); //remove question message?
 				// with the selection complete the sort
 				if (selection == 0) {
-					spreadsheetList.get(tabs.getSelectedIndex()).itemSort();
+					tableList.get(tabs.getSelectedIndex()).itemSort();
 				} else {
-					spreadsheetList.get(tabs.getSelectedIndex()).sortByType(selection);
+					tableList.get(tabs.getSelectedIndex()).sortByType(selection);
 				}
 				mainWindow.validate();
 				mainWindow.repaint();
@@ -454,7 +449,7 @@ public class GUI {// start of GUI class
 			JDialog dialog = new JDialog();
 			dialog.setAlwaysOnTop(true);
 
-			if (spreadsheetList.size() == 0) {
+			if (tableList.size() == 0) {
 				//Displays error message if user has not opened a database and tries to click a button
 				JOptionPane.showMessageDialog(dialog, "Please open a database!", "Error!", JOptionPane.WARNING_MESSAGE);
 			} else {
@@ -466,7 +461,7 @@ public class GUI {// start of GUI class
 					JScrollPane scroller = new JScrollPane(overdueList, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 
 					// get all the names and student numbers of overdue students
-					String overdueNames[] = spreadsheetList.get(tabs.getSelectedIndex()).getOverdueNames();
+					String overdueNames[] = tableList.get(tabs.getSelectedIndex()).getOverdueNames();
 
 					// add some text
 					for (int i = 0; i < overdueNames.length; i++) {
@@ -492,7 +487,7 @@ public class GUI {// start of GUI class
 						JScrollPane scroller1 = new JScrollPane(emailList, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 
 						// get all the overdue student numbers in an array
-						String[] studentEmails = spreadsheetList.get(tabs.getSelectedIndex()).getOverdueEmails();
+						String[] studentEmails = tableList.get(tabs.getSelectedIndex()).getOverdueEmails();
 
 						//  Add the emails to the panel
 						for (int i = 0; i < studentEmails.length; i++) {
@@ -528,7 +523,7 @@ public class GUI {// start of GUI class
 			JDialog dialog = new JDialog();
 			dialog.setAlwaysOnTop(true);
 
-			if (spreadsheetList.size() == 0) {
+			if (tableList.size() == 0) {
 				//Displays error message if user has not opened a database and tries to click a button
 				JOptionPane.showMessageDialog(dialog, "Please open a database!", "Error!", JOptionPane.WARNING_MESSAGE);
 			} else {
@@ -536,7 +531,7 @@ public class GUI {// start of GUI class
 				String input = (String) JOptionPane.showInputDialog(dialog, "What is the textbook number?", "Input Number", JOptionPane.QUESTION_MESSAGE, null, null, null);
 
 				// add the textbook to the database
-				spreadsheetList.get(tabs.getSelectedIndex()).add(input);
+				tableList.get(tabs.getSelectedIndex()).add(input);
 
 				mainWindow.validate();
 				mainWindow.repaint();
@@ -554,7 +549,7 @@ public class GUI {// start of GUI class
 			JDialog dialog = new JDialog();
 			dialog.setAlwaysOnTop(true);
 
-			if (spreadsheetList.size() == 0) {
+			if (tableList.size() == 0) {
 				//Displays error message if user has not opened a database and tries to click a button
 				JOptionPane.showMessageDialog(dialog, "Please open a database!", "Error!", JOptionPane.WARNING_MESSAGE);
 			} else {
@@ -562,7 +557,7 @@ public class GUI {// start of GUI class
 				String selection = (String) JOptionPane.showInputDialog(dialog, "Which textbook do you want to remove?", "Warning", JOptionPane.QUESTION_MESSAGE, null, null, null);
 
 				// remove the selected textbook
-				spreadsheetList.get(tabs.getSelectedIndex()).remove(selection); //need to get selection row here, temporarily set to 0
+				tableList.get(tabs.getSelectedIndex()).remove(selection); //need to get selection row here, temporarily set to 0
 
 				mainWindow.validate();
 				mainWindow.repaint();
@@ -580,7 +575,7 @@ public class GUI {// start of GUI class
 			JDialog dialog = new JDialog();
 			dialog.setAlwaysOnTop(true);
 
-			if (spreadsheetList.size() == 0) {
+			if (tableList.size() == 0) {
 				//Displays error message if user has not opened a database and tries to click a button
 				JOptionPane.showMessageDialog(dialog, "Please open a database!", "Error!", JOptionPane.WARNING_MESSAGE);
 			} else {
@@ -597,12 +592,13 @@ public class GUI {// start of GUI class
 				// put the imported textbook numbers into database
 				if (returnValue == JFileChooser.APPROVE_OPTION) {
 					File selectedFile = picker.getSelectedFile();
-					spreadsheetList.get(tabs.getSelectedIndex()).importData(selectedFile.getAbsolutePath());
-					spreadsheetList.get(tabs.getSelectedIndex()).saveData();
+					tableList.get(tabs.getSelectedIndex()).importData(selectedFile.getAbsolutePath());
+					tableList.get(tabs.getSelectedIndex()).saveData();
 				}
 
 				mainWindow.validate();
 				mainWindow.repaint();
+
 			}
 		}
 	}
@@ -617,7 +613,7 @@ public class GUI {// start of GUI class
 			JDialog dialog = new JDialog();
 			dialog.setAlwaysOnTop(true);
 
-			if (spreadsheetList.size() == 0) {
+			if (tableList.size() == 0) {
 				//Displays error message if user has not opened a database and tries to click a button
 				JOptionPane.showMessageDialog(dialog, "Please open a database!", "Error!", JOptionPane.WARNING_MESSAGE);
 			} else {
@@ -627,7 +623,7 @@ public class GUI {// start of GUI class
 					// asks for confirmation on clear
 					selection = JOptionPane.showOptionDialog(dialog, "Are you sure you want to clear all students?", "Warning", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null, null, null);
 					if (selection == 0) { // clear all the students
-						spreadsheetList.get(tabs.getSelectedIndex()).clear();
+						tableList.get(tabs.getSelectedIndex()).clear();
 					}
 				}
 				mainWindow.repaint();
@@ -670,10 +666,9 @@ public class GUI {// start of GUI class
 				JTable table = new JTable(new SpreadsheetModel(path));
 				SpreadsheetModel model = (SpreadsheetModel) table.getModel();
 				model.setTable(table);
-				spreadsheetList.add(model);
-				tableList.add(table);
+				tableList.add(model);
 				table.getTableHeader().setReorderingAllowed(false);
-				JScrollPane scrollPane = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+				JScrollPane scrollPane = new JScrollPane(table);
 				table.setFillsViewportHeight(true);
 
 				//adds JPanel to JTabbedPane
@@ -681,11 +676,7 @@ public class GUI {// start of GUI class
 				//must find way to pass in the textbook name as well
 
 				//sets new database to selected database
-				tabs.setSelectedIndex(spreadsheetList.size() - 1);
-
-				for(int i =0;i<table.getColumnCount()-1;i++){
-					table.getColumnModel().getColumn(i).setCellRenderer(new SpreadsheetRenderer());
-				}
+				tabs.setSelectedIndex(tableList.size() - 1);
 
 				//adds JTabbedPane to main panel
 				mainWindow.add(tabs, BorderLayout.CENTER);
@@ -735,28 +726,28 @@ public class GUI {// start of GUI class
 					SpreadsheetModel model = (SpreadsheetModel) table.getModel();
 					table.getTableHeader().setReorderingAllowed(false);
 					model.addEmpty();
-					spreadsheetList.add(model);
-					tableList.add (table);
+					tableList.add(model);
 
-					JScrollPane scrollPane = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+					JScrollPane scrollPane = new JScrollPane(table);
 					table.setFillsViewportHeight(true);
 
 					//adds JPanel to JTabbedPane
 					tabs.addTab(input, null, scrollPane, input);
 
 					//sets new database to selected database
-					tabs.setSelectedIndex(spreadsheetList.size() - 1);
+					tabs.setSelectedIndex(tableList.size() - 1);
 
 					//sets directory
-					spreadsheetList.get(tabs.getSelectedIndex()).setFilePath(path);
+					tableList.get(tabs.getSelectedIndex()).setFilePath(path);
 
 					//adds JTabbedPane to main panel
 					mainWindow.add(tabs, BorderLayout.CENTER);
 
 					mainWindow.validate();
 					mainWindow.repaint();
+					scrollPane.revalidate();
 
-					spreadsheetList.get(tabs.getSelectedIndex()).saveData();
+					tableList.get(tabs.getSelectedIndex()).saveData();
 					// multi selection later if time and doable
 				}
 			}
@@ -774,7 +765,7 @@ public class GUI {// start of GUI class
 			JDialog dialog = new JDialog();
 			dialog.setAlwaysOnTop(true);
 
-			if (spreadsheetList.size() == 0) {
+			if (tableList.size() == 0) {
 				//Displays error message if user has not opened a database and tries to click a button
 				JOptionPane.showMessageDialog(dialog, "Please open a database!", "Error!", JOptionPane.WARNING_MESSAGE);
 			} else {
@@ -785,7 +776,7 @@ public class GUI {// start of GUI class
 					selection = JOptionPane.showOptionDialog(dialog, "Have you saved your work?", "Warning", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null, null, null);
 					if (selection == 0) {
 						// close the database
-						spreadsheetList.remove(tabs.getSelectedIndex());
+						tableList.remove(tabs.getSelectedIndex());
 						tabs.remove(tabs.getSelectedIndex());
 						showEmpty();
 						mainWindow.repaint();
@@ -806,16 +797,16 @@ public class GUI {// start of GUI class
 			JDialog dialog = new JDialog();
 			dialog.setAlwaysOnTop(true);
 
-			if (spreadsheetList.size() == 0) {
+			if (tableList.size() == 0) {
 				//Displays error message if user has not opened a database and tries to click a button
 				JOptionPane.showMessageDialog(dialog, "Please open a database!", "Error!", JOptionPane.WARNING_MESSAGE);
 			} else {
-				if (spreadsheetList.size() == 0) {
+				if (tableList.size() == 0) {
 					//Displays error message if user has not opened a database and tries to click a button
 					JOptionPane.showMessageDialog(dialog, "Please open a database!", "Error!", JOptionPane.WARNING_MESSAGE);
 				} else {
 					// save the database
-					spreadsheetList.get(tabs.getSelectedIndex()).saveData();
+					tableList.get(tabs.getSelectedIndex()).saveData();
 					JOptionPane.showMessageDialog(dialog, "You have saved the database!", "Saved!", JOptionPane.QUESTION_MESSAGE, null);
 				}
 			}
@@ -823,7 +814,7 @@ public class GUI {// start of GUI class
 	}
 
 	/**
-	 * searchListener
+	 * searchListner
 	 * gets a search query from the user and highlights the first valid row
 	 */
 	static class searchListener implements ActionListener {
@@ -832,41 +823,34 @@ public class GUI {// start of GUI class
 			JDialog dialog = new JDialog();
 			dialog.setAlwaysOnTop(true);
 
-			if (spreadsheetList.size() == 0) {
+			if (tableList.size() == 0) {
 				//Displays error message if user has not opened a database and tries to click a button
 				JOptionPane.showMessageDialog(dialog, "Please open a database!", "Error!", JOptionPane.WARNING_MESSAGE);
 			} else {
-				tableList.get(tabs.getSelectedIndex()).selectAll();
-			}
-		}
-	}
-
-	public static class SpreadsheetRenderer extends DefaultTableCellRenderer{
-
-		public Component getTableCellRendererComponent(JTable table, Object value,boolean isSelected, boolean hasFocus,int row, int column) {
-
-			Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-			Object valueAt = table.getModel().getValueAt(row, column);
-			String compareText = valueAt.toString();
-			String searchText = search.getText();
-
-			if (searchText.contains(compareText)) {
-				isSelected = true;
-				hasFocus = true;
-				if (table.isCellSelected(row, column)) {
-					setBackground(Color.red);
+				// get the search query
+				String searchText = search.getText();
+				// get table from spreadsheet model
+				JTable table = tableList.get(tabs.getSelectedIndex()).getTable();
+				// if query is null or empty clear the selection
+				if (searchText == null || searchText.isEmpty()) {
+					table.clearSelection();
+					return;
 				}
-			} else if (row % 2 == 0 ){
-				setBackground(Color.LIGHT_GRAY);
-			} else if (row % 2 != 0){
-				setBackground(Color.WHITE);
+
+				// get coordinates of valid rows
+				int[][] coordinates = tableList.get(tabs.getSelectedIndex()).searchAll(searchText);
+
+				// if there is no valid option, clear selection
+				if (coordinates.length == 0) { // nothing found
+					table.clearSelection();
+				} else {// highlight first row only
+					table.setRowSelectionInterval(coordinates[0][0], coordinates[0][0]);
+				}
+				mainWindow.repaint(); //repaints entire main window (index of table???), make sure matches array list
 			}
-			mainWindow.validate();
-			mainWindow.repaint();
-			return c;
 		}
-
-
 	}
-
 }
+
+//check comments
+//try making all variables used static or all not static
