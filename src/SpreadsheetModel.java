@@ -6,7 +6,7 @@
 
 // imports
 import java.io.IOException;
-import javax.swing.*;
+import javax.swing.JTable;
 import javax.swing.event.TableModelEvent;
 import javax.swing.table.AbstractTableModel;
 
@@ -18,6 +18,8 @@ class SpreadsheetModel extends AbstractTableModel {
     private DataLinkedList list;
     // holds the table for the current tab
     private JTable table;
+
+    private String courseCode;
 
     // constructor for new Databases
     SpreadsheetModel (String name, int none) {
@@ -34,6 +36,14 @@ class SpreadsheetModel extends AbstractTableModel {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * getCourseCode
+     * set Course Code for the current tab
+     */
+    public void getCourseCode(String courseCode){
+        this.courseCode =  courseCode;
     }
 
     /**
@@ -215,11 +225,10 @@ class SpreadsheetModel extends AbstractTableModel {
      * @param lastName - last name
      * @param firstName - first name
      * @param teacher - teacher
-     * @param courseCode - courseCode
      * @param date - date
      * @return boolean - if textbook is not valid return false, if it is return true
      */
-    public boolean assignStudent(String textBookNum, String studentNum, String lastName, String firstName, String teacher, String courseCode, String date) {
+    public boolean assignStudent(String textBookNum, String studentNum, String lastName, String firstName, String teacher, String date) {
         DataItem assigned = list.get(textBookNum);
         if (assigned == null){
             System.out.println("ERROR");

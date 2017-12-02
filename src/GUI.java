@@ -15,6 +15,8 @@ import java.awt.event.ActionListener;
 import java.awt.Font;
 import java.awt.Frame;
 
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.io.File;
 
 import java.util.ArrayList;
@@ -51,6 +53,8 @@ public class GUI {// start of GUI class
 	public static JTextField search = new JTextField(25);
 	public static JLabel empty;
 	public static Font font = new Font("Courier", Font.BOLD, 18);
+	public static String teacherName;
+	public static String date;
 
 	// main method to run GUI
 	public static void main(String[] args) {
@@ -81,10 +85,16 @@ public class GUI {// start of GUI class
 		//warning to user to not access files while running the database program.
 		JOptionPane.showMessageDialog(null, "Do not open database .csv files while program is running!", "WARNING!", JOptionPane.WARNING_MESSAGE);
 
+		teacherName = (String) JOptionPane.showInputDialog (null, "Please Input Your Name", "Name", JOptionPane.QUESTION_MESSAGE, null, null, null);
+		date = (String) JOptionPane.showInputDialog (null, "Please input the school year(YYYY/YYYY)", "Date Input", JOptionPane.QUESTION_MESSAGE, null, null, null);
+
+
 		//creates main JFrame
 		mainWindow.setLayout(new BorderLayout());
 		mainWindow.setBackground(Color.WHITE);
 		mainWindow.setResizable(true);
+		Window window = new Window();
+		mainWindow.addWindowListener(window);
 		mainWindow.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
 		//sets GUI to full screen
@@ -237,9 +247,6 @@ public class GUI {// start of GUI class
 		public static JTextField studentNumIn = new JTextField (10);
 		public static JTextField lastIn = new JTextField (10);
 		public static JTextField firstIn = new JTextField (10);
-		public static JTextField teacherIn = new JTextField (10);
-		public static JTextField courseIn = new JTextField (10);
-		public static JTextField dateIn = new JTextField (10);
 		public static JRadioButton sem1 = new JRadioButton("Semester 1", true);
 		public static JRadioButton sem2 = new JRadioButton("Semester 2");
 		public static boolean isFirst = true;
@@ -282,17 +289,6 @@ public class GUI {// start of GUI class
 					JLabel firstLabel = new JLabel("First Name:");
 					firstLabel.setFont(font);
 
-					//get teacher name
-					JLabel teacherLabel = new JLabel("Teacher Name:");
-					teacherLabel.setFont(font);
-
-					//get course code
-					JLabel courseLabel = new JLabel("Course Code:");
-					courseLabel.setFont(font);
-
-					//date label
-					JLabel dateLabel = new JLabel("Date:");
-					dateLabel.setFont(font);
 
 					//date panel
 					JPanel datePanel = new JPanel(new FlowLayout());
@@ -304,9 +300,6 @@ public class GUI {// start of GUI class
 					datePanel.add(sem1);
 					datePanel.add(sem2);
 
-					//get year
-					datePanel.add(dateIn);
-
 					//adds fields to the panel
 					assigned.add(textNumLabel);
 					assigned.add(textNumIn);
@@ -316,11 +309,6 @@ public class GUI {// start of GUI class
 					assigned.add(lastIn);
 					assigned.add(firstLabel);
 					assigned.add(firstIn);
-					assigned.add(teacherLabel);
-					assigned.add(teacherIn);
-					assigned.add(courseLabel);
-					assigned.add(courseIn);
-					assigned.add(dateLabel);
 					assigned.add(datePanel);
 
 					//adds components
@@ -362,10 +350,7 @@ public class GUI {// start of GUI class
 				String studentNum = studentNumIn.getText();
 				String last = lastIn.getText();
 				String first = firstIn.getText();
-				String teacher = teacherIn.getText();
-				String course = courseIn.getText();
 				String semester = "";
-				String year = dateIn.getText();
 
 				//checks which radio button is selected
 				if (sem1.isSelected()){
@@ -375,10 +360,10 @@ public class GUI {// start of GUI class
 				}
 
 				//assigns date
-				String date = semester + "-" + year;
+				String tempDate = semester + "-" + date;
 
 				//checks if it is a real textbook number
-				boolean isRealTable = tableList.get(tabs.getSelectedIndex()).assignStudent(textNum, studentNum, last, first, teacher, course, date);
+				boolean isRealTable = tableList.get(tabs.getSelectedIndex()).assignStudent(textNum, studentNum, last, first, teacherName, tempDate);
 
 				//gives error if textbook number is not found
 				if (!isRealTable) {
@@ -396,9 +381,6 @@ public class GUI {// start of GUI class
 						studentNumIn.setText("");
 						lastIn.setText("");
 						firstIn.setText("");
-						teacherIn.setText("");
-						courseIn.setText("");
-						dateIn.setText("");
 						semester = "";
 
 						//disposes the window and redraws the main window
@@ -682,6 +664,9 @@ public class GUI {// start of GUI class
 				//adds JTabbedPane to main panel
 				mainWindow.add(tabs, BorderLayout.CENTER);
 
+				// get course code for current tab
+				tableList.get(tabs.getSelectedIndex()).getCourseCode((String) JOptionPane.showInputDialog (dialog, "What is your couse code - including section?", "Course Code Input", JOptionPane.QUESTION_MESSAGE, null, null, null));
+
 				showEmpty();
 			}
 
@@ -743,6 +728,10 @@ public class GUI {// start of GUI class
 
 					//adds JTabbedPane to main panel
 					mainWindow.add(tabs, BorderLayout.CENTER);
+
+					// get course code for current tab
+					tableList.get(tabs.getSelectedIndex()).getCourseCode((String) JOptionPane.showInputDialog (dialog, "What is your couse code - including section?", "Course Code Input", JOptionPane.QUESTION_MESSAGE, null, null, null));
+
 
 					mainWindow.validate();
 					mainWindow.repaint();
@@ -850,6 +839,38 @@ public class GUI {// start of GUI class
 				mainWindow.repaint(); //repaints entire main window (index of table???), make sure matches array list
 			}
 		}
+	}
+
+	/**
+	 * Window
+	 * An Action Listener that will save all the data when the program is closed
+	 */
+	static class Window implements WindowListener {
+
+		@Override
+		public void windowOpened(WindowEvent e) { }
+
+		@Override
+		public void windowClosing(WindowEvent e) {
+			for (int i = 0; i < tableList.size(); i++) {
+				tableList.get(i).saveData();
+			}
+		}
+
+		@Override
+		public void windowClosed(WindowEvent e) { }
+
+		@Override
+		public void windowIconified(WindowEvent e) { }
+
+		@Override
+		public void windowDeiconified(WindowEvent e) { }
+
+		@Override
+		public void windowActivated(WindowEvent e) { }
+
+		@Override
+		public void windowDeactivated(WindowEvent e) { }
 	}
 }
 
