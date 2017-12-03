@@ -147,7 +147,7 @@ class DataLinkedList {//start of class
 
 		ArrayList<DataItem> dataArray = new ArrayList<DataItem>();
 		while(tempNode != null){
-			if(!tempNode.getReturned()){
+			if(!tempNode.getReturned() && !tempNode.getStudentNum().isEmpty()){
 				dataArray.add(tempNode);
 			}
 			tempNode = (tempNode.getNext());
