@@ -330,6 +330,8 @@ public class GUI {// start of GUI class
 					assign.setVisible(true);
 					mainWindow.validate();
 					mainWindow.repaint();
+
+					tableList.get(tabs.getSelectedIndex()).saveData();
 				} else {
 					assign.setVisible(true);
 				}
@@ -437,6 +439,8 @@ public class GUI {// start of GUI class
 				JOptionPane.showMessageDialog(dialog, "Please open a database!", "Error!", JOptionPane.WARNING_MESSAGE);
 			} else {
 				// asks user if they want to get all the overdue student names
+				String semester = (String) JOptionPane.showInputDialog (null, "Which semester do you want to check?", "Semester Select", JOptionPane.QUESTION_MESSAGE, null, null, null);
+				String year = (String) JOptionPane.showInputDialog (null, "Please input the school year to check(YYYY/YYYY)", "Date Input", JOptionPane.QUESTION_MESSAGE, null, null, null);
 				int selection = JOptionPane.showOptionDialog(dialog, "Display all overdue students?", "Confirm", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null, null, null);
 				if (selection == 0) {
 					JFrame overdue = new JFrame("Overdue Names");
@@ -444,7 +448,7 @@ public class GUI {// start of GUI class
 					JScrollPane scroller = new JScrollPane(overdueList, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 
 					// get all the names and student numbers of overdue students
-					String overdueNames[] = tableList.get(tabs.getSelectedIndex()).getOverdueNames();
+					String overdueNames[] = tableList.get(tabs.getSelectedIndex()).getOverdueNames(semester, year);
 
 					// add some text
 					for (int i = 0; i < overdueNames.length; i++) {
@@ -470,7 +474,7 @@ public class GUI {// start of GUI class
 						JScrollPane scroller1 = new JScrollPane(emailList, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 
 						// get all the overdue student numbers in an array
-						String[] studentEmails = tableList.get(tabs.getSelectedIndex()).getOverdueEmails();
+						String[] studentEmails = tableList.get(tabs.getSelectedIndex()).getOverdueEmails(semester, year);
 
 						//  Add the emails to the panel
 						for (int i = 0; i < studentEmails.length; i++) {
@@ -604,9 +608,10 @@ public class GUI {// start of GUI class
 				int selection = JOptionPane.showOptionDialog(dialog, "Only the Math Department Head can use this function. Proceed?", "Warning", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null, null, null);
 				if (selection == 0) {// if the user selects yes
 					// asks for confirmation on clear
-					selection = JOptionPane.showOptionDialog(dialog, "Are you sure you want to clear all students?", "Warning", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null, null, null);
+					selection = JOptionPane.showOptionDialog(dialog, "Are you sure you want to clear all students that returned textbooks?", "Warning", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null, null, null);
 					if (selection == 0) { // clear all the students
-						tableList.get(tabs.getSelectedIndex()).clear();
+						String semester = (String) JOptionPane.showInputDialog (null, "Which semester do you want to remove from?", "Semester Select", JOptionPane.QUESTION_MESSAGE, null, null, null);
+						tableList.get(tabs.getSelectedIndex()).clear(semester);
 					}
 				}
 				mainWindow.repaint();

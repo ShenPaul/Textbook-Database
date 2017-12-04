@@ -112,8 +112,8 @@ class SpreadsheetModel extends AbstractTableModel {
      * clear
      * clears all the students from the database
      */
-    public void clear () {
-        list.itemClear();
+    public void clear (String semester) {
+        list.itemClear(semester);
     }
 
     /*
@@ -250,8 +250,9 @@ class SpreadsheetModel extends AbstractTableModel {
      * get all the names & numbers of students that have overdue textbooks and gives it to gui
      * @return String[] - array of all the student names + student numbers
      */
-    public String[] getOverdueNames() {
-        DataItem[] overdue = list.getOverdue();
+    public String[] getOverdueNames(String semester, String year) {
+        semester += "-" + year;
+        DataItem[] overdue = list.getOverdue(semester);
         // map that holds name of student and student number
         String[] overdueStudentNames = new String[overdue.length];
 
@@ -272,8 +273,9 @@ class SpreadsheetModel extends AbstractTableModel {
      * get all the emails of the students that have overdue textbooks and give it to gui
      * @return String[] - array of all the student emails
      */
-    public String[] getOverdueEmails() {
-        DataItem[] overdue = list.getOverdue();
+    public String[] getOverdueEmails(String semester, String year) {
+        semester += "-" + year;
+        DataItem[] overdue = list.getOverdue(semester);
 
         String[] overdueNums = new String[overdue.length];
 

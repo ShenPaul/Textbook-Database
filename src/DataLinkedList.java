@@ -142,12 +142,12 @@ class DataLinkedList {//start of class
 	 * locates not returned DataItems
 	 * @return array of all not returned items
 	 */
-	public DataItem[] getOverdue(){
+	public DataItem[] getOverdue(String semester){
 		DataItem tempNode = head;
 
 		ArrayList<DataItem> dataArray = new ArrayList<DataItem>();
 		while(tempNode != null){
-			if(!tempNode.getReturned() && !tempNode.getStudentNum().isEmpty()){
+			if(!tempNode.getReturned() && !tempNode.getStudentNum().isEmpty()&& tempNode.getCourseCode().substring(9).equals(semester)){
 				dataArray.add(tempNode);
 			}
 			tempNode = (tempNode.getNext());
@@ -338,10 +338,16 @@ class DataLinkedList {//start of class
 		BufferedReader bRead = new BufferedReader(new FileReader(filePath.toFile()));
 
 		String str;
-		//set head data
-		head.setItemNum(bRead.readLine());
+
 		DataItem tempNode;
-		DataItem prevNode = head;
+		DataItem prevNode;
+		//set head data
+		if (head.getItemNum().isEmpty()) {
+			head.setItemNum(bRead.readLine());
+			prevNode = head;
+		}else{
+			prevNode = get(size()-1);
+		}
 
 		while((str = bRead.readLine()) != null){//loop through file
 			tempNode = new DataItem(str);//create 1 node per line
@@ -593,16 +599,22 @@ class DataLinkedList {//start of class
 	/** itemClear *******************************************
 	 * removes data of all items
 	 */
-	public void itemClear(){
+	public void itemClear(String semester){
 		for(int i=0;i<this.size();i++){
 			DataItem item = this.get(i);
-			item.setCourseCode("");
-			item.setDate("");
-			item.setFirstName("");
-			item.setLastName("");
-			item.setStudentNum("");
-			item.setTeacher("");
-			item.setReturned(false);
+			if (item.getCourseCode().isEmpty()){
+				continue;
+			}
+
+			if (item.getReturned() && item.getCourseCode().substring(9,10).equals(semester)) {
+				item.setCourseCode("");
+				item.setDate("");
+				item.setFirstName("");
+				item.setLastName("");
+				item.setStudentNum("");
+				item.setTeacher("");
+				item.setReturned(false);
+			}
 		}
 	}
 
