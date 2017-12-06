@@ -606,7 +606,7 @@ class DataLinkedList {//start of class
 				continue;
 			}
 
-			if (item.getReturned() && item.getCourseCode().substring(9,10).equals(semester)) {
+			if (item.getReturned() && item.getCourseCode().substring(9).equals(semester)) {
 				item.setCourseCode("");
 				item.setDate("");
 				item.setFirstName("");

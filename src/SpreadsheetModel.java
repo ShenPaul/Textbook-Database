@@ -112,7 +112,8 @@ class SpreadsheetModel extends AbstractTableModel {
      * clear
      * clears all the students from the database
      */
-    public void clear (String semester) {
+    public void clear (String semester, String year) {
+        semester += '-'+ year;
         list.itemClear(semester);
     }
 

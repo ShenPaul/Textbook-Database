@@ -439,8 +439,8 @@ public class GUI {// start of GUI class
 				JOptionPane.showMessageDialog(dialog, "Please open a database!", "Error!", JOptionPane.WARNING_MESSAGE);
 			} else {
 				// asks user if they want to get all the overdue student names
-				String semester = (String) JOptionPane.showInputDialog (null, "Which semester do you want to check?", "Semester Select", JOptionPane.QUESTION_MESSAGE, null, null, null);
 				String year = (String) JOptionPane.showInputDialog (null, "Please input the school year to check(YYYY/YYYY)", "Date Input", JOptionPane.QUESTION_MESSAGE, null, null, null);
+				String semester = (String) JOptionPane.showInputDialog (null, "Which semester do you want to check?", "Semester Select", JOptionPane.QUESTION_MESSAGE, null, null, null);
 				int selection = JOptionPane.showOptionDialog(dialog, "Display all overdue students?", "Confirm", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null, null, null);
 				if (selection == 0) {
 					JFrame overdue = new JFrame("Overdue Names");
@@ -610,8 +610,9 @@ public class GUI {// start of GUI class
 					// asks for confirmation on clear
 					selection = JOptionPane.showOptionDialog(dialog, "Are you sure you want to clear all students that returned textbooks?", "Warning", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null, null, null);
 					if (selection == 0) { // clear all the students
+						String year = (String) JOptionPane.showInputDialog (null, "Please input the school year that you want to remove from(YYYY/YYYY)", "Date Input", JOptionPane.QUESTION_MESSAGE, null, null, null);
 						String semester = (String) JOptionPane.showInputDialog (null, "Which semester do you want to remove from?", "Semester Select", JOptionPane.QUESTION_MESSAGE, null, null, null);
-						tableList.get(tabs.getSelectedIndex()).clear(semester);
+						tableList.get(tabs.getSelectedIndex()).clear(semester, year);
 					}
 				}
 				mainWindow.repaint();
